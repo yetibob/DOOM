@@ -1,0 +1,5 @@
+-Wall
+-DNORMALUNIX
+-DLINUX
+-L/usr/lib/x86_64-linux-gnu
+-lXext -lX11 -lnsl -lm

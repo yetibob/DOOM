@@ -23,9 +23,9 @@
 
 #include <stdint.h>
 
-#include "z_zone.h"
 #include "doomdef.h"
 #include "i_system.h"
+#include "z_zone.h"
 
 //
 // ZONE MEMORY ALLOCATION
@@ -86,8 +86,12 @@ void Z_Init(void) {
 	mainzone->size = size;
 
 	// set the entire zone to one free block
+	// TODO:INVESTIGATE
+	// why do a (byte*)mainzone + sizeof(memzone_t) instead of mainzone + 1?
+	// just tested and it seems to do the same thing so idk really...seems odd?
 	mainzone->blocklist.next = mainzone->blocklist.prev = block =
 	    (memblock_t*)((byte*)mainzone + sizeof(memzone_t));
+	    // (memblock_t*)(mainzone + 1);
 
 	mainzone->blocklist.user = (void*)mainzone;
 	mainzone->blocklist.tag  = PU_STATIC;
@@ -116,7 +120,6 @@ void Z_Free(void* ptr) {
 
 	if (block->user > (void**)0x100) {
 		// smaller values are not pointers
-		// Note: OS-dependend?
 
 		// clear the user's mark
 		*block->user = 0;
@@ -189,6 +192,10 @@ void* Z_Malloc(int size, int tag, void* user) {
 	rover = base;
 	start = base->prev;
 
+	// TODO:RESUME
+	// Was going through z_zone to figure out how the zone allocator works
+	// still trying to find out how rover is getting a crap value
+	// and why we are trying to free a bum pointer
 	do {
 		if (rover == start) {
 			// scanned all the way around the list

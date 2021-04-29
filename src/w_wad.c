@@ -412,8 +412,6 @@ void W_ReadLump(int lump, void* dest) {
 // W_CacheLumpNum
 //
 
-// TODO:REMOVE
-// remove is_tex after TEXTURE lump issues have been sorted out
 void* W_CacheLumpNum(int lump, int tag) {
     if ((unsigned)lump >= numlumps) {
         I_Error("W_CacheLumpNum: %i >= numlumps", lump);

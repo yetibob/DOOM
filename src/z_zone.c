@@ -88,11 +88,10 @@ void Z_Init(void) {
 	// set the entire zone to one free block
 	// TODO:INVESTIGATE
 	// why do a (byte*)mainzone + sizeof(memzone_t) instead of mainzone + 1?
-	// just tested and it seems to do the same thing so idk really...seems odd?
 	mainzone->blocklist.next = mainzone->blocklist.prev = block =
-	    (memblock_t*)((byte*)mainzone + sizeof(memzone_t));
-	    // (memblock_t*)(mainzone + 1);
+	    (memblock_t*)(mainzone + 1);
 
+	// Why is user being set to just a regular pointer when its supposed to be a double pointer (**)
 	mainzone->blocklist.user = (void*)mainzone;
 	mainzone->blocklist.tag  = PU_STATIC;
 	mainzone->rover          = block;
@@ -243,7 +242,9 @@ void* Z_Malloc(int size, int tag, void* user) {
 	if (user) {
 		// mark as an in use block
 		base->user    = user;
-		*(void**)user = (void*)((byte*)base + sizeof(memblock_t));
+		// TODO:INVESTIGATE
+		// Why is he doing a (byte*)base + sizeof(memblock_t) instead of + 1?
+		*(void**)user = (void*)(base + 1);
 	} else {
 		if (tag >= PU_PURGELEVEL) {
 			I_Error("Z_Malloc: an owner is required for purgable blocks");
@@ -259,7 +260,9 @@ void* Z_Malloc(int size, int tag, void* user) {
 
 	base->id = ZONEID;
 
-	return (void*)((byte*)base + sizeof(memblock_t));
+	// TODO:INVESTIGATE:
+	// Seriously, why the (byte*)base + sizeof(memblock_t) instead of base+1?
+	return (void*)(base + 1);
 }
 
 //

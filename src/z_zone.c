@@ -163,7 +163,7 @@ void Z_Free(void* ptr) {
 //
 #define MINFRAGMENT 64
 
-void* Z_Malloc(int size, int tag, void* user) {
+void* Z_Malloc(int size, int tag, void** user) {
 	int         extra;
 	memblock_t* start;
 	memblock_t* rover;
@@ -244,7 +244,7 @@ void* Z_Malloc(int size, int tag, void* user) {
 		base->user    = user;
 		// TODO:INVESTIGATE
 		// Why is he doing a (byte*)base + sizeof(memblock_t) instead of + 1?
-		*(void**)user = (void*)(base + 1);
+		*user = (void*)(base + 1);
 	} else {
 		if (tag >= PU_PURGELEVEL) {
 			I_Error("Z_Malloc: an owner is required for purgable blocks");

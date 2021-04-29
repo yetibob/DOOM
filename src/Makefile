@@ -81,11 +81,11 @@ OBJS=				\
 
 all:	 $(O)/linuxxdoom
 
-run:
-	./build/linuxxdoom
+run: all
+	DOOMWADDIR=../wads ./build/linuxxdoom
 
 debug: all
-	gdb ./build/linuxxdoom
+	DOOMWADDIR=../wads gdb ./build/linuxxdoom
 
 clean:
 	rm -f *.o *~ *.flc

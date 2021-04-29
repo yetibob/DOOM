@@ -79,7 +79,9 @@ typedef struct {
 	boolean    masked;
 	short      width;
 	short      height;
-	void**     columndirectory; // OBSOLETE
+	// TODO:INVESTIGATE
+	// Wtf is this and why was it here breaking my game
+	// void**     columndirectory; // OBSOLETE
 	short      patchcount;
 	mappatch_t patches[1];
 } maptexture_t;
@@ -493,9 +495,7 @@ void R_InitTextures(void) {
 			patch->originx = SHORT(mpatch->originx);
 			patch->originy = SHORT(mpatch->originy);
 			patch->patch   = 0;
-			if (mpatch->patch < nummappatches) {
-				patch->patch   = patchlookup[SHORT(mpatch->patch)];
-			}
+			patch->patch   = patchlookup[SHORT(mpatch->patch)];
 			if (patch->patch == -1) {
 				I_Error("R_InitTextures: Missing patch in texture %s",
 				        texture->name);

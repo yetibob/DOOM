@@ -603,6 +603,12 @@ void IdentifyVersion(void) {
 		return;
 	}
 
+	if (!access(doomuwad, R_OK)) {
+		gamemode = retail;
+		D_AddFile(doomuwad);
+		return;
+	}
+
 	if (!access(doom2fwad, R_OK)) {
 		gamemode = commercial;
 		// C'est ridicule!
@@ -628,12 +634,6 @@ void IdentifyVersion(void) {
 	if (!access(tntwad, R_OK)) {
 		gamemode = commercial;
 		D_AddFile(tntwad);
-		return;
-	}
-
-	if (!access(doomuwad, R_OK)) {
-		gamemode = retail;
-		D_AddFile(doomuwad);
 		return;
 	}
 

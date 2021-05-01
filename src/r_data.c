@@ -81,7 +81,7 @@ typedef struct {
     short   height;
     // TODO:INVESTIGATE
     // Wtf is this and why was it here breaking my game
-    // void**     columndirectory; // OBSOLETE
+    int        columndirectory; // OBSOLETE
     short      patchcount;
     mappatch_t patches[1];
 } maptexture_t;
@@ -431,13 +431,13 @@ void R_InitTextures(void) {
     }
     numtextures = numtextures1 + numtextures2;
 
-    textures             = Z_Malloc(numtextures * 4, PU_STATIC, 0);
-    texturecolumnlump    = Z_Malloc(numtextures * 4, PU_STATIC, 0);
-    texturecolumnofs     = Z_Malloc(numtextures * 4, PU_STATIC, 0);
-    texturecomposite     = Z_Malloc(numtextures * 4, PU_STATIC, 0);
-    texturecompositesize = Z_Malloc(numtextures * 4, PU_STATIC, 0);
-    texturewidthmask     = Z_Malloc(numtextures * 4, PU_STATIC, 0);
-    textureheight        = Z_Malloc(numtextures * 4, PU_STATIC, 0);
+    textures             = Z_Malloc(numtextures * sizeof(*textures), PU_STATIC, 0);
+    texturecolumnlump    = Z_Malloc(numtextures * sizeof(*texturecolumnlump), PU_STATIC, 0);
+    texturecolumnofs     = Z_Malloc(numtextures * sizeof(*texturecolumnofs), PU_STATIC, 0);
+    texturecomposite     = Z_Malloc(numtextures * sizeof(*texturecomposite), PU_STATIC, 0);
+    texturecompositesize = Z_Malloc(numtextures * sizeof(*texturecompositesize), PU_STATIC, 0);
+    texturewidthmask     = Z_Malloc(numtextures * sizeof(*texturewidthmask), PU_STATIC, 0);
+    textureheight        = Z_Malloc(numtextures * sizeof(*textureheight), PU_STATIC, 0);
 
     totalwidth = 0;
 
@@ -477,11 +477,7 @@ void R_InitTextures(void) {
 
         mtexture = (maptexture_t*)((byte*)maptex + offset);
 
-        texture = textures[i] =
-            Z_Malloc(sizeof(texture_t) +
-                         sizeof(texpatch_t) * (SHORT(mtexture->patchcount) - 1),
-                     PU_STATIC,
-                     0);
+        texture = textures[i] = Z_Malloc(sizeof(texture_t) + sizeof(texpatch_t) * (SHORT(mtexture->patchcount) - 1), PU_STATIC, 0);
 
         texture->width      = SHORT(mtexture->width);
         texture->height     = SHORT(mtexture->height);

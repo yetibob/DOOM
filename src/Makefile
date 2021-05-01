@@ -15,6 +15,8 @@ LIBS=-lXext -lX11 -lnsl -lm
 # subdirectory for objects
 O=build
 
+GDBSCRIPT?=x11
+
 # not too sophisticated dependency
 OBJS=				\
 		$(O)/doomdef.o		\
@@ -85,7 +87,7 @@ run: all
 	./build/linuxxdoom
 
 debug: all
-	gdb ./build/linuxxdoom
+	gdb ./build/linuxxdoom --command=../gdb/$(GDBSCRIPT).gdb
 
 clean:
 	rm -f *.o *~ *.flc

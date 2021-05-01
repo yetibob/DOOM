@@ -1,4 +1,5 @@
 build/
 wads/
+src/sndserver
 **/*.wad
 **/*.swp

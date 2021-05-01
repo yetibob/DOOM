@@ -32,13 +32,13 @@ char** myargv;
 // Returns the argument number (1 to argc-1)
 // or 0 if not present
 int M_CheckParm(char* check) {
-	int i;
+    int i;
 
-	for (i = 1; i < myargc; i++) {
-		if (!strcasecmp(check, myargv[i])) {
-			return i;
-		}
-	}
+    for (i = 1; i < myargc; i++) {
+        if (!strcasecmp(check, myargv[i])) {
+            return i;
+        }
+    }
 
-	return 0;
+    return 0;
 }

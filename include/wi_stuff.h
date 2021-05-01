@@ -29,9 +29,9 @@
 // States for the intermission
 
 typedef enum {
-	NoState = -1,
-	StatCount,
-	ShowNextLoc
+    NoState = -1,
+    StatCount,
+    ShowNextLoc
 
 } stateenum_t;
 

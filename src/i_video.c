@@ -85,7 +85,7 @@ int     doPointerWarp = POINTER_WARP_COUNTDOWN;
 // replace each 320x200 pixel with multiply*multiply pixels.
 // According to Dave Taylor, it still is a bonehead thing
 // to use ....
-static int multiply = 1;
+static int multiply = 4;
 
 //
 //  Translates the key currently in X_event
@@ -506,17 +506,7 @@ void I_FinishUpdate(void) {
 
     if (doShm) {
 
-        if (!XShmPutImage(X_display,
-                          X_mainWindow,
-                          X_gc,
-                          image,
-                          0,
-                          0,
-                          0,
-                          0,
-                          X_width,
-                          X_height,
-                          True)) {
+        if (!XShmPutImage(X_display, X_mainWindow, X_gc, image, 0, 0, 0, 0, X_width, X_height, True)) {
             I_Error("XShmPutImage() failed\n");
         }
 
@@ -529,16 +519,7 @@ void I_FinishUpdate(void) {
     } else {
 
         // draw the image
-        XPutImage(X_display,
-                  X_mainWindow,
-                  X_gc,
-                  image,
-                  0,
-                  0,
-                  0,
-                  0,
-                  X_width,
-                  X_height);
+        XPutImage(X_display, X_mainWindow, X_gc, image, 0, 0, 0, 0, X_width, X_height);
 
         // sync up with server
         XSync(X_display, False);
@@ -563,12 +544,7 @@ void UploadNewPalette(Colormap cmap, byte* palette) {
     register int   c;
     static boolean firstcall = true;
 
-#ifdef __cplusplus
-    if (X_visualinfo.c_class == PseudoColor && X_visualinfo.depth == 8)
-#else
-    if (X_visualinfo.class == PseudoColor && X_visualinfo.depth == 8)
-#endif
-    {
+    if (X_visualinfo.class == DirectColor && X_visualinfo.depth == 24) {
         // initialize the colormap
         if (firstcall) {
             firstcall = false;
@@ -778,10 +754,13 @@ void I_InitGraphics(void) {
 
     // use the default visual
     X_screen = DefaultScreen(X_display);
-    if (!XMatchVisualInfo(X_display, X_screen, 8, PseudoColor, &X_visualinfo)) {
+
+    if (!XMatchVisualInfo(X_display, X_screen, 24, DirectColor, &X_visualinfo)) {
         I_Error("xdoom currently only supports 256-color PseudoColor screens");
     }
+
     X_visual = X_visualinfo.visual;
+    // X_visual = DefaultVisual(X_display, X_screen);
 
     // check for the MITSHM extension
     doShm = XShmQueryExtension(X_display);
@@ -832,7 +811,7 @@ void I_InitGraphics(void) {
                                  X_width,
                                  X_height,
                                  0, // borderwidth
-                                 8, // depth
+                                 24, // depth
                                  InputOutput,
                                  X_visual,
                                  attribmask,
@@ -879,7 +858,7 @@ void I_InitGraphics(void) {
         // create the image
         image = XShmCreateImage(X_display,
                                 X_visual,
-                                8,
+                                24,
                                 ZPixmap,
                                 0,
                                 &X_shminfo,

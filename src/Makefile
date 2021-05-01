@@ -8,7 +8,7 @@ CC=gcc
 
 INCLUDE=-I../include
 
-CFLAGS=-g -ggdb -Wall -DNORMALUNIX -DLINUX $(INCLUDE)# -DUSEASM 
+CFLAGS=-g -Wall -DNORMALUNIX -DLINUX $(INCLUDE)# -DUSEASM
 LDFLAGS=-L/usr/lib/x86_64-linux-gnu
 LIBS=-lXext -lX11 -lnsl -lm
 

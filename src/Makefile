@@ -84,11 +84,10 @@ OBJS=				\
 all:	 $(O)/linuxxdoom
 
 run: all
-	./build/linuxxdoom
+	./build/linuxxdoom -3
 
 debug: all
-	gdb ./build/linuxxdoom --command=../gdb/$(GDBSCRIPT).gdb
-
+	gdb --command=../gdb/$(GDBSCRIPT).gdb ./build/linuxxdoom
 clean:
 	rm -f *.o *~ *.flc
 	rm -f build/*

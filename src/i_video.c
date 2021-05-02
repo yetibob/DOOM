@@ -85,7 +85,7 @@ int     doPointerWarp = POINTER_WARP_COUNTDOWN;
 // replace each 320x200 pixel with multiply*multiply pixels.
 // According to Dave Taylor, it still is a bonehead thing
 // to use ....
-static int multiply = 4;
+static int multiply = 1;
 
 //
 //  Translates the key currently in X_event
@@ -544,7 +544,7 @@ void UploadNewPalette(Colormap cmap, byte* palette) {
     register int   c;
     static boolean firstcall = true;
 
-    if (X_visualinfo.class == DirectColor && X_visualinfo.depth == 24) {
+    if (X_visualinfo.class == PseudoColor && X_visualinfo.depth == 8) {
         // initialize the colormap
         if (firstcall) {
             firstcall = false;
@@ -712,8 +712,7 @@ void I_InitGraphics(void) {
     X_height = SCREENHEIGHT * multiply;
 
     // check for command-line display name
-    if ((pnum =
-             M_CheckParm("-disp"))) { // suggest parentheses around assignment
+    if ((pnum = M_CheckParm("-disp"))) { // suggest parentheses around assignment
         displayname = myargv[pnum + 1];
     } else {
         displayname = 0;
@@ -754,13 +753,7 @@ void I_InitGraphics(void) {
 
     // use the default visual
     X_screen = DefaultScreen(X_display);
-
-    if (!XMatchVisualInfo(X_display, X_screen, 24, DirectColor, &X_visualinfo)) {
-        I_Error("xdoom currently only supports 256-color PseudoColor screens");
-    }
-
-    X_visual = X_visualinfo.visual;
-    // X_visual = DefaultVisual(X_display, X_screen);
+    X_visual = XDefaultVisual(X_display, X_screen);
 
     // check for the MITSHM extension
     doShm = XShmQueryExtension(X_display);
@@ -787,18 +780,15 @@ void I_InitGraphics(void) {
     fprintf(stderr, "Using MITSHM extension\n");
 
     // create the colormap
-    X_cmap = XCreateColormap(X_display,
-                             RootWindow(X_display, X_screen),
-                             X_visual,
-                             AllocAll);
+    X_cmap = XDefaultColormap(X_display, X_screen);
 
     // setup attributes for main window
     attribmask = CWEventMask | CWColormap | CWBorderPixel;
     attribs.event_mask =
-        KeyPressMask |
-        KeyReleaseMask
+        KeyPressMask   |
+        KeyReleaseMask |
+        ExposureMask;
         // | PointerMotionMask | ButtonPressMask | ButtonReleaseMask
-        | ExposureMask;
 
     attribs.colormap     = X_cmap;
     attribs.border_pixel = 0;

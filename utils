@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 tidy() {
-    if clang-tidy -p linux **/*.h; then
-        clang-tidy -p linux **/*.c
+    if clang-tidy -p linux **/*.hpp; then
+        clang-tidy -p linux **/*.cpp
     fi
 }

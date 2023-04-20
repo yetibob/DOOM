@@ -8,14 +8,14 @@ set(EXE doom)
 project (${APP} VERSION 0.1)
 
 list(APPEND SOURCE_DIRS  ${PROJECT_SOURCE_DIR}/linuxdoom-1.10)
-# list(APPEND INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
+list(APPEND INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/linuxdoom-1.10/include)
 file(GLOB source_files "${SOURCE_DIRS}/*.cpp")
 
 add_executable(${EXE} ${source_files})
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -DNORMALUNIX -DLINUX")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -DNORMALUNIX -DLINUX -Wno-unused-function -Wno-unused-variable -Wno-write-strings -Wno-narrowing -Wno-literal-suffix")
 Set(CMAKE_SHARED_LINKER_FLAGS -L/usr/X11R6/lib)
 
 # Custom boost dir
@@ -58,7 +58,7 @@ if (${APP}_TEST)
     FetchContent_Declare(
         googletest
         GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG release-1.12.1
+        GIT_TAG v1.13.0
     )
 
     # For Windows: Prevent overriding the parent project's compiler/linker settings

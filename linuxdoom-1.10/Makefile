@@ -4,7 +4,7 @@
 #
 # $Log:$
 #
-CC=  gcc  # gcc or g++
+CC=  g++  # gcc or g++
 
 CFLAGS=-g -Wall -DNORMALUNIX -DLINUX # -DUSEASM 
 LDFLAGS=-L/usr/X11R6/lib
@@ -87,7 +87,7 @@ $(O)/linuxxdoom:	$(OBJS) $(O)/i_main.o
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(O)/i_main.o \
 	-o $(O)/linuxxdoom $(LIBS)
 
-$(O)/%.o:	%.c
+$(O)/%.o:	%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 #############################################################

@@ -104,18 +104,16 @@ bool M_WriteFile(char const* name, void* source, int length) {
     count = write(handle, source, length);
     close(handle);
 
-    if (count < length) {
-        return false;
-    }
-
-    return true;
+    return count >= length;
 }
 
 //
 // M_ReadFile
 //
 int M_ReadFile(char const* name, byte** buffer) {
-    int         handle, count, length;
+    int         handle;
+    int         count;
+    int         length;
     struct stat fileinfo;
     byte*       buf;
 
@@ -167,17 +165,11 @@ extern int joybstrafe;
 extern int joybuse;
 extern int joybspeed;
 
-extern int viewwidth;
-extern int viewheight;
-
-extern int mouseSensitivity;
 extern int showMessages;
 
 extern int detailLevel;
 
 extern int screenblocks;
-
-extern int showMessages;
 
 // machine-independent sound params
 extern int numChannels;

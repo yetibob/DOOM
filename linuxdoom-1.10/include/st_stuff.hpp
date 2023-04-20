@@ -67,8 +67,6 @@ typedef enum {
 
 } st_chatstateenum_t;
 
-bool ST_Responder(event_t* ev);
-
 #endif
 //-----------------------------------------------------------------------------
 //

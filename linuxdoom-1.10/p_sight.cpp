@@ -255,9 +255,8 @@ bool P_CrossBSPNode(int bspnum) {
     if (bspnum & NF_SUBSECTOR) {
         if (bspnum == -1) {
             return P_CrossSubsector(0);
-        } else {
-            return P_CrossSubsector(bspnum & (~NF_SUBSECTOR));
         }
+        return P_CrossSubsector(bspnum & (~NF_SUBSECTOR));
     }
 
     bsp = &nodes[bspnum];

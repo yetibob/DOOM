@@ -198,7 +198,7 @@ void M_DrawSelCell(menu_t* menu, int item);
 void M_WriteText(int x, int y, char* string);
 int  M_StringWidth(char* string);
 int  M_StringHeight(char* string);
-void M_StartControlPanel(void);
+
 void M_StartMessage(char* string, void* routine, bool input);
 void M_StopMessage(void);
 void M_ClearMenus(void);
@@ -556,7 +556,6 @@ void M_DrawReadThis1(void) {
         default:
             break;
     }
-    return;
 }
 
 //
@@ -577,7 +576,6 @@ void M_DrawReadThis2(void) {
         default:
             break;
     }
-    return;
 }
 
 //
@@ -851,8 +849,6 @@ void M_ChangeDetail(int choice) {
     // FIXME - does not work. Remove anyway?
     fprintf(stderr, "M_ChangeDetail: low detail mode n.a.\n");
 
-    return;
-
     /*R_SetViewSize (screenblocks, detailLevel);
 
     if (!detailLevel)
@@ -920,7 +916,6 @@ void M_StartMessage(char* string, void* routine, bool input) {
     messageRoutine        = routine;
     messageNeedsInput     = input;
     menuactive            = true;
-    return;
 }
 
 void M_StopMessage(void) {
@@ -1133,8 +1128,7 @@ bool M_Responder(event_t* ev) {
 
     // Take care of any messages that need input
     if (messageToPrint) {
-        if (messageNeedsInput == true &&
-            !(ch == ' ' || ch == 'n' || ch == 'y' || ch == KEY_ESCAPE)) {
+        if (messageNeedsInput && ch != ' ' && ch != 'n' && ch != 'y' && ch != KEY_ESCAPE) {
             return false;
         }
 

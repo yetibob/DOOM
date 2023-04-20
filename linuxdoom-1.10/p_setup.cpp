@@ -296,7 +296,7 @@ void P_LoadThings(int lump) {
                     break;
             }
         }
-        if (spawn == false) {
+        if (!spawn) {
             break;
         }
 

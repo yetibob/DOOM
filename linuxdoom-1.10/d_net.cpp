@@ -89,7 +89,8 @@ int NetbufferSize(void) {
 //
 unsigned NetbufferChecksum(void) {
     unsigned c;
-    int      i, l;
+    int      i;
+    int      l;
 
     c = 0x1234567;
 
@@ -257,7 +258,8 @@ char exitmsg[80];
 void GetPackets(void) {
     int       netconsole;
     int       netnode;
-    ticcmd_t *src, *dest;
+    ticcmd_t* src;
+    ticcmd_t* dest;
     int       realend;
     int       realstart;
 
@@ -366,7 +368,8 @@ int gametime;
 void NetUpdate(void) {
     int nowtime;
     int newtics;
-    int i, j;
+    int i;
+    int j;
     int realstart;
     int gameticdiv;
 
@@ -536,7 +539,6 @@ void D_ArbitrateNetStart(void) {
 // D_CheckNetGame
 // Works out player numbers among the net participants
 //
-extern int viewangleoffset;
 
 void D_CheckNetGame(void) {
     int i;
@@ -592,7 +594,8 @@ void D_CheckNetGame(void) {
 // without hanging the other players
 //
 void D_QuitNetGame(void) {
-    int i, j;
+    int i;
+    int j;
 
     if (debugfile) {
         fclose(debugfile);

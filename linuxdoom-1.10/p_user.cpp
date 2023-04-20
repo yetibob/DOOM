@@ -258,7 +258,7 @@ void P_PlayerThink(player_t* player) {
         newweapon = (cmd->buttons & BT_WEAPONMASK) >> BT_WEAPONSHIFT;
 
         if (newweapon == wp_fist && player->weaponowned[wp_chainsaw] &&
-            !(player->readyweapon == wp_chainsaw && player->powers[pw_strength])) {
+            (player->readyweapon != wp_chainsaw || !player->powers[pw_strength])) {
             newweapon = wp_chainsaw;
         }
 

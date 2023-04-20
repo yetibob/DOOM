@@ -36,7 +36,6 @@
 // Separate header file for each module.
 //
 #include "r_bsp.hpp"
-#include "r_data.hpp"
 #include "r_draw.hpp"
 #include "r_main.hpp"
 #include "r_plane.hpp"

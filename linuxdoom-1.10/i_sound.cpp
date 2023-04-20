@@ -637,7 +637,6 @@ void I_ShutdownSound(void) {
 #endif
 
     // Done.
-    return;
 }
 
 void I_InitSound() {
@@ -815,7 +814,6 @@ void I_HandleSoundTimer(int ignore) {
 
     // UNUSED, but required.
     ignore = 0;
-    return;
 }
 
 // Get the interrupt. Set duration in millisecs.

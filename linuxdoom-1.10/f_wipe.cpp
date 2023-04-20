@@ -109,7 +109,8 @@ int wipe_exitColorXForm(int width, int height, int ticks) {
 static int* y;
 
 int wipe_initMelt(int width, int height, int ticks) {
-    int i, r;
+    int i;
+    int r;
 
     // copy start screen to main screen
     memcpy(wipe_scr, wipe_scr_start, width * height);
@@ -204,8 +205,6 @@ int wipe_ScreenWipe(int wipeno, int x, int y, int width, int height, int ticks) 
     static int (*wipes[])(int, int, int) = { wipe_initColorXForm, wipe_doColorXForm,
                                              wipe_exitColorXForm, wipe_initMelt,
                                              wipe_doMelt,         wipe_exitMelt };
-
-    void V_MarkRect(int, int, int, int);
 
     // initial stuff
     if (!go) {

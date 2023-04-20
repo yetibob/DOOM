@@ -267,17 +267,15 @@ static cheatseq_t    cheat_amap       = { cheat_amap_seq, 0 };
 
 static bool stopped = true;
 
-extern bool viewactive;
 // extern byte screens[][SCREENWIDTH*SCREENHEIGHT];
-
-void V_MarkRect(int x, int y, int width, int height);
 
 // Calculates the slope and slope according to the x-axis of a line
 // segment in map coordinates (with the upright y-axis n' all) so
 // that it can be used with the brain-dead drawing stuff.
 
 void AM_getIslope(mline_t* ml, islope_t* is) {
-    int dx, dy;
+    int dx;
+    int dy;
 
     dy = ml->a.y - ml->b.y;
     dx = ml->b.x - ml->a.x;
@@ -526,7 +524,8 @@ void AM_Stop(void) {
 //
 //
 void AM_Start(void) {
-    static int lastlevel = -1, lastepisode = -1;
+    static int lastlevel   = -1;
+    static int lastepisode = -1;
 
     if (!stopped) {
         AM_Stop();
@@ -994,8 +993,10 @@ void AM_drawMline(mline_t* ml, int color) {
 // Draws flat (floor/ceiling tile) aligned grid lines.
 //
 void AM_drawGrid(int color) {
-    fixed_t x, y;
-    fixed_t start, end;
+    fixed_t x;
+    fixed_t y;
+    fixed_t start;
+    fixed_t end;
     mline_t ml;
 
     // Figure out start of vertical gridlines
@@ -1214,7 +1215,11 @@ void AM_drawThings(int colors, int colorrange) {
 }
 
 void AM_drawMarks(void) {
-    int i, fx, fy, w, h;
+    int i;
+    int fx;
+    int fy;
+    int w;
+    int h;
 
     for (i = 0; i < AM_NUMMARKPOINTS; i++) {
         if (markpoints[i].x != -1) {

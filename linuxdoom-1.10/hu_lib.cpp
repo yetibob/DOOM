@@ -57,23 +57,21 @@ bool HUlib_addCharToTextLine(hu_textline_t* t, char ch) {
 
     if (t->len == HU_MAXLINELENGTH) {
         return false;
-    } else {
-        t->l[t->len++] = ch;
-        t->l[t->len]   = 0;
-        t->needsupdate = 4;
-        return true;
     }
+    t->l[t->len++] = ch;
+    t->l[t->len]   = 0;
+    t->needsupdate = 4;
+    return true;
 }
 
 bool HUlib_delCharFromTextLine(hu_textline_t* t) {
 
     if (!t->len) {
         return false;
-    } else {
-        t->l[--t->len] = 0;
-        t->needsupdate = 4;
-        return true;
     }
+    t->l[--t->len] = 0;
+    t->needsupdate = 4;
+    return true;
 }
 
 void HUlib_drawTextLine(hu_textline_t* l, bool drawcursor) {
@@ -187,7 +185,8 @@ void HUlib_addMessageToSText(hu_stext_t* s, char* prefix, char* msg) {
 }
 
 void HUlib_drawSText(hu_stext_t* s) {
-    int            i, idx;
+    int            i;
+    int            idx;
     hu_textline_t* l;
 
     if (!*s->on) {

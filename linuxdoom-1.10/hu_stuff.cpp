@@ -79,7 +79,6 @@ static hu_stext_t w_message;
 static int        message_counter;
 
 extern int     showMessages;
-extern bool automapactive;
 
 static bool headsupactive = false;
 
@@ -324,7 +323,8 @@ void HU_Erase(void) {
 
 void HU_Ticker(void) {
 
-    int  i, rc;
+    int  i;
+    int  rc;
     char c;
 
     // tick down message counter if message is up
@@ -441,7 +441,8 @@ bool HU_Responder(event_t* ev) {
     if (ev->data1 == KEY_RSHIFT) {
         shiftdown = ev->type == ev_keydown;
         return false;
-    } else if (ev->data1 == KEY_RALT || ev->data1 == KEY_LALT) {
+    }
+    if (ev->data1 == KEY_RALT || ev->data1 == KEY_LALT) {
         altdown = ev->type == ev_keydown;
         return false;
     }
@@ -467,7 +468,8 @@ bool HU_Responder(event_t* ev) {
                         HUlib_resetIText(&w_chat);
                         HU_queueChatChar(i + 1);
                         break;
-                    } else if (i == consoleplayer) {
+                    }
+                    if (i == consoleplayer) {
                         num_nobrainers++;
                         if (num_nobrainers < 3) {
                             plr->message = HUSTR_TALKTOSELF1;

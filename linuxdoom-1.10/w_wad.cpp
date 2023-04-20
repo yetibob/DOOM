@@ -464,14 +464,14 @@ void W_Profile(void) {
         if (!ptr) {
             ch = ' ';
             continue;
-        } else {
-            block = (memblock_t*)((byte*)ptr - sizeof(memblock_t));
-            if (block->tag < PU_PURGELEVEL) {
-                ch = 'S';
-            } else {
-                ch = 'P';
-            }
         }
+        block = (memblock_t*)((byte*)ptr - sizeof(memblock_t));
+        if (block->tag < PU_PURGELEVEL) {
+            ch = 'S';
+        } else {
+            ch = 'P';
+        }
+
         info[i][profilecount] = ch;
     }
     profilecount++;

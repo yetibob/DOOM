@@ -389,7 +389,9 @@ void I_FinishUpdate(void) {
     if (multiply == 2) {
         unsigned int* olineptrs[2];
         unsigned int* ilineptr;
-        int           x, y, i;
+        int           x;
+        int           y;
+        int           i;
         unsigned int  twoopixels;
         unsigned int  twomoreopixels;
         unsigned int  fouripixels;
@@ -427,7 +429,9 @@ void I_FinishUpdate(void) {
     } else if (multiply == 3) {
         unsigned int* olineptrs[3];
         unsigned int* ilineptr;
-        int           x, y, i;
+        int           x;
+        int           y;
+        int           i;
         unsigned int  fouropixels[3];
         unsigned int  fouripixels;
 
@@ -476,7 +480,7 @@ void I_FinishUpdate(void) {
 
     } else if (multiply == 4) {
         // Broken. Gotta fix this some day.
-        void Expand4(unsigned*, double*);
+        void Expand4(const unsigned* /*lineptr*/, double* /*xline*/);
         Expand4((unsigned*)(screens[0]), (double*)(image->data));
     }
 
@@ -617,15 +621,14 @@ void grabsharedmemory(int size) {
                     if (size >= shminfo.shm_segsz) {
                         fprintf(stderr, "will use %d's stale shared memory\n", shminfo.shm_cpid);
                         break;
-                    } else {
-                        fprintf(stderr,
-                                "warning: can't use stale "
-                                "shared memory belonging to id %d, "
-                                "key=0x%x\n",
-                                shminfo.shm_cpid,
-                                key);
-                        key++;
                     }
+                    fprintf(stderr,
+                            "warning: can't use stale "
+                            "shared memory belonging to id %d, "
+                            "key=0x%x\n",
+                            shminfo.shm_cpid,
+                            key);
+                    key++;
                 }
             } else {
                 I_Error("could not get stats on key=%d", key);
@@ -759,7 +762,7 @@ void I_InitGraphics(void) {
             if (*d) {
                 *d = 0;
             }
-            if (!(!strcasecmp(displayname, "unix") || !*displayname)) {
+            if (strcasecmp(displayname, "unix") && *displayname) {
                 doShm = false;
             }
         }
@@ -914,7 +917,7 @@ void InitExpand2(void) {
 
 int inited;
 
-void Expand4(unsigned* lineptr, double* xline) {
+void Expand4(const unsigned* lineptr, double* xline) {
     double   dpixel;
     unsigned x;
     unsigned y;

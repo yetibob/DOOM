@@ -262,10 +262,9 @@ angle_t R_PointToAngle(fixed_t x, fixed_t y) {
             if (x > y) {
                 // octant 0
                 return tantoangle[SlopeDiv(y, x)];
-            } else {
-                // octant 1
-                return ANG90 - 1 - tantoangle[SlopeDiv(x, y)];
-            }
+            } // octant 1
+            return ANG90 - 1 - tantoangle[SlopeDiv(x, y)];
+
         } else {
             // y<0
             y = -y;
@@ -273,10 +272,8 @@ angle_t R_PointToAngle(fixed_t x, fixed_t y) {
             if (x > y) {
                 // octant 8
                 return -tantoangle[SlopeDiv(y, x)];
-            } else {
-                // octant 7
-                return ANG270 + tantoangle[SlopeDiv(x, y)];
-            }
+            } // octant 7
+            return ANG270 + tantoangle[SlopeDiv(x, y)];
         }
     } else {
         // x<0
@@ -287,10 +284,9 @@ angle_t R_PointToAngle(fixed_t x, fixed_t y) {
             if (x > y) {
                 // octant 3
                 return ANG180 - 1 - tantoangle[SlopeDiv(y, x)];
-            } else {
-                // octant 2
-                return ANG90 + tantoangle[SlopeDiv(x, y)];
-            }
+            } // octant 2
+            return ANG90 + tantoangle[SlopeDiv(x, y)];
+
         } else {
             // y<0
             y = -y;
@@ -298,10 +294,8 @@ angle_t R_PointToAngle(fixed_t x, fixed_t y) {
             if (x > y) {
                 // octant 4
                 return ANG180 + tantoangle[SlopeDiv(y, x)];
-            } else {
-                // octant 5
-                return ANG270 - 1 - tantoangle[SlopeDiv(x, y)];
-            }
+            } // octant 5
+            return ANG270 - 1 - tantoangle[SlopeDiv(x, y)];
         }
     }
     return 0;

@@ -289,9 +289,8 @@ bool P_Move(mobj_t* actor) {
             }
         }
         return good;
-    } else {
-        actor->flags &= ~MF_INFLOAT;
     }
+    actor->flags &= ~MF_INFLOAT;
 
     if (!(actor->flags & MF_FLOAT)) {
         actor->z = actor->floorz;

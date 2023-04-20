@@ -564,7 +564,8 @@ void R_InitSpriteLumps(void) {
 // R_InitColormaps
 //
 void R_InitColormaps(void) {
-    int lump, length;
+    int lump;
+    int length;
 
     // Load in the light tables,
     //  256 byte align tables.

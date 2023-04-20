@@ -99,14 +99,14 @@ void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation, bool flipp
 
     if (rotation == 0) {
         // the lump should be used for all rotations
-        if (sprtemp[frame].rotate == false) {
+        if (!sprtemp[frame].rotate) {
             I_Error("R_InitSprites: Sprite %s frame %c has "
                     "multip rot=0 lump",
                     spritename,
                     'A' + frame);
         }
 
-        if (sprtemp[frame].rotate == true) {
+        if (sprtemp[frame].rotate) {
             I_Error("R_InitSprites: Sprite %s frame %c has rotations "
                     "and a rot=0 lump",
                     spritename,
@@ -122,7 +122,7 @@ void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation, bool flipp
     }
 
     // the lump is only used for one rotation
-    if (sprtemp[frame].rotate == false) {
+    if (!sprtemp[frame].rotate) {
         I_Error("R_InitSprites: Sprite %s frame %c has rotations "
                 "and a rot=0 lump",
                 spritename,

@@ -1001,7 +1001,7 @@ void P_UpdateSpecials(void) {
     line_t* line;
 
     //	LEVEL TIMER
-    if (levelTimer == true) {
+    if (levelTimer) {
         levelTimeCount--;
         if (!levelTimeCount) {
             G_ExitLevel();

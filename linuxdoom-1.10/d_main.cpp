@@ -315,7 +315,6 @@ void D_Display(void) {
 //
 //  D_DoomLoop
 //
-extern bool demorecording;
 
 void D_DoomLoop(void) {
     if (demorecording) {

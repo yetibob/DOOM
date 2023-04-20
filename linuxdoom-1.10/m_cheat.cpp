@@ -72,7 +72,8 @@ int cht_CheckCheat(cheatseq_t* cht, char key) {
 
 void cht_GetParam(cheatseq_t* cht, char* buffer) {
 
-    unsigned char *p, c;
+    unsigned char* p;
+    unsigned char  c;
 
     p = cht->sequence;
     while (*(p++) != 1) {

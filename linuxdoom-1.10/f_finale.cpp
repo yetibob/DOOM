@@ -244,7 +244,9 @@ void F_TextWrite(void) {
     byte* src;
     byte* dest;
 
-    int   x, y, w;
+    int   x;
+    int   y;
+    int   w;
     int   count;
     char* ch;
     int   c;
@@ -344,7 +346,6 @@ bool  castattacking;
 //
 // F_StartCast
 //
-extern gamestate_t wipegamestate;
 
 void F_StartCast(void) {
     wipegamestate = -1; // force a screen wipe

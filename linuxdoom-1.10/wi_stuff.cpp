@@ -487,7 +487,7 @@ void WI_updateAnimatedBack(void) {
 
                 case ANIM_LEVEL:
                     // gawd-awful hack for level anims
-                    if (!(state == StatCount && i == 7) && wbs->next == a->data1) {
+                    if ((state != StatCount || i != 7) && wbs->next == a->data1) {
                         a->ctr++;
                         if (a->ctr == a->nanims) {
                             a->ctr--;

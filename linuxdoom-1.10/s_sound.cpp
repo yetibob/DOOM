@@ -72,11 +72,8 @@ const char snd_prefixen[] = { 'P', 'P', 'A', 'S', 'S', 'S', 'M', 'M', 'M', 'S', 
 
 // Current music/sfx card - index useless
 //  w/o a reference LUT in a sound module.
-extern int snd_MusicDevice;
-extern int snd_SfxDevice;
+
 // Config file? Same disclaimer as above.
-extern int snd_DesiredMusicDevice;
-extern int snd_DesiredSfxDevice;
 
 typedef struct {
     // sound information (if null, channel avail.)
@@ -478,7 +475,8 @@ void S_UpdateSounds(void* listener_p) {
                     if (volume < 1) {
                         S_StopChannel(cnum);
                         continue;
-                    } else if (volume > snd_SfxVolume) {
+                    }
+                    if (volume > snd_SfxVolume) {
                         volume = snd_SfxVolume;
                     }
                 }
@@ -682,7 +680,8 @@ int S_getChannel(void* origin, sfxinfo_t* sfxinfo) {
     for (cnum = 0; cnum < numChannels; cnum++) {
         if (!channels[cnum].sfxinfo) {
             break;
-        } else if (origin && channels[cnum].origin == origin) {
+        }
+        if (origin && channels[cnum].origin == origin) {
             S_StopChannel(cnum);
             break;
         }
@@ -700,10 +699,8 @@ int S_getChannel(void* origin, sfxinfo_t* sfxinfo) {
         if (cnum == numChannels) {
             // FUCK!  No lower priority.  Sorry, Charlie.
             return -1;
-        } else {
-            // Otherwise, kick out lower priority.
-            S_StopChannel(cnum);
-        }
+        } // Otherwise, kick out lower priority.
+        S_StopChannel(cnum);
     }
 
     c = &channels[cnum];

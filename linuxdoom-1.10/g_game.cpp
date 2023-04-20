@@ -61,17 +61,15 @@ static const char rcsid[] = "$Id: g_game.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 #define SAVEGAMESIZE 0x2c000
 #define SAVESTRINGSIZE 24
 
-bool G_CheckDemoStatus(void);
 void    G_ReadDemoTiccmd(ticcmd_t* cmd);
 void    G_WriteDemoTiccmd(ticcmd_t* cmd);
 void    G_PlayerReborn(int player);
-void    G_InitNew(skill_t skill, int episode, int map);
 
 void G_DoReborn(int playernum);
 
 void G_DoLoadLevel(void);
 void G_DoNewGame(void);
-void G_DoLoadGame(void);
+
 void G_DoPlayDemo(void);
 void G_DoCompleted(void);
 void G_DoVictory(void);
@@ -405,7 +403,6 @@ void G_BuildTiccmd(ticcmd_t* cmd) {
 //
 // G_DoLoadLevel
 //
-extern gamestate_t wipegamestate;
 
 void G_DoLoadLevel(void) {
     int i;
@@ -833,7 +830,8 @@ bool G_CheckSpot(int playernum, mapthing_t* mthing) {
 // called at level load and each death
 //
 void G_DeathMatchSpawnPlayer(int playernum) {
-    int i, j;
+    int i;
+    int j;
     int selections;
 
     selections = deathmatch_p - deathmatchstarts;
@@ -926,11 +924,7 @@ void G_ExitLevel(void) {
 // Here's for the german edition.
 void G_SecretExitLevel(void) {
     // IF NO WOLF3D LEVELS, NO SECRET EXIT!
-    if ((gamemode == commercial) && (W_CheckNumForName("map31") < 0)) {
-        secretexit = false;
-    } else {
-        secretexit = true;
-    }
+    secretexit = !((gamemode == commercial) && (W_CheckNumForName("map31") < 0));
     gameaction = ga_completed;
 }
 
@@ -1111,7 +1105,9 @@ void G_LoadGame(char* name) {
 void G_DoLoadGame(void) {
     int  length;
     int  i;
-    int  a, b, c;
+    int  a;
+    int  b;
+    int  c;
     char vcheck[VERSIONSIZE];
 
     gameaction = ga_nothing;
@@ -1260,7 +1256,6 @@ void G_DoNewGame(void) {
 }
 
 // The sky texture to be used instead of the F_SKY1 dummy.
-extern int skytexture;
 
 void G_InitNew(skill_t skill, int episode, int map) {
     int i;
@@ -1305,11 +1300,7 @@ void G_InitNew(skill_t skill, int episode, int map) {
 
     M_ClearRandom();
 
-    if (skill == sk_nightmare || respawnparm) {
-        respawnmonsters = true;
-    } else {
-        respawnmonsters = false;
-    }
+    respawnmonsters = skill == sk_nightmare || respawnparm;
 
     if (fastparm || (skill == sk_nightmare && gameskill != sk_nightmare)) {
         for (i = S_SARG_RUN1; i <= S_SARG_PAIN2; i++) {
@@ -1460,7 +1451,9 @@ void G_DeferedPlayDemo(char* name) {
 
 void G_DoPlayDemo(void) {
     skill_t skill;
-    int     i, episode, map;
+    int     i;
+    int     episode;
+    int     map;
 
     gameaction = ga_nothing;
     demobuffer = demo_p = W_CacheLumpName(defdemoname, PU_STATIC);

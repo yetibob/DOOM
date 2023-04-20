@@ -229,7 +229,8 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing) {
 }
 
 int EV_DoDoor(line_t* line, vldoor_e type) {
-    int       secnum, rtn;
+    int       secnum;
+    int       rtn;
     sector_t* sec;
     vldoor_t* door;
 

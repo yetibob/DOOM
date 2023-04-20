@@ -73,8 +73,9 @@ int I_GetTime(void) {
     static int      basetime = 0;
 
     gettimeofday(&tp, &tzp);
-    if (!basetime)
+    if (!basetime) {
         basetime = tp.tv_sec;
+    }
     newtics = (tp.tv_sec - basetime) * TICRATE + tp.tv_usec * TICRATE / 1000000;
     return newtics;
 }
@@ -141,8 +142,9 @@ void I_Error(char* error, ...) {
     fflush(stderr);
 
     // Shutdown. Here might be other errors.
-    if (demorecording)
+    if (demorecording) {
         G_CheckDemoStatus();
+    }
 
     D_QuitNetGame();
     I_ShutdownGraphics();

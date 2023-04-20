@@ -183,14 +183,16 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing) {
 
     p = thing->player;
 
-    if (!p)
+    if (!p) {
         return 0;
+    }
 
     switch (line->special) {
         case 99: // Blue Lock
         case 133:
-            if (!p)
+            if (!p) {
                 return 0;
+            }
             if (!p->cards[it_bluecard] && !p->cards[it_blueskull]) {
                 p->message = PD_BLUEO;
                 S_StartSound(NULL, sfx_oof);
@@ -200,8 +202,9 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing) {
 
         case 134: // Red Lock
         case 135:
-            if (!p)
+            if (!p) {
                 return 0;
+            }
             if (!p->cards[it_redcard] && !p->cards[it_redskull]) {
                 p->message = PD_REDO;
                 S_StartSound(NULL, sfx_oof);
@@ -211,8 +214,9 @@ int EV_DoLockedDoor(line_t* line, vldoor_e type, mobj_t* thing) {
 
         case 136: // Yellow Lock
         case 137:
-            if (!p)
+            if (!p) {
                 return 0;
+            }
             if (!p->cards[it_yellowcard] && !p->cards[it_yellowskull]) {
                 p->message = PD_YELLOWO;
                 S_StartSound(NULL, sfx_oof);
@@ -234,8 +238,9 @@ int EV_DoDoor(line_t* line, vldoor_e type) {
 
     while ((secnum = P_FindSectorFromLineTag(line, secnum)) >= 0) {
         sec = &sectors[secnum];
-        if (sec->specialdata)
+        if (sec->specialdata) {
             continue;
+        }
 
         // new door thinker
         rtn  = 1;
@@ -277,8 +282,9 @@ int EV_DoDoor(line_t* line, vldoor_e type) {
                 door->topheight = P_FindLowestCeilingSurrounding(sec);
                 door->topheight -= 4 * FRACUNIT;
                 door->speed = VDOORSPEED * 4;
-                if (door->topheight != sec->ceilingheight)
+                if (door->topheight != sec->ceilingheight) {
                     S_StartSound((mobj_t*)&door->sector->soundorg, sfx_bdopn);
+                }
                 break;
 
             case normal:
@@ -286,8 +292,9 @@ int EV_DoDoor(line_t* line, vldoor_e type) {
                 door->direction = 1;
                 door->topheight = P_FindLowestCeilingSurrounding(sec);
                 door->topheight -= 4 * FRACUNIT;
-                if (door->topheight != sec->ceilingheight)
+                if (door->topheight != sec->ceilingheight) {
                     S_StartSound((mobj_t*)&door->sector->soundorg, sfx_doropn);
+                }
                 break;
 
             default:
@@ -315,8 +322,9 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing) {
     switch (line->special) {
         case 26: // Blue Lock
         case 32:
-            if (!player)
+            if (!player) {
                 return;
+            }
 
             if (!player->cards[it_bluecard] && !player->cards[it_blueskull]) {
                 player->message = PD_BLUEK;
@@ -327,8 +335,9 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing) {
 
         case 27: // Yellow Lock
         case 34:
-            if (!player)
+            if (!player) {
                 return;
+            }
 
             if (!player->cards[it_yellowcard] && !player->cards[it_yellowskull]) {
                 player->message = PD_YELLOWK;
@@ -339,8 +348,9 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing) {
 
         case 28: // Red Lock
         case 33:
-            if (!player)
+            if (!player) {
                 return;
+            }
 
             if (!player->cards[it_redcard] && !player->cards[it_redskull]) {
                 player->message = PD_REDK;
@@ -362,11 +372,12 @@ void EV_VerticalDoor(line_t* line, mobj_t* thing) {
             case 27:
             case 28:
             case 117:
-                if (door->direction == -1)
+                if (door->direction == -1) {
                     door->direction = 1; // go back up
-                else {
-                    if (!thing->player)
-                        return;           // JDC: bad guys never close doors
+                } else {
+                    if (!thing->player) {
+                        return; // JDC: bad guys never close doors
+                    }
 
                     door->direction = -1; // start going down immediately
                 }

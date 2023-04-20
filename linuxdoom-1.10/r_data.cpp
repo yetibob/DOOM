@@ -177,11 +177,13 @@ void R_DrawColumnInCache(column_t* patch, byte* cache, int originy, int cachehei
             position = 0;
         }
 
-        if (position + count > cacheheight)
+        if (position + count > cacheheight) {
             count = cacheheight - position;
+        }
 
-        if (count > 0)
+        if (count > 0) {
             memcpy(cache + position, source, count);
+        }
 
         patch = (column_t*)((byte*)patch + patch->length + 4);
     }
@@ -221,18 +223,21 @@ void R_GenerateComposite(int texnum) {
         x1        = patch->originx;
         x2        = x1 + SHORT(realpatch->width);
 
-        if (x1 < 0)
+        if (x1 < 0) {
             x = 0;
-        else
+        } else {
             x = x1;
+        }
 
-        if (x2 > texture->width)
+        if (x2 > texture->width) {
             x2 = texture->width;
+        }
 
         for (; x < x2; x++) {
             // Column does not have multiple patches?
-            if (collump[x] >= 0)
+            if (collump[x] >= 0) {
                 continue;
+            }
 
             patchcol = (column_t*)((byte*)realpatch + LONG(realpatch->columnofs[x - x1]));
             R_DrawColumnInCache(patchcol, block + colofs[x], patch->originy, texture->height);
@@ -281,13 +286,15 @@ void R_GenerateLookup(int texnum) {
         x1        = patch->originx;
         x2        = x1 + SHORT(realpatch->width);
 
-        if (x1 < 0)
+        if (x1 < 0) {
             x = 0;
-        else
+        } else {
             x = x1;
+        }
 
-        if (x2 > texture->width)
+        if (x2 > texture->width) {
             x2 = texture->width;
+        }
         for (; x < x2; x++) {
             patchcount[x]++;
             collump[x] = patch->patch;
@@ -327,11 +334,13 @@ byte* R_GetColumn(int tex, int col) {
     lump = texturecolumnlump[tex][col];
     ofs  = texturecolumnofs[tex][col];
 
-    if (lump > 0)
+    if (lump > 0) {
         return (byte*)W_CacheLumpNum(lump, PU_CACHE) + ofs;
+    }
 
-    if (!texturecomposite[tex])
+    if (!texturecomposite[tex]) {
         R_GenerateComposite(tex);
+    }
 
     return texturecomposite[tex] + ofs;
 }
@@ -421,16 +430,19 @@ void R_InitTextures(void) {
     temp2 = W_GetNumForName("S_END") - 1;
     temp3 = ((temp2 - temp1 + 63) / 64) + ((numtextures + 63) / 64);
     printf("[");
-    for (i = 0; i < temp3; i++)
+    for (i = 0; i < temp3; i++) {
         printf(" ");
+    }
     printf("         ]");
-    for (i = 0; i < temp3; i++)
+    for (i = 0; i < temp3; i++) {
         printf("\x8");
+    }
     printf("\x8\x8\x8\x8\x8\x8\x8\x8\x8\x8");
 
     for (i = 0; i < numtextures; i++, directory++) {
-        if (!(i & 63))
+        if (!(i & 63)) {
             printf(".");
+        }
 
         if (i == numtextures1) {
             // Start looking in second texture file.
@@ -441,8 +453,9 @@ void R_InitTextures(void) {
 
         offset = LONG(*directory);
 
-        if (offset > maxoff)
+        if (offset > maxoff) {
             I_Error("R_InitTextures: bad texture directory");
+        }
 
         mtexture = (maptexture_t*)((byte*)maptex + offset);
 
@@ -471,8 +484,9 @@ void R_InitTextures(void) {
         texturecolumnofs[i]  = Z_Malloc(texture->width * 2, PU_STATIC, 0);
 
         j = 1;
-        while (j * 2 <= texture->width)
+        while (j * 2 <= texture->width) {
             j <<= 1;
+        }
 
         texturewidthmask[i] = j - 1;
         textureheight[i]    = texture->height << FRACBITS;
@@ -481,18 +495,21 @@ void R_InitTextures(void) {
     }
 
     Z_Free(maptex1);
-    if (maptex2)
+    if (maptex2) {
         Z_Free(maptex2);
+    }
 
     // Precalculate whatever possible.
-    for (i = 0; i < numtextures; i++)
+    for (i = 0; i < numtextures; i++) {
         R_GenerateLookup(i);
+    }
 
     // Create translation table for global animation.
     texturetranslation = Z_Malloc((numtextures + 1) * 4, PU_STATIC, 0);
 
-    for (i = 0; i < numtextures; i++)
+    for (i = 0; i < numtextures; i++) {
         texturetranslation[i] = i;
+    }
 }
 
 //
@@ -508,8 +525,9 @@ void R_InitFlats(void) {
     // Create translation table for global animation.
     flattranslation = Z_Malloc((numflats + 1) * 4, PU_STATIC, 0);
 
-    for (i = 0; i < numflats; i++)
+    for (i = 0; i < numflats; i++) {
         flattranslation[i] = i;
+    }
 }
 
 //
@@ -531,8 +549,9 @@ void R_InitSpriteLumps(void) {
     spritetopoffset = Z_Malloc(numspritelumps * 4, PU_STATIC, 0);
 
     for (i = 0; i < numspritelumps; i++) {
-        if (!(i & 63))
+        if (!(i & 63)) {
             printf(".");
+        }
 
         patch              = W_CacheLumpNum(firstspritelump + i, PU_CACHE);
         spritewidth[i]     = SHORT(patch->width) << FRACBITS;
@@ -600,12 +619,15 @@ int R_CheckTextureNumForName(char* name) {
     int i;
 
     // "NoTexture" marker.
-    if (name[0] == '-')
+    if (name[0] == '-') {
         return 0;
+    }
 
-    for (i = 0; i < numtextures; i++)
-        if (!strncasecmp(textures[i]->name, name, 8))
+    for (i = 0; i < numtextures; i++) {
+        if (!strncasecmp(textures[i]->name, name, 8)) {
             return i;
+        }
+    }
 
     return -1;
 }
@@ -648,8 +670,9 @@ void R_PrecacheLevel(void) {
     thinker_t*     th;
     spriteframe_t* sf;
 
-    if (demoplayback)
+    if (demoplayback) {
         return;
+    }
 
     // Precache flats.
     flatpresent = alloca(numflats);
@@ -690,8 +713,9 @@ void R_PrecacheLevel(void) {
 
     texturememory = 0;
     for (i = 0; i < numtextures; i++) {
-        if (!texturepresent[i])
+        if (!texturepresent[i]) {
             continue;
+        }
 
         texture = textures[i];
 
@@ -707,14 +731,16 @@ void R_PrecacheLevel(void) {
     memset(spritepresent, 0, numsprites);
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next) {
-        if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+        if (th->function.acp1 == (actionf_p1)P_MobjThinker) {
             spritepresent[((mobj_t*)th)->sprite] = 1;
+        }
     }
 
     spritememory = 0;
     for (i = 0; i < numsprites; i++) {
-        if (!spritepresent[i])
+        if (!spritepresent[i]) {
             continue;
+        }
 
         for (j = 0; j < sprites[i].numframes; j++) {
             sf = &sprites[i].spriteframes[j];

@@ -182,10 +182,11 @@ void* getsfx(char* sfxname, int* len) {
     // I do not do runtime patches to that
     //  variable. Instead, we will use a
     //  default sound for replacement.
-    if (W_CheckNumForName(name) == -1)
+    if (W_CheckNumForName(name) == -1) {
         sfxlump = W_GetNumForName("dspistol");
-    else
+    } else {
         sfxlump = W_GetNumForName(name);
+    }
 
     size = W_LumpLength(sfxlump);
 
@@ -209,8 +210,9 @@ void* getsfx(char* sfxname, int* len) {
 
     // Now copy and pad.
     memcpy(paddedsfx, sfx, size);
-    for (i = size; i < paddedsize + 8; i++)
+    for (i = size; i < paddedsize + 8; i++) {
         paddedsfx[i] = 128;
+    }
 
     // Remove the cached lump.
     Z_Free(sfx);
@@ -271,10 +273,11 @@ int addsfx(int sfxid, int volume, int step, int seperation) {
     // If we found a channel, fine.
     // If not, we simply overwrite the first one, 0.
     // Probably only happens at startup.
-    if (i == NUM_CHANNELS)
+    if (i == NUM_CHANNELS) {
         slot = oldestnum;
-    else
+    } else {
         slot = i;
+    }
 
     // Okay, in the less recent channel,
     //  we will handle the new SFX.
@@ -284,8 +287,9 @@ int addsfx(int sfxid, int volume, int step, int seperation) {
     channelsend[slot] = channels[slot] + lengths[sfxid];
 
     // Reset current handle number, limited to 0..100.
-    if (!handlenums)
+    if (!handlenums) {
         handlenums = 100;
+    }
 
     // Assign current handle number.
     // Preserved so sounds could be stopped (unused).
@@ -311,11 +315,13 @@ int addsfx(int sfxid, int volume, int step, int seperation) {
     rightvol   = volume - ((volume * seperation * seperation) >> 16);
 
     // Sanity check, clamp volume.
-    if (rightvol < 0 || rightvol > 127)
+    if (rightvol < 0 || rightvol > 127) {
         I_Error("rightvol out of bounds");
+    }
 
-    if (leftvol < 0 || leftvol > 127)
+    if (leftvol < 0 || leftvol > 127) {
         I_Error("leftvol out of bounds");
+    }
 
     // Get the proper lookup table piece
     //  for this volume level???
@@ -356,15 +362,18 @@ void I_SetChannels() {
 
     // This table provides step widths for pitch parameters.
     // I fail to see that this is currently used.
-    for (i = -128; i < 128; i++)
+    for (i = -128; i < 128; i++) {
         steptablemid[i] = (int)(pow(2.0, (i / 64.0)) * 65536.0);
+    }
 
     // Generates volume lookup tables
     //  which also turn the unsigned samples
     //  into signed samples.
-    for (i = 0; i < 128; i++)
-        for (j = 0; j < 256; j++)
+    for (i = 0; i < 128; i++) {
+        for (j = 0; j < 256; j++) {
             vol_lookup[i * 256 + j] = (i * (j - 128) * 256) / 127;
+        }
+    }
 }
 
 void I_SetSfxVolume(int volume) {
@@ -521,8 +530,9 @@ void I_UpdateSound(void) {
                 channelstepremainder[chan] &= 65536 - 1;
 
                 // Check whether we are done.
-                if (channels[chan] >= channelsend[chan])
+                if (channels[chan] >= channelsend[chan]) {
                     channels[chan] = 0;
+                }
             }
         }
 
@@ -532,20 +542,22 @@ void I_UpdateSound(void) {
         // else if (dl < -128) *leftout = -128;
         // else *leftout = dl;
 
-        if (dl > 0x7fff)
+        if (dl > 0x7fff) {
             *leftout = 0x7fff;
-        else if (dl < -0x8000)
+        } else if (dl < -0x8000) {
             *leftout = -0x8000;
-        else
+        } else {
             *leftout = dl;
+        }
 
         // Same for right hardware channel.
-        if (dr > 0x7fff)
+        if (dr > 0x7fff) {
             *rightout = 0x7fff;
-        else if (dr < -0x8000)
+        } else if (dr < -0x8000) {
             *rightout = -0x8000;
-        else
+        } else {
             *rightout = dr;
+        }
 
         // Increment current pointers in mixbuffer.
         leftout += step;
@@ -632,17 +644,19 @@ void I_InitSound() {
 #ifdef SNDSERV
     char buffer[256];
 
-    if (getenv("DOOMWADDIR"))
+    if (getenv("DOOMWADDIR")) {
         sprintf(buffer, "%s/%s", getenv("DOOMWADDIR"), sndserver_filename);
-    else
+    } else {
         sprintf(buffer, "%s", sndserver_filename);
+    }
 
     // start sound process
     if (!access(buffer, X_OK)) {
         strcat(buffer, " -quiet");
         sndserver = popen(buffer, "w");
-    } else
+    } else {
         fprintf(stderr, "Could not start sound server [%s]\n", buffer);
+    }
 #else
 
     int i;
@@ -795,8 +809,9 @@ void I_HandleSoundTimer(int ignore) {
 
         // Reset flag counter.
         flag = 0;
-    } else
+    } else {
         return;
+    }
 
     // UNUSED, but required.
     ignore = 0;
@@ -834,8 +849,9 @@ int I_SoundSetTimer(int duration_of_tick) {
     res = setitimer(itimer, &value, &ovalue);
 
     // Debug.
-    if (res == -1)
+    if (res == -1) {
         fprintf(stderr, "I_SoundSetTimer: interrupt n.a.\n");
+    }
 
     return res;
 }
@@ -843,6 +859,7 @@ int I_SoundSetTimer(int duration_of_tick) {
 // Remove the interrupt. Set duration to zero.
 void I_SoundDelTimer() {
     // Debug.
-    if (I_SoundSetTimer(0) == -1)
+    if (I_SoundSetTimer(0) == -1) {
         fprintf(stderr, "I_SoundDelTimer: failed to remove interrupt. Doh!\n");
+    }
 }

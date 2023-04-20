@@ -81,10 +81,11 @@ void STlib_drawNum(st_number_t* n, bool refresh) {
     neg = num < 0;
 
     if (neg) {
-        if (numdigits == 2 && num < -9)
+        if (numdigits == 2 && num < -9) {
             num = -9;
-        else if (numdigits == 3 && num < -99)
+        } else if (numdigits == 3 && num < -99) {
             num = -99;
+        }
 
         num = -num;
     }
@@ -92,20 +93,23 @@ void STlib_drawNum(st_number_t* n, bool refresh) {
     // clear the area
     x = n->x - numdigits * w;
 
-    if (n->y - ST_Y < 0)
+    if (n->y - ST_Y < 0) {
         I_Error("drawNum: n->y - ST_Y < 0");
+    }
 
     V_CopyRect(x, n->y - ST_Y, BG, w * numdigits, h, x, n->y, FG);
 
     // if non-number, do not draw it
-    if (num == 1994)
+    if (num == 1994) {
         return;
+    }
 
     x = n->x;
 
     // in the special case of 0, you draw 0
-    if (!num)
+    if (!num) {
         V_DrawPatch(x - w, n->y, FG, n->p[0]);
+    }
 
     // draw the new number
     while (num && numdigits--) {
@@ -115,14 +119,16 @@ void STlib_drawNum(st_number_t* n, bool refresh) {
     }
 
     // draw a minus sign if necessary
-    if (neg)
+    if (neg) {
         V_DrawPatch(x - 8, n->y, FG, sttminus);
+    }
 }
 
 //
 void STlib_updateNum(st_number_t* n, bool refresh) {
-    if (*n->on)
+    if (*n->on) {
         STlib_drawNum(n, refresh);
+    }
 }
 
 //
@@ -138,8 +144,9 @@ void STlib_initPercent(st_percent_t* p,
 }
 
 void STlib_updatePercent(st_percent_t* per, int refresh) {
-    if (refresh && *per->n.on)
+    if (refresh && *per->n.on) {
         V_DrawPatch(per->n.x, per->n.y, FG, per->p);
+    }
 
     STlib_updateNum(&per->n, refresh);
 }
@@ -166,8 +173,9 @@ void STlib_updateMultIcon(st_multicon_t* mi, bool refresh) {
             w = SHORT(mi->p[mi->oldinum]->width);
             h = SHORT(mi->p[mi->oldinum]->height);
 
-            if (y - ST_Y < 0)
+            if (y - ST_Y < 0) {
                 I_Error("updateMultIcon: y - ST_Y < 0");
+            }
 
             V_CopyRect(x, y - ST_Y, BG, w, h, x, y, FG);
         }
@@ -197,13 +205,15 @@ void STlib_updateBinIcon(st_binicon_t* bi, bool refresh) {
         w = SHORT(bi->p->width);
         h = SHORT(bi->p->height);
 
-        if (y - ST_Y < 0)
+        if (y - ST_Y < 0) {
             I_Error("updateBinIcon: y - ST_Y < 0");
+        }
 
-        if (*bi->val)
+        if (*bi->val) {
             V_DrawPatch(bi->x, bi->y, FG, bi->p);
-        else
+        } else {
             V_CopyRect(x, y - ST_Y, BG, w, h, x, y, FG);
+        }
 
         bi->oldval = *bi->val;
     }

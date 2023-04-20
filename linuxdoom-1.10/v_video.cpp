@@ -186,8 +186,9 @@ void V_DrawPatch(int x, int y, int scrn, patch_t* patch) {
     }
 #endif
 
-    if (!scrn)
+    if (!scrn) {
         V_MarkRect(x, y, SHORT(patch->width), SHORT(patch->height));
+    }
 
     col     = 0;
     desttop = screens[scrn] + y * SCREENWIDTH + x;
@@ -237,8 +238,9 @@ void V_DrawPatchFlipped(int x, int y, int scrn, patch_t* patch) {
     }
 #endif
 
-    if (!scrn)
+    if (!scrn) {
         V_MarkRect(x, y, SHORT(patch->width), SHORT(patch->height));
+    }
 
     col     = 0;
     desttop = screens[scrn] + y * SCREENWIDTH + x;
@@ -382,6 +384,7 @@ void V_Init(void) {
 
     base = I_AllocLow(SCREENWIDTH * SCREENHEIGHT * 4);
 
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < 4; i++) {
         screens[i] = base + i * SCREENWIDTH * SCREENHEIGHT;
+    }
 }

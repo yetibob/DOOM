@@ -70,12 +70,14 @@ int M_DrawText(int x, int y, bool direct, char* string) {
         }
 
         w = SHORT(hu_font[c]->width);
-        if (x + w > SCREENWIDTH)
+        if (x + w > SCREENWIDTH) {
             break;
-        if (direct)
+        }
+        if (direct) {
             V_DrawPatchDirect(x, y, 0, hu_font[c]);
-        else
+        } else {
             V_DrawPatch(x, y, 0, hu_font[c]);
+        }
         x += w;
     }
 
@@ -95,14 +97,16 @@ bool M_WriteFile(char const* name, void* source, int length) {
 
     handle = open(name, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
 
-    if (handle == -1)
+    if (handle == -1) {
         return false;
+    }
 
     count = write(handle, source, length);
     close(handle);
 
-    if (count < length)
+    if (count < length) {
         return false;
+    }
 
     return true;
 }
@@ -116,17 +120,20 @@ int M_ReadFile(char const* name, byte** buffer) {
     byte*       buf;
 
     handle = open(name, O_RDONLY | O_BINARY, 0666);
-    if (handle == -1)
+    if (handle == -1) {
         I_Error("Couldn't read file %s", name);
-    if (fstat(handle, &fileinfo) == -1)
+    }
+    if (fstat(handle, &fileinfo) == -1) {
         I_Error("Couldn't read file %s", name);
+    }
     length = fileinfo.st_size;
     buf    = Z_Malloc(length, PU_STATIC, NULL);
     count  = read(handle, buf, length);
     close(handle);
 
-    if (count < length)
+    if (count < length) {
         I_Error("Couldn't read file %s", name);
+    }
 
     *buffer = buf;
     return length;
@@ -270,8 +277,9 @@ void M_SaveDefaults(void) {
     FILE* f;
 
     f = fopen(defaultfile, "w");
-    if (!f)
+    if (!f) {
         return; // can't write the file, but don't complain
+    }
 
     for (i = 0; i < numdefaults; i++) {
         if (defaults[i].defaultvalue > -0xfff && defaults[i].defaultvalue < 0xfff) {
@@ -302,16 +310,18 @@ void M_LoadDefaults(void) {
 
     // set everything to base values
     numdefaults = sizeof(defaults) / sizeof(defaults[0]);
-    for (i = 0; i < numdefaults; i++)
+    for (i = 0; i < numdefaults; i++) {
         *defaults[i].location = defaults[i].defaultvalue;
+    }
 
     // check for a custom default file
     i = M_CheckParm("-config");
     if (i && i < myargc - 1) {
         defaultfile = myargv[i + 1];
         printf("	default file: %s\n", defaultfile);
-    } else
+    } else {
         defaultfile = basedefault;
+    }
 
     // read the file in, overriding any set defaults
     f = fopen(defaultfile, "r");
@@ -326,18 +336,22 @@ void M_LoadDefaults(void) {
                     newstring        = (char*)malloc(len);
                     strparm[len - 1] = 0;
                     strcpy(newstring, strparm + 1);
-                } else if (strparm[0] == '0' && strparm[1] == 'x')
+                } else if (strparm[0] == '0' && strparm[1] == 'x') {
                     sscanf(strparm + 2, "%x", &parm);
-                else
+                } else {
                     sscanf(strparm, "%i", &parm);
-                for (i = 0; i < numdefaults; i++)
+                }
+                for (i = 0; i < numdefaults; i++) {
                     if (!strcmp(def, defaults[i].name)) {
-                        if (!isstring)
+                        if (!isstring) {
                             *defaults[i].location = parm;
-                        else
-                            *defaults[i].location = (int)newstring;
+                        } else {
+                            *
+                        }
+                        defaults[i].location = (int)newstring;
                         break;
                     }
+                }
             }
         }
 
@@ -405,9 +419,9 @@ void WritePCXfile(char* filename, byte* data, int width, int height, byte* palet
     pack = &pcx->data;
 
     for (i = 0; i < width * height; i++) {
-        if ((*data & 0xc0) != 0xc0)
+        if ((*data & 0xc0) != 0xc0) {
             *pack++ = *data++;
-        else {
+        } else {
             *pack++ = 0xc1;
             *pack++ = *data++;
         }
@@ -415,8 +429,9 @@ void WritePCXfile(char* filename, byte* data, int width, int height, byte* palet
 
     // write the palette
     *pack++ = 0x0c; // palette ID byte
-    for (i = 0; i < 768; i++)
+    for (i = 0; i < 768; i++) {
         *pack++ = *palette++;
+    }
 
     // write output file
     length = pack - (byte*)pcx;
@@ -443,11 +458,13 @@ void M_ScreenShot(void) {
     for (i = 0; i <= 99; i++) {
         lbmname[4] = i / 10 + '0';
         lbmname[5] = i % 10 + '0';
-        if (access(lbmname, 0) == -1)
+        if (access(lbmname, 0) == -1) {
             break; // file doesn't exist
+        }
     }
-    if (i == 100)
+    if (i == 100) {
         I_Error("M_ScreenShot: Couldn't create a PCX");
+    }
 
     // save the pcx file
     WritePCXfile(lbmname, linear, SCREENWIDTH, SCREENHEIGHT, W_CacheLumpName("PLAYPAL", PU_CACHE));

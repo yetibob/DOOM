@@ -83,8 +83,9 @@ int UDPsocket(void) {
 
     // allocate a socket
     s = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    if (s < 0)
+    if (s < 0) {
         I_Error("can't create socket: %s", strerror(errno));
+    }
 
     return s;
 }
@@ -102,8 +103,9 @@ void BindToLocalPort(int s, int port) {
     address.sin_port        = port;
 
     v = bind(s, (void*)&address, sizeof(address));
-    if (v == -1)
+    if (v == -1) {
         I_Error("BindToPort: bind: %s", strerror(errno));
+    }
 }
 
 //
@@ -153,23 +155,27 @@ void PacketGet(void) {
     fromlen = sizeof(fromaddress);
     c       = recvfrom(insocket, &sw, sizeof(sw), 0, (struct sockaddr*)&fromaddress, &fromlen);
     if (c == -1) {
-        if (errno != EWOULDBLOCK)
+        if (errno != EWOULDBLOCK) {
             I_Error("GetPacket: %s", strerror(errno));
+        }
         doomcom->remotenode = -1; // no packet
         return;
     }
 
     {
         static int first = 1;
-        if (first)
+        if (first) {
             printf("len=%d:p=[0x%x 0x%x] \n", c, *(int*)&sw, *((int*)&sw + 1));
+        }
         first = 0;
     }
 
     // find remote node number
-    for (i = 0; i < doomcom->numnodes; i++)
-        if (fromaddress.sin_addr.s_addr == sendaddress[i].sin_addr.s_addr)
+    for (i = 0; i < doomcom->numnodes; i++) {
+        if (fromaddress.sin_addr.s_addr == sendaddress[i].sin_addr.s_addr) {
             break;
+        }
+    }
 
     if (i == doomcom->numnodes) {
         // packet is not from one of the players (new game broadcast)
@@ -204,12 +210,14 @@ int GetLocalAddress(void) {
 
     // get local address
     v = gethostname(hostname, sizeof(hostname));
-    if (v == -1)
+    if (v == -1) {
         I_Error("GetLocalAddress : gethostname: errno %d", errno);
+    }
 
     hostentry = gethostbyname(hostname);
-    if (!hostentry)
+    if (!hostentry) {
         I_Error("GetLocalAddress : gethostbyname: couldn't get local host");
+    }
 
     return *(int*)hostentry->h_addr_list[0];
 }
@@ -230,17 +238,21 @@ void I_InitNetwork(void) {
     i = M_CheckParm("-dup");
     if (i && i < myargc - 1) {
         doomcom->ticdup = myargv[i + 1][0] - '0';
-        if (doomcom->ticdup < 1)
+        if (doomcom->ticdup < 1) {
             doomcom->ticdup = 1;
-        if (doomcom->ticdup > 9)
+        }
+        if (doomcom->ticdup > 9) {
             doomcom->ticdup = 9;
-    } else
+        }
+    } else {
         doomcom->ticdup = 1;
+    }
 
-    if (M_CheckParm("-extratic"))
+    if (M_CheckParm("-extratic")) {
         doomcom->extratics = 1;
-    else
+    } else {
         doomcom->extratics = 0;
+    }
 
     p = M_CheckParm("-port");
     if (p && p < myargc - 1) {
@@ -278,8 +290,9 @@ void I_InitNetwork(void) {
             sendaddress[doomcom->numnodes].sin_addr.s_addr = inet_addr(myargv[i] + 1);
         } else {
             hostentry = gethostbyname(myargv[i]);
-            if (!hostentry)
+            if (!hostentry) {
                 I_Error("gethostbyname: couldn't find %s", myargv[i]);
+            }
             sendaddress[doomcom->numnodes].sin_addr.s_addr = *(int*)hostentry->h_addr_list[0];
         }
         doomcom->numnodes++;
@@ -301,6 +314,7 @@ void I_NetCmd(void) {
         netsend();
     } else if (doomcom->command == CMD_GET) {
         netget();
-    } else
+    } else {
         I_Error("Bad net cmd: %i\n", doomcom->command);
+    }
 }

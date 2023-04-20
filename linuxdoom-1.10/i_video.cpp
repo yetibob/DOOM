@@ -188,10 +188,12 @@ int xlatekey(void) {
             break;
 
         default:
-            if (rc >= XK_space && rc <= XK_asciitilde)
+            if (rc >= XK_space && rc <= XK_asciitilde) {
                 rc = rc - XK_space + ' ';
-            if (rc >= 'A' && rc <= 'Z')
+            }
+            if (rc >= 'A' && rc <= 'Z') {
                 rc = rc - 'A' + 'a';
+            }
             break;
     }
 
@@ -200,8 +202,9 @@ int xlatekey(void) {
 
 void I_ShutdownGraphics(void) {
     // Detach from X server
-    if (!XShmDetach(X_display, &X_shminfo))
+    if (!XShmDetach(X_display, &X_shminfo)) {
         I_Error("XShmDetach() failed in I_ShutdownGraphics()");
+    }
 
     // Release shared memory.
     shmdt(X_shminfo.shmaddr);
@@ -293,8 +296,9 @@ void I_GetEvent(void) {
             break;
 
         default:
-            if (doShm && X_event.type == X_shmeventtype)
+            if (doShm && X_event.type == X_shmeventtype) {
                 shmFinished = true;
+            }
             break;
     }
 }
@@ -324,11 +328,13 @@ Cursor createnullcursor(Display* display, Window root) {
 //
 void I_StartTic(void) {
 
-    if (!X_display)
+    if (!X_display) {
         return;
+    }
 
-    while (XPending(X_display))
+    while (XPending(X_display)) {
         I_GetEvent();
+    }
 
     // Warp the pointer back to the middle of the window
     //  or it will wander off - that is, the game will
@@ -367,13 +373,16 @@ void I_FinishUpdate(void) {
         i       = I_GetTime();
         tics    = i - lasttic;
         lasttic = i;
-        if (tics > 20)
+        if (tics > 20) {
             tics = 20;
+        }
 
-        for (i = 0; i < tics * 2; i += 2)
+        for (i = 0; i < tics * 2; i += 2) {
             screens[0][(SCREENHEIGHT - 1) * SCREENWIDTH + i] = 0xff;
-        for (; i < 20 * 2; i += 2)
+        }
+        for (; i < 20 * 2; i += 2) {
             screens[0][(SCREENHEIGHT - 1) * SCREENWIDTH + i] = 0x0;
+        }
     }
 
     // scales the screen size before blitting it
@@ -386,8 +395,9 @@ void I_FinishUpdate(void) {
         unsigned int  fouripixels;
 
         ilineptr = (unsigned int*)(screens[0]);
-        for (i = 0; i < 2; i++)
+        for (i = 0; i < 2; i++) {
             olineptrs[i] = (unsigned int*)&image->data[i * X_width];
+        }
 
         y = SCREENHEIGHT;
         while (y--) {
@@ -422,8 +432,9 @@ void I_FinishUpdate(void) {
         unsigned int  fouripixels;
 
         ilineptr = (unsigned int*)(screens[0]);
-        for (i = 0; i < 3; i++)
+        for (i = 0; i < 3; i++) {
             olineptrs[i] = (unsigned int*)&image->data[i * X_width];
+        }
 
         y = SCREENHEIGHT;
         while (y--) {
@@ -481,8 +492,9 @@ void I_FinishUpdate(void) {
                           0,
                           X_width,
                           X_height,
-                          True))
+                          True)) {
             I_Error("XShmPutImage() failed\n");
+        }
 
         // wait for it to finish and processes all input events
         shmFinished = false;
@@ -587,14 +599,16 @@ void grabsharedmemory(int size) {
                 } else {
                     if (getuid() == shminfo.shm_perm.cuid) {
                         rc = shmctl(id, IPC_RMID, 0);
-                        if (!rc)
+                        if (!rc) {
                             fprintf(stderr, "Was able to kill my old shared memory\n");
-                        else
+                        } else {
                             I_Error("Was NOT able to kill my old shared memory");
+                        }
 
                         id = shmget((key_t)key, size, IPC_CREAT | 0777);
-                        if (id == -1)
+                        if (id == -1) {
                             I_Error("Could not get shared memory");
+                        }
 
                         rc = shmctl(id, IPC_STAT, &shminfo);
 
@@ -660,29 +674,34 @@ void I_InitGraphics(void) {
     int                  valuemask;
     static int           firsttime = 1;
 
-    if (!firsttime)
+    if (!firsttime) {
         return;
+    }
     firsttime = 0;
 
     signal(SIGINT, (void (*)(int))I_Quit);
 
-    if (M_CheckParm("-2"))
+    if (M_CheckParm("-2")) {
         multiply = 2;
+    }
 
-    if (M_CheckParm("-3"))
+    if (M_CheckParm("-3")) {
         multiply = 3;
+    }
 
-    if (M_CheckParm("-4"))
+    if (M_CheckParm("-4")) {
         multiply = 4;
+    }
 
     X_width  = SCREENWIDTH * multiply;
     X_height = SCREENHEIGHT * multiply;
 
     // check for command-line display name
-    if ((pnum = M_CheckParm("-disp"))) // suggest parentheses around assignment
+    if ((pnum = M_CheckParm("-disp"))) { // suggest parentheses around assignment
         displayname = myargv[pnum + 1];
-    else
+    } else {
         displayname = 0;
+    }
 
     // check if the user wants to grab the mouse (quite unnice)
     grabMouse = !!M_CheckParm("-grabmouse");
@@ -693,30 +712,35 @@ void I_InitGraphics(void) {
         // warning: char format, different type arg 3,5
         n = sscanf(myargv[pnum + 1], "%c%d%c%d", &xsign, &x, &ysign, &y);
 
-        if (n == 2)
+        if (n == 2) {
             x = y = 0;
-        else if (n == 6) {
-            if (xsign == '-')
+        } else if (n == 6) {
+            if (xsign == '-') {
                 x = -x;
-            if (ysign == '-')
+            }
+            if (ysign == '-') {
                 y = -y;
-        } else
+            }
+        } else {
             I_Error("bad -geom parameter");
+        }
     }
 
     // open the display
     X_display = XOpenDisplay(displayname);
     if (!X_display) {
-        if (displayname)
+        if (displayname) {
             I_Error("Could not open display [%s]", displayname);
-        else
+        } else {
             I_Error("Could not open display (DISPLAY=[%s])", getenv("DISPLAY"));
+        }
     }
 
     // use the default visual
     X_screen = DefaultScreen(X_display);
-    if (!XMatchVisualInfo(X_display, X_screen, 8, PseudoColor, &X_visualinfo))
+    if (!XMatchVisualInfo(X_display, X_screen, 8, PseudoColor, &X_visualinfo)) {
         I_Error("xdoom currently only supports 256-color PseudoColor screens");
+    }
     X_visual = X_visualinfo.visual;
 
     // check for the MITSHM extension
@@ -724,16 +748,20 @@ void I_InitGraphics(void) {
 
     // even if it's available, make sure it's a local connection
     if (doShm) {
-        if (!displayname)
+        if (!displayname) {
             displayname = (char*)getenv("DISPLAY");
+        }
         if (displayname) {
             d = displayname;
-            while (*d && (*d != ':'))
+            while (*d && (*d != ':')) {
                 d++;
-            if (*d)
+            }
+            if (*d) {
                 *d = 0;
-            if (!(!strcasecmp(displayname, "unix") || !*displayname))
+            }
+            if (!(!strcasecmp(displayname, "unix") || !*displayname)) {
                 doShm = false;
+            }
         }
     }
 
@@ -786,7 +814,7 @@ void I_InitGraphics(void) {
     }
 
     // grabs the pointer so it is restricted to this window
-    if (grabMouse)
+    if (grabMouse) {
         XGrabPointer(X_display,
                      X_mainWindow,
                      True,
@@ -796,6 +824,7 @@ void I_InitGraphics(void) {
                      X_mainWindow,
                      None,
                      CurrentTime);
+    }
 
     if (doShm) {
 
@@ -825,8 +854,9 @@ void I_InitGraphics(void) {
         }
 
         // get the X server to attach to it
-        if (!XShmAttach(X_display, &X_shminfo))
+        if (!XShmAttach(X_display, &X_shminfo)) {
             I_Error("XShmAttach() failed in InitGraphics()");
+        }
 
     } else {
         image = XCreateImage(X_display,
@@ -841,10 +871,11 @@ void I_InitGraphics(void) {
                              X_width);
     }
 
-    if (multiply == 1)
+    if (multiply == 1) {
         screens[0] = (unsigned char*)(image->data);
-    else
+    } else {
         screens[0] = (unsigned char*)malloc(SCREENWIDTH * SCREENHEIGHT);
+    }
 }
 
 unsigned exptable[256];
@@ -852,8 +883,9 @@ unsigned exptable[256];
 void InitExpand(void) {
     int i;
 
-    for (i = 0; i < 256; i++)
+    for (i = 0; i < 256; i++) {
         exptable[i] = i | (i << 8) | (i << 16) | (i << 24);
+    }
 }
 
 double exptable2[256 * 256];

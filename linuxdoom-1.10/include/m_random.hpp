@@ -22,7 +22,7 @@
 #ifndef __M_RANDOM__
 #define __M_RANDOM__
 
-#include "doomtype.h"
+#include "doomtype.hpp"
 
 // Returns a number from 0 to 255,
 // from a lookup table.

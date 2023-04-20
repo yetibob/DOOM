@@ -29,17 +29,17 @@ static const char rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #include <sys/time.h>
 #include <unistd.h>
 
-#include "d_net.h"
-#include "doomdef.h"
-#include "g_game.h"
-#include "i_sound.h"
-#include "i_video.h"
-#include "m_misc.h"
+#include "d_net.hpp"
+#include "doomdef.hpp"
+#include "g_game.hpp"
+#include "i_sound.hpp"
+#include "i_video.hpp"
+#include "m_misc.hpp"
 
 #ifdef __GNUG__
 #pragma implementation "i_system.h"
 #endif
-#include "i_system.h"
+#include "i_system.hpp"
 
 int mb_used = 6;
 

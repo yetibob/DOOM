@@ -25,24 +25,24 @@ static const char rcsid[] = "$Id: am_map.c,v 1.4 1997/02/03 21:24:33 b1 Exp $";
 
 #include <stdio.h>
 
-#include "doomdef.h"
-#include "i_system.h"
-#include "m_cheat.h"
-#include "p_local.h"
-#include "st_stuff.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "doomdef.hpp"
+#include "i_system.hpp"
+#include "m_cheat.hpp"
+#include "p_local.hpp"
+#include "st_stuff.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 // Needs access to LFB.
-#include "v_video.h"
+#include "v_video.hpp"
 
 // State.
-#include "doomstat.h"
-#include "r_state.h"
+#include "doomstat.hpp"
+#include "r_state.hpp"
 
 // Data.
-#include "am_map.h"
-#include "dstrings.h"
+#include "am_map.hpp"
+#include "dstrings.hpp"
 
 // For use if I do walls with outsides/insides
 #define REDS (256 - 5 * 16)

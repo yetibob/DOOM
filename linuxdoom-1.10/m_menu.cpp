@@ -31,25 +31,25 @@ static const char rcsid[] = "$Id: m_menu.c,v 1.7 1997/02/03 22:45:10 b1 Exp $";
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "d_main.h"
-#include "doomdef.h"
-#include "doomstat.h"
-#include "dstrings.h"
-#include "g_game.h"
-#include "hu_stuff.h"
-#include "i_system.h"
-#include "i_video.h"
-#include "m_argv.h"
-#include "m_swap.h"
-#include "r_local.h"
-#include "s_sound.h"
-#include "v_video.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "d_main.hpp"
+#include "doomdef.hpp"
+#include "doomstat.hpp"
+#include "dstrings.hpp"
+#include "g_game.hpp"
+#include "hu_stuff.hpp"
+#include "i_system.hpp"
+#include "i_video.hpp"
+#include "m_argv.hpp"
+#include "m_swap.hpp"
+#include "r_local.hpp"
+#include "s_sound.hpp"
+#include "v_video.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 // Data.
-#include "m_menu.h"
-#include "sounds.h"
+#include "m_menu.hpp"
+#include "sounds.hpp"
 
 extern patch_t* hu_font[HU_FONTSIZE];
 extern boolean  message_dontfuckwithme;

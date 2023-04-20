@@ -30,9 +30,9 @@
 // Use -DFRENCH etc.
 
 #ifdef FRENCH
-#include "d_french.h"
+#include "d_french.hpp"
 #else
-#include "d_englsh.h"
+#include "d_englsh.hpp"
 #endif
 
 // Misc. other strings.

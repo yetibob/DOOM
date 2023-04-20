@@ -23,20 +23,20 @@
 #define __P_MOBJ__
 
 // Basics.
-#include "m_fixed.h"
-#include "tables.h"
+#include "m_fixed.hpp"
+#include "tables.hpp"
 
 // We need the thinker_t stuff.
-#include "d_think.h"
+#include "d_think.hpp"
 
 // We need the WAD data structure for Map things,
 // from the THINGS lump.
-#include "doomdata.h"
+#include "doomdata.hpp"
 
 // States are tied to finite states are
 //  tied to animation frames.
 // Needs precompiled tables/data structures.
-#include "info.h"
+#include "info.hpp"
 
 #ifdef __GNUG__
 #pragma interface

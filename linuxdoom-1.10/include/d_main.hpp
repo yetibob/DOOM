@@ -24,7 +24,7 @@
 #ifndef __D_MAIN__
 #define __D_MAIN__
 
-#include "d_event.h"
+#include "d_event.hpp"
 
 #ifdef __GNUG__
 #pragma interface

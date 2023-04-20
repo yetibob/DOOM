@@ -22,9 +22,9 @@
 #ifndef __WI_STUFF__
 #define __WI_STUFF__
 
-// #include "v_video.h"
+// #include "v_video.hpp"
 
-#include "doomdef.h"
+#include "doomdef.hpp"
 
 // States for the intermission
 

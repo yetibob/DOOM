@@ -26,7 +26,7 @@ static const char rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #ifdef __GNUG__
 #pragma implementation "m_swap.h"
 #endif
-#include "m_swap.h"
+#include "m_swap.hpp"
 
 // Not needed with big endian.
 #ifndef __BIG_ENDIAN__

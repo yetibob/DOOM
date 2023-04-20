@@ -22,8 +22,8 @@
 #ifndef __I_SYSTEM__
 #define __I_SYSTEM__
 
-#include "d_event.h"
-#include "d_ticcmd.h"
+#include "d_event.hpp"
+#include "d_ticcmd.hpp"
 
 #ifdef __GNUG__
 #pragma interface

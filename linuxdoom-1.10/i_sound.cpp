@@ -45,13 +45,13 @@ static const char rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 #include <signal.h>
 #include <time.h>
 
-#include "doomdef.h"
-#include "i_sound.h"
-#include "i_system.h"
-#include "m_argv.h"
-#include "m_misc.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "doomdef.hpp"
+#include "i_sound.hpp"
+#include "i_system.hpp"
+#include "m_argv.hpp"
+#include "m_misc.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 // UNIX hack, to be removed.
 #ifdef SNDSERV

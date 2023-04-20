@@ -26,13 +26,13 @@ static const char rcsid[] = "$Id: r_things.c,v 1.5 1997/02/03 16:47:56 b1 Exp $"
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "doomdef.h"
-#include "doomstat.h"
-#include "i_system.h"
-#include "m_swap.h"
-#include "r_local.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "doomdef.hpp"
+#include "doomstat.hpp"
+#include "i_system.hpp"
+#include "m_swap.hpp"
+#include "r_local.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 #define MINZ (FRACUNIT * 4)
 #define BASEYCENTER 100

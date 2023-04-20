@@ -22,20 +22,20 @@
 
 static const char rcsid[] = "$Id: s_sound.c,v 1.6 1997/02/03 22:45:12 b1 Exp $";
 
-#include "s_sound.h"
+#include "s_sound.hpp"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "doomdef.h"
-#include "doomstat.h"
-#include "i_sound.h"
-#include "i_system.h"
-#include "m_random.h"
-#include "p_local.h"
-#include "sounds.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "doomdef.hpp"
+#include "doomstat.hpp"
+#include "i_sound.hpp"
+#include "i_system.hpp"
+#include "m_random.hpp"
+#include "p_local.hpp"
+#include "sounds.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 // Purpose?
 const char snd_prefixen[] = { 'P', 'P', 'A', 'S', 'S', 'S', 'M', 'M', 'M', 'S', 'S', 'S' };

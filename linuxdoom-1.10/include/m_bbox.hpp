@@ -24,7 +24,7 @@
 
 #include <values.h>
 
-#include "m_fixed.h"
+#include "m_fixed.hpp"
 
 // Bounding box coordinate storage.
 enum { BOXTOP, BOXBOTTOM, BOXLEFT, BOXRIGHT }; // bbox coordinates

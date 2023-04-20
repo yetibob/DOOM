@@ -24,20 +24,20 @@
 static const char rcsid[] = "$Id: p_inter.c,v 1.4 1997/02/03 22:45:11 b1 Exp $";
 
 // Data.
-#include "am_map.h"
-#include "doomdef.h"
-#include "doomstat.h"
-#include "dstrings.h"
-#include "i_system.h"
-#include "m_random.h"
-#include "p_local.h"
-#include "s_sound.h"
-#include "sounds.h"
+#include "am_map.hpp"
+#include "doomdef.hpp"
+#include "doomstat.hpp"
+#include "dstrings.hpp"
+#include "i_system.hpp"
+#include "m_random.hpp"
+#include "p_local.hpp"
+#include "s_sound.hpp"
+#include "sounds.hpp"
 
 #ifdef __GNUG__
 #pragma implementation "p_inter.h"
 #endif
-#include "p_inter.h"
+#include "p_inter.hpp"
 
 #define BONUSADD 6
 

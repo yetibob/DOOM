@@ -23,18 +23,18 @@
 
 static const char rcsid[] = "$Id: st_lib.c,v 1.4 1997/02/03 16:47:56 b1 Exp $";
 
-#include "st_lib.h"
+#include "st_lib.hpp"
 
 #include <ctype.h>
 
-#include "doomdef.h"
-#include "i_system.h"
-#include "m_swap.h"
-#include "r_local.h"
-#include "st_stuff.h"
-#include "v_video.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "doomdef.hpp"
+#include "i_system.hpp"
+#include "m_swap.hpp"
+#include "r_local.hpp"
+#include "st_stuff.hpp"
+#include "v_video.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 // in AM_map.c
 extern boolean automapactive;

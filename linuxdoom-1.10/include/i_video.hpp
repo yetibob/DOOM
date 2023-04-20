@@ -22,7 +22,7 @@
 #ifndef __I_VIDEO__
 #define __I_VIDEO__
 
-#include "doomtype.h"
+#include "doomtype.hpp"
 
 #ifdef __GNUG__
 #pragma interface

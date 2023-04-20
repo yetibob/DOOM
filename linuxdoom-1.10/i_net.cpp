@@ -33,16 +33,16 @@ static const char rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #include <sys/socket.h>
 #include <unistd.h>
 
-#include "d_event.h"
-#include "d_net.h"
-#include "doomstat.h"
-#include "i_system.h"
-#include "m_argv.h"
+#include "d_event.hpp"
+#include "d_net.hpp"
+#include "doomstat.hpp"
+#include "i_system.hpp"
+#include "m_argv.hpp"
 
 #ifdef __GNUG__
 #pragma implementation "i_net.h"
 #endif
-#include "i_net.h"
+#include "i_net.hpp"
 
 // For some odd reason...
 #define ntohl(x)                                                                                   \

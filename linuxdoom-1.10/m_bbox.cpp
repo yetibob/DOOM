@@ -29,7 +29,7 @@ static const char rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #ifdef __GNUG__
 #pragma implementation "m_bbox.h"
 #endif
-#include "m_bbox.h"
+#include "m_bbox.hpp"
 
 void M_ClearBox(fixed_t* box) {
     box[BOXTOP] = box[BOXRIGHT] = MININT;

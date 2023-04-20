@@ -22,15 +22,15 @@
 
 static const char rcsid[] = "$Id: hu_lib.c,v 1.3 1997/01/26 07:44:58 b1 Exp $";
 
-#include "hu_lib.h"
+#include "hu_lib.hpp"
 
 #include <ctype.h>
 
-#include "doomdef.h"
-#include "m_swap.h"
-#include "r_draw.h"
-#include "r_local.h"
-#include "v_video.h"
+#include "doomdef.hpp"
+#include "m_swap.hpp"
+#include "r_draw.hpp"
+#include "r_local.hpp"
+#include "v_video.hpp"
 
 // boolean : whether the screen is always erased
 #define noterased viewwindowx

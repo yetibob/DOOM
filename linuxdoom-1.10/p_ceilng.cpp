@@ -22,17 +22,17 @@
 
 static const char rcsid[] = "$Id: p_ceilng.c,v 1.4 1997/02/03 16:47:53 b1 Exp $";
 
-#include "doomdef.h"
-#include "p_local.h"
-#include "s_sound.h"
-#include "z_zone.h"
+#include "doomdef.hpp"
+#include "p_local.hpp"
+#include "s_sound.hpp"
+#include "z_zone.hpp"
 
 // State.
-#include "doomstat.h"
-#include "r_state.h"
+#include "doomstat.hpp"
+#include "r_state.hpp"
 
 // Data.
-#include "sounds.h"
+#include "sounds.hpp"
 
 //
 // CEILINGS

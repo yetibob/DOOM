@@ -23,13 +23,13 @@
 
 static const char rcsid[] = "$Id: f_wipe.c,v 1.2 1997/02/03 22:45:09 b1 Exp $";
 
-#include "f_wipe.h"
+#include "f_wipe.hpp"
 
-#include "doomdef.h"
-#include "i_video.h"
-#include "m_random.h"
-#include "v_video.h"
-#include "z_zone.h"
+#include "doomdef.hpp"
+#include "i_video.hpp"
+#include "m_random.hpp"
+#include "v_video.hpp"
+#include "z_zone.hpp"
 
 //
 //                       SCREEN WIPE PACKAGE

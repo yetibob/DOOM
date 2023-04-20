@@ -22,21 +22,21 @@
 
 static const char rcsid[] = "$Id: hu_stuff.c,v 1.4 1997/02/03 16:47:52 b1 Exp $";
 
-#include "hu_stuff.h"
+#include "hu_stuff.hpp"
 
 #include <ctype.h>
 
-#include "doomdef.h"
-#include "doomstat.h"
-#include "hu_lib.h"
-#include "m_swap.h"
-#include "s_sound.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "doomdef.hpp"
+#include "doomstat.hpp"
+#include "hu_lib.hpp"
+#include "m_swap.hpp"
+#include "s_sound.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 // Data.
-#include "dstrings.h"
-#include "sounds.h"
+#include "dstrings.hpp"
+#include "sounds.hpp"
 
 //
 // Locally used constants, shortcuts.

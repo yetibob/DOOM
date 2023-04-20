@@ -23,7 +23,7 @@
 #define __P_LOCAL__
 
 #ifndef __R_LOCAL__
-#include "r_local.h"
+#include "r_local.hpp"
 #endif
 
 #define FLOATSPEED (FRACUNIT * 4)
@@ -226,7 +226,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 //
 // P_SPEC
 //
-#include "p_spec.h"
+#include "p_spec.hpp"
 
 #endif // __P_LOCAL__
 //-----------------------------------------------------------------------------

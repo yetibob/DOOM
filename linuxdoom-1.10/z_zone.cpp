@@ -23,10 +23,10 @@
 
 static const char rcsid[] = "$Id: z_zone.c,v 1.4 1997/02/03 16:47:58 b1 Exp $";
 
-#include "z_zone.h"
+#include "z_zone.hpp"
 
-#include "doomdef.h"
-#include "i_system.h"
+#include "doomdef.hpp"
+#include "i_system.hpp"
 
 //
 // ZONE MEMORY ALLOCATION

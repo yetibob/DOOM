@@ -45,12 +45,12 @@ int XShmGetEventBase(Display* dpy); // problems with g++?
 #include <sys/time.h>
 #include <sys/types.h>
 
-#include "d_main.h"
-#include "doomdef.h"
-#include "doomstat.h"
-#include "i_system.h"
-#include "m_argv.h"
-#include "v_video.h"
+#include "d_main.hpp"
+#include "doomdef.hpp"
+#include "doomstat.hpp"
+#include "i_system.hpp"
+#include "m_argv.hpp"
+#include "v_video.hpp"
 
 #define POINTER_WARP_COUNTDOWN 1
 

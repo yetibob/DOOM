@@ -25,38 +25,38 @@ static const char rcsid[] = "$Id: g_game.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 #include <stdlib.h>
 #include <string.h>
 
-#include "am_map.h"
-#include "d_main.h"
-#include "doomdef.h"
-#include "doomstat.h"
-#include "f_finale.h"
-#include "hu_stuff.h"
-#include "i_system.h"
-#include "m_argv.h"
-#include "m_menu.h"
-#include "m_misc.h"
-#include "m_random.h"
-#include "p_saveg.h"
-#include "p_setup.h"
-#include "p_tick.h"
-#include "st_stuff.h"
-#include "wi_stuff.h"
-#include "z_zone.h"
+#include "am_map.hpp"
+#include "d_main.hpp"
+#include "doomdef.hpp"
+#include "doomstat.hpp"
+#include "f_finale.hpp"
+#include "hu_stuff.hpp"
+#include "i_system.hpp"
+#include "m_argv.hpp"
+#include "m_menu.hpp"
+#include "m_misc.hpp"
+#include "m_random.hpp"
+#include "p_saveg.hpp"
+#include "p_setup.hpp"
+#include "p_tick.hpp"
+#include "st_stuff.hpp"
+#include "wi_stuff.hpp"
+#include "z_zone.hpp"
 
 // Needs access to LFB.
-#include "p_local.h"
-#include "s_sound.h"
-#include "v_video.h"
-#include "w_wad.h"
+#include "p_local.hpp"
+#include "s_sound.hpp"
+#include "v_video.hpp"
+#include "w_wad.hpp"
 
 // Data.
-#include "dstrings.h"
-#include "sounds.h"
+#include "dstrings.hpp"
+#include "sounds.hpp"
 
 // SKY handling - still the wrong place.
-#include "g_game.h"
-#include "r_data.h"
-#include "r_sky.h"
+#include "g_game.hpp"
+#include "r_data.hpp"
+#include "r_sky.hpp"
 
 #define SAVEGAMESIZE 0x2c000
 #define SAVESTRINGSIZE 24

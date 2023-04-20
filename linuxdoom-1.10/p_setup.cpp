@@ -26,16 +26,16 @@ static const char rcsid[] = "$Id: p_setup.c,v 1.5 1997/02/03 22:45:12 b1 Exp $";
 
 #include <math.h>
 
-#include "doomdef.h"
-#include "doomstat.h"
-#include "g_game.h"
-#include "i_system.h"
-#include "m_bbox.h"
-#include "m_swap.h"
-#include "p_local.h"
-#include "s_sound.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "doomdef.hpp"
+#include "doomstat.hpp"
+#include "g_game.hpp"
+#include "i_system.hpp"
+#include "m_bbox.hpp"
+#include "m_swap.hpp"
+#include "p_local.hpp"
+#include "s_sound.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 void P_SpawnMapThing(mapthing_t* mthing);
 

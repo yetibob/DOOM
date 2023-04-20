@@ -25,10 +25,10 @@
 #define __DOOMDATA__
 
 // The most basic types we use, portability.
-#include "doomtype.h"
+#include "doomtype.hpp"
 
 // Some global defines, that configure the game.
-#include "doomdef.h"
+#include "doomdef.hpp"
 
 //
 // Map level types.

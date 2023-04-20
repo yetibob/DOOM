@@ -25,22 +25,22 @@ static const char rcsid[] = "$Id: wi_stuff.c,v 1.7 1997/02/03 22:45:13 b1 Exp $"
 
 #include <stdio.h>
 
-#include "doomstat.h"
-#include "g_game.h"
-#include "i_system.h"
-#include "m_random.h"
-#include "m_swap.h"
-#include "r_local.h"
-#include "s_sound.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "doomstat.hpp"
+#include "g_game.hpp"
+#include "i_system.hpp"
+#include "m_random.hpp"
+#include "m_swap.hpp"
+#include "r_local.hpp"
+#include "s_sound.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 // Data.
-#include "sounds.h"
+#include "sounds.hpp"
 
 // Needs access to LFB.
-#include "v_video.h"
-#include "wi_stuff.h"
+#include "v_video.hpp"
+#include "wi_stuff.hpp"
 
 //
 // Data needed to add patches to full screen intermission pics.

@@ -22,7 +22,7 @@
 #ifndef __D_TICCMD__
 #define __D_TICCMD__
 
-#include "doomtype.h"
+#include "doomtype.hpp"
 
 #ifdef __GNUG__
 #pragma interface

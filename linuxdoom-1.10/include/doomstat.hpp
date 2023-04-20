@@ -29,11 +29,11 @@
 
 // We need globally shared data structures,
 //  for defining the global state variables.
-#include "d_net.h"
-#include "doomdata.h"
+#include "d_net.hpp"
+#include "doomdata.hpp"
 
 // We need the playr data structure as well.
-#include "d_player.h"
+#include "d_player.hpp"
 
 #ifdef __GNUG__
 #pragma interface

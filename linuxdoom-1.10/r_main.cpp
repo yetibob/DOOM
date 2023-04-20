@@ -28,11 +28,11 @@ static const char rcsid[] = "$Id: r_main.c,v 1.5 1997/02/03 22:45:12 b1 Exp $";
 #include <math.h>
 #include <stdlib.h>
 
-#include "d_net.h"
-#include "doomdef.h"
-#include "m_bbox.h"
-#include "r_local.h"
-#include "r_sky.h"
+#include "d_net.hpp"
+#include "doomdef.hpp"
+#include "m_bbox.hpp"
+#include "r_local.hpp"
+#include "r_sky.hpp"
 
 // Fineangles in the SCREENWIDTH wide window.
 #define FIELDOFVIEW 2048

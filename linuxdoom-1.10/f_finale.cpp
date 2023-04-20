@@ -26,23 +26,23 @@ static const char rcsid[] = "$Id: f_finale.c,v 1.5 1997/02/03 21:26:34 b1 Exp $"
 #include <ctype.h>
 
 // Functions.
-#include "i_system.h"
-#include "m_swap.h"
-#include "s_sound.h"
-#include "v_video.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "i_system.hpp"
+#include "m_swap.hpp"
+#include "s_sound.hpp"
+#include "v_video.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 // Data.
-#include "doomstat.h"
-#include "dstrings.h"
-#include "r_state.h"
-#include "sounds.h"
+#include "doomstat.hpp"
+#include "dstrings.hpp"
+#include "r_state.hpp"
+#include "sounds.hpp"
 
 // ?
-// #include "doomstat.h"
-// #include "r_local.h"
-// #include "f_finale.h"
+// #include "doomstat.hpp"
+// #include "r_local.hpp"
+// #include "f_finale.hpp"
 
 // Stage of animation:
 //  0 = text, 1 = art screen, 2 = character cast
@@ -231,7 +231,7 @@ void F_Ticker(void) {
 // F_TextWrite
 //
 
-#include "hu_stuff.h"
+#include "hu_stuff.hpp"
 extern patch_t* hu_font[HU_FONTSIZE];
 
 void F_TextWrite(void) {

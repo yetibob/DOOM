@@ -25,34 +25,34 @@
 
 static const char rcsid[] = "$Id: st_stuff.c,v 1.6 1997/02/03 22:45:13 b1 Exp $";
 
-#include "st_stuff.h"
+#include "st_stuff.hpp"
 
 #include <stdio.h>
 
-#include "am_map.h"
-#include "doomdef.h"
-#include "g_game.h"
-#include "i_system.h"
-#include "i_video.h"
-#include "m_cheat.h"
-#include "m_random.h"
-#include "p_inter.h"
-#include "p_local.h"
-#include "r_local.h"
-#include "s_sound.h"
-#include "st_lib.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "am_map.hpp"
+#include "doomdef.hpp"
+#include "g_game.hpp"
+#include "i_system.hpp"
+#include "i_video.hpp"
+#include "m_cheat.hpp"
+#include "m_random.hpp"
+#include "p_inter.hpp"
+#include "p_local.hpp"
+#include "r_local.hpp"
+#include "s_sound.hpp"
+#include "st_lib.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 // Needs access to LFB.
-#include "v_video.h"
+#include "v_video.hpp"
 
 // State.
-#include "doomstat.h"
+#include "doomstat.hpp"
 
 // Data.
-#include "dstrings.h"
-#include "sounds.h"
+#include "dstrings.hpp"
+#include "sounds.hpp"
 
 //
 // STATUS BAR DATA

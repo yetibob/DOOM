@@ -25,11 +25,11 @@ static const char rcsid[] = "$Id: r_segs.c,v 1.3 1997/01/29 20:10:19 b1 Exp $";
 
 #include <stdlib.h>
 
-#include "doomdef.h"
-#include "doomstat.h"
-#include "i_system.h"
-#include "r_local.h"
-#include "r_sky.h"
+#include "doomdef.hpp"
+#include "doomstat.hpp"
+#include "i_system.hpp"
+#include "r_local.hpp"
+#include "r_sky.hpp"
 
 // OPTIMIZE: closed two sided lines as single sided
 

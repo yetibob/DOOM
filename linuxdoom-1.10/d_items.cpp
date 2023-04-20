@@ -23,12 +23,12 @@
 static const char rcsid[] = "$Id:$";
 
 // We are referring to sprite numbers.
-#include "info.h"
+#include "info.hpp"
 
 #ifdef __GNUG__
 #pragma implementation "d_items.h"
 #endif
-#include "d_items.h"
+#include "d_items.hpp"
 
 //
 // PSPRITE ACTIONS for waepons.

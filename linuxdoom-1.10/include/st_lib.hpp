@@ -23,7 +23,7 @@
 #define __STLIB__
 
 // We are referring to patches.
-#include "r_defs.h"
+#include "r_defs.hpp"
 
 //
 // Background and foreground screen numbers

@@ -27,13 +27,13 @@ static const char rcsid[] = "$Id: r_plane.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
 
 #include <stdlib.h>
 
-#include "doomdef.h"
-#include "doomstat.h"
-#include "i_system.h"
-#include "r_local.h"
-#include "r_sky.h"
-#include "w_wad.h"
-#include "z_zone.h"
+#include "doomdef.hpp"
+#include "doomstat.hpp"
+#include "i_system.hpp"
+#include "r_local.hpp"
+#include "r_sky.hpp"
+#include "w_wad.hpp"
+#include "z_zone.hpp"
 
 planefunction_t floorfunc;
 planefunction_t ceilingfunc;

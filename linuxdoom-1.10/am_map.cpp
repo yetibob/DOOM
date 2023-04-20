@@ -563,9 +563,10 @@ void AM_maxOutWindowScale(void) {
 //
 bool AM_Responder(event_t* ev) {
 
-    int         rc;
-    static int  cheatstate = 0;
-    static int  bigstate   = 0;
+    int rc;
+    // TODO What is this for?
+    // static int  cheatstate = 0;
+    static int  bigstate = 0;
     static char buffer[20];
 
     rc = false;
@@ -651,8 +652,9 @@ bool AM_Responder(event_t* ev) {
                 plr->message = AMSTR_MARKSCLEARED;
                 break;
             default:
-                cheatstate = 0;
-                rc         = false;
+                // TODO What is this for?
+                // cheatstate = 0;
+                rc = false;
         }
         if (!deathmatch && cht_CheckCheat(&cheat_amap, ev->data1)) {
             rc       = false;

@@ -1,6 +1,6 @@
 ---
 # Checks:          'clang-diagnostic-*,clang-analyzer-*,clang-bugprone-*,concurrency-*,cppcoreguidelines-*,modernize-*,readability-*'
-Checks:          'readability-braces-around-statements'
+Checks:          'readability-*,-readability-identifier-length,-readability-implicit-bool-conversion,-readability-magic-numbers'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false

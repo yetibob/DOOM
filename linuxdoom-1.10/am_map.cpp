@@ -771,9 +771,9 @@ void AM_clearFB(int color) {
 boolean AM_clipMline(mline_t* ml, fline_t* fl) {
     enum { LEFT = 1, RIGHT = 2, BOTTOM = 4, TOP = 8 };
 
-    register outcode1 = 0;
-    register outcode2 = 0;
-    register outside;
+    int outcode1 = 0;
+    int outcode2 = 0;
+    int outside;
 
     fpoint_t tmp;
     int      dx;
@@ -880,15 +880,15 @@ boolean AM_clipMline(mline_t* ml, fline_t* fl) {
 // Classic Bresenham w/ whatever optimizations needed for speed
 //
 void AM_drawFline(fline_t* fl, int color) {
-    register int x;
-    register int y;
-    register int dx;
-    register int dy;
-    register int sx;
-    register int sy;
-    register int ax;
-    register int ay;
-    register int d;
+    int x;
+    int y;
+    int dx;
+    int dy;
+    int sx;
+    int sy;
+    int ax;
+    int ay;
+    int d;
 
     static fuck = 0;
 

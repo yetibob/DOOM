@@ -514,8 +514,8 @@ static XColor colors[256];
 
 void UploadNewPalette(Colormap cmap, byte* palette) {
 
-    register int   i;
-    register int   c;
+    int            i;
+    int            c;
     static boolean firstcall = true;
 
 #ifdef __cplusplus

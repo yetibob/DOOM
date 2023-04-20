@@ -153,8 +153,8 @@ extern fixed_t lowfloor;
 
 void P_LineOpening(line_t* linedef);
 
-bool P_BlockLinesIterator(int x, int y, boolean (*func)(line_t*));
-bool P_BlockThingsIterator(int x, int y, boolean (*func)(mobj_t*));
+bool P_BlockLinesIterator(int x, int y, bool (*func)(line_t*));
+bool P_BlockThingsIterator(int x, int y, bool (*func)(mobj_t*));
 
 #define PT_ADDLINES 1
 #define PT_ADDTHINGS 2
@@ -191,7 +191,7 @@ void    P_SlideMove(mobj_t* mo);
 bool P_CheckSight(mobj_t* t1, mobj_t* t2);
 void    P_UseLines(player_t* player);
 
-bool P_ChangeSector(sector_t* sector, boolean crunch);
+bool P_ChangeSector(sector_t* sector, bool crunch);
 
 extern mobj_t* linetarget; // who got hit (or NULL)
 

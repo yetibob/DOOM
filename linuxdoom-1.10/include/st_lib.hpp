@@ -154,7 +154,7 @@ void STlib_updateMultIcon(st_multicon_t* mi, bool refresh);
 
 // Binary Icon widget routines
 
-void STlib_initBinIcon(st_binicon_t* b, int x, int y, patch_t* i, bool* val, boolean* on);
+void STlib_initBinIcon(st_binicon_t* b, int x, int y, patch_t* i, bool* val, bool* on);
 
 void STlib_updateBinIcon(st_binicon_t* bi, bool refresh);
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 tidy() {
-    if clang-tidy -p build $@ *.hpp; then
+    if clang-tidy -p build $@ **/*.hpp; then
         clang-tidy -p build $@ *.cpp
     fi
 }

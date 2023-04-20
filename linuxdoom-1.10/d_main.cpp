@@ -76,29 +76,29 @@ void D_DoomLoop(void);
 
 char* wadfiles[MAXWADFILES];
 
-boolean devparm;     // started game with -devparm
-boolean nomonsters;  // checkparm of -nomonsters
-boolean respawnparm; // checkparm of -respawn
-boolean fastparm;    // checkparm of -fast
+bool devparm;     // started game with -devparm
+bool nomonsters;  // checkparm of -nomonsters
+bool respawnparm; // checkparm of -respawn
+bool fastparm;    // checkparm of -fast
 
-boolean drone;
+bool drone;
 
-boolean singletics = false; // debug flag to cancel adaptiveness
+bool singletics = false; // debug flag to cancel adaptiveness
 
 // extern int soundVolume;
 // extern  int	sfxVolume;
 // extern  int	musicVolume;
 
-extern boolean inhelpscreens;
+extern bool inhelpscreens;
 
 skill_t startskill;
 int     startepisode;
 int     startmap;
-boolean autostart;
+bool autostart;
 
 FILE* debugfile;
 
-boolean advancedemo;
+bool advancedemo;
 
 char wadfile[1024];     // primary wad file
 char mapdir[1024];      // directory of development maps
@@ -124,8 +124,8 @@ int     eventtail;
 // Called by the I/O functions when input is detected
 //
 void D_PostEvent(event_t* ev) {
-    events[eventhead] = *ev;
-    eventhead         = (++eventhead) & (MAXEVENTS - 1);
+    events[++eventhead] = *ev;
+    eventhead           = (eventhead) & (MAXEVENTS - 1);
 }
 
 //
@@ -139,7 +139,7 @@ void D_ProcessEvents(void) {
     if ((gamemode == commercial) && (W_CheckNumForName("map01") < 0))
         return;
 
-    for (; eventtail != eventhead; eventtail = (++eventtail) & (MAXEVENTS - 1)) {
+    for (; eventtail != eventhead; eventtail++, eventtail = (eventtail) & (MAXEVENTS - 1)) {
         ev = &events[eventtail];
         if (M_Responder(ev))
             continue; // menu ate the event
@@ -154,24 +154,24 @@ void D_ProcessEvents(void) {
 
 // wipegamestate can be set to -1 to force a wipe on the next draw
 gamestate_t    wipegamestate = GS_DEMOSCREEN;
-extern boolean setsizeneeded;
+extern bool setsizeneeded;
 extern int     showMessages;
 void           R_ExecuteSetViewSize(void);
 
 void D_Display(void) {
-    static boolean     viewactivestate    = false;
-    static boolean     menuactivestate    = false;
-    static boolean     inhelpscreensstate = false;
-    static boolean     fullscreen         = false;
+    static bool     viewactivestate    = false;
+    static bool     menuactivestate    = false;
+    static bool     inhelpscreensstate = false;
+    static bool     fullscreen         = false;
     static gamestate_t oldgamestate       = -1;
     static int         borderdrawcount;
     int                nowtime;
     int                tics;
     int                wipestart;
     int                y;
-    boolean            done;
-    boolean            wipe;
-    boolean            redrawsbar;
+    bool            done;
+    bool            wipe;
+    bool            redrawsbar;
 
     if (nodrawers)
         return; // for comparative timing / profiling
@@ -301,7 +301,7 @@ void D_Display(void) {
 //
 //  D_DoomLoop
 //
-extern boolean demorecording;
+extern bool demorecording;
 
 void D_DoomLoop(void) {
     if (demorecording)

@@ -52,7 +52,7 @@ static const char rcsid[] = "$Id: p_spec.c,v 1.6 1997/02/03 22:45:12 b1 Exp $";
 // There is another anim_t used in wi_stuff, unrelated.
 //
 typedef struct {
-    boolean istexture;
+    bool istexture;
     int     picnum;
     int     basepic;
     int     numpics;
@@ -64,7 +64,7 @@ typedef struct {
 //      source animation definition
 //
 typedef struct {
-    boolean istexture; // if false, it is a flat
+    bool istexture; // if false, it is a flat
     char    endname[9];
     char    startname[9];
     int     speed;
@@ -958,7 +958,7 @@ void P_PlayerInSpecialSector(player_t* player) {
 // P_UpdateSpecials
 // Animate planes, scroll walls, etc.
 //
-boolean levelTimer;
+bool levelTimer;
 int     levelTimeCount;
 
 void P_UpdateSpecials(void) {

@@ -237,7 +237,7 @@ typedef enum {
 
 #define KEY_LALT KEY_RALT
 
-// DOOM basic types (boolean),
+// DOOM basic types (bool),
 //  and max/min values.
 // #include "doomtype.hpp"
 

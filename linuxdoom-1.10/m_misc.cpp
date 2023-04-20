@@ -57,7 +57,7 @@ static const char rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 //
 extern patch_t* hu_font[HU_FONTSIZE];
 
-int M_DrawText(int x, int y, boolean direct, char* string) {
+int M_DrawText(int x, int y, bool direct, char* string) {
     int c;
     int w;
 
@@ -89,7 +89,7 @@ int M_DrawText(int x, int y, boolean direct, char* string) {
 #define O_BINARY 0
 #endif
 
-boolean M_WriteFile(char const* name, void* source, int length) {
+bool M_WriteFile(char const* name, void* source, int length) {
     int handle;
     int count;
 
@@ -298,7 +298,7 @@ void M_LoadDefaults(void) {
     char    strparm[100];
     char*   newstring;
     int     parm;
-    boolean isstring;
+    bool isstring;
 
     // set everything to base values
     numdefaults = sizeof(defaults) / sizeof(defaults[0]);

@@ -37,7 +37,7 @@ static const char rcsid[] = "$Id: st_lib.c,v 1.4 1997/02/03 16:47:56 b1 Exp $";
 #include "z_zone.hpp"
 
 // in AM_map.c
-extern boolean automapactive;
+extern bool automapactive;
 
 //
 // Hack display negative frags.
@@ -50,7 +50,7 @@ void STlib_init(void) {
 }
 
 // ?
-void STlib_initNum(st_number_t* n, int x, int y, patch_t** pl, int* num, boolean* on, int width) {
+void STlib_initNum(st_number_t* n, int x, int y, patch_t** pl, int* num, bool* on, int width) {
     n->x      = x;
     n->y      = y;
     n->oldnum = 0;
@@ -65,7 +65,7 @@ void STlib_initNum(st_number_t* n, int x, int y, patch_t** pl, int* num, boolean
 //  based on differences from the old number.
 // Note: worth the trouble?
 //
-void STlib_drawNum(st_number_t* n, boolean refresh) {
+void STlib_drawNum(st_number_t* n, bool refresh) {
 
     int numdigits = n->width;
     int num       = *n->num;
@@ -120,7 +120,7 @@ void STlib_drawNum(st_number_t* n, boolean refresh) {
 }
 
 //
-void STlib_updateNum(st_number_t* n, boolean refresh) {
+void STlib_updateNum(st_number_t* n, bool refresh) {
     if (*n->on)
         STlib_drawNum(n, refresh);
 }
@@ -131,7 +131,7 @@ void STlib_initPercent(st_percent_t* p,
                        int           y,
                        patch_t**     pl,
                        int*          num,
-                       boolean*      on,
+                       bool*      on,
                        patch_t*      percent) {
     STlib_initNum(&p->n, x, y, pl, num, on, 3);
     p->p = percent;
@@ -144,7 +144,7 @@ void STlib_updatePercent(st_percent_t* per, int refresh) {
     STlib_updateNum(&per->n, refresh);
 }
 
-void STlib_initMultIcon(st_multicon_t* i, int x, int y, patch_t** il, int* inum, boolean* on) {
+void STlib_initMultIcon(st_multicon_t* i, int x, int y, patch_t** il, int* inum, bool* on) {
     i->x       = x;
     i->y       = y;
     i->oldinum = -1;
@@ -153,7 +153,7 @@ void STlib_initMultIcon(st_multicon_t* i, int x, int y, patch_t** il, int* inum,
     i->p       = il;
 }
 
-void STlib_updateMultIcon(st_multicon_t* mi, boolean refresh) {
+void STlib_updateMultIcon(st_multicon_t* mi, bool refresh) {
     int w;
     int h;
     int x;
@@ -176,7 +176,7 @@ void STlib_updateMultIcon(st_multicon_t* mi, boolean refresh) {
     }
 }
 
-void STlib_initBinIcon(st_binicon_t* b, int x, int y, patch_t* i, boolean* val, boolean* on) {
+void STlib_initBinIcon(st_binicon_t* b, int x, int y, patch_t* i, bool* val, boolean* on) {
     b->x      = x;
     b->y      = y;
     b->oldval = 0;
@@ -185,7 +185,7 @@ void STlib_initBinIcon(st_binicon_t* b, int x, int y, patch_t* i, boolean* val, 
     b->p      = i;
 }
 
-void STlib_updateBinIcon(st_binicon_t* bi, boolean refresh) {
+void STlib_updateBinIcon(st_binicon_t* bi, bool refresh) {
     int x;
     int y;
     int w;

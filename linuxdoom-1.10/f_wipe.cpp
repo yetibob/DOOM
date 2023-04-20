@@ -36,7 +36,7 @@ static const char rcsid[] = "$Id: f_wipe.c,v 1.2 1997/02/03 22:45:09 b1 Exp $";
 //
 
 // when zero, stop the wipe
-static boolean go = 0;
+static bool go = 0;
 
 static byte* wipe_scr_start;
 static byte* wipe_scr_end;
@@ -64,7 +64,7 @@ int wipe_initColorXForm(int width, int height, int ticks) {
 }
 
 int wipe_doColorXForm(int width, int height, int ticks) {
-    boolean changed;
+    bool changed;
     byte*   w;
     byte*   e;
     int     newval;
@@ -139,7 +139,7 @@ int wipe_doMelt(int width, int height, int ticks) {
 
     short*  s;
     short*  d;
-    boolean done = true;
+    bool done = true;
 
     width /= 2;
 

@@ -38,6 +38,8 @@ static const char rcsid[] = "$Id: d_main.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 #include <unistd.h>
 #endif
 
+#include <string>
+
 #include "am_map.hpp"
 #include "d_main.hpp"
 #include "doomdef.hpp"
@@ -94,7 +96,7 @@ extern bool inhelpscreens;
 skill_t startskill;
 int     startepisode;
 int     startmap;
-bool autostart;
+bool    autostart;
 
 FILE* debugfile;
 
@@ -155,25 +157,25 @@ void D_ProcessEvents(void) {
 //
 
 // wipegamestate can be set to -1 to force a wipe on the next draw
-gamestate_t    wipegamestate = GS_DEMOSCREEN;
+gamestate_t wipegamestate = GS_DEMOSCREEN;
 extern bool setsizeneeded;
-extern int     showMessages;
-void           R_ExecuteSetViewSize(void);
+extern int  showMessages;
+void        R_ExecuteSetViewSize(void);
 
 void D_Display(void) {
-    static bool     viewactivestate    = false;
-    static bool     menuactivestate    = false;
-    static bool     inhelpscreensstate = false;
-    static bool     fullscreen         = false;
+    static bool        viewactivestate    = false;
+    static bool        menuactivestate    = false;
+    static bool        inhelpscreensstate = false;
+    static bool        fullscreen         = false;
     static gamestate_t oldgamestate       = -1;
     static int         borderdrawcount;
     int                nowtime;
     int                tics;
     int                wipestart;
     int                y;
-    bool            done;
-    bool            wipe;
-    bool            redrawsbar;
+    bool               done;
+    bool               wipe;
+    bool               redrawsbar;
 
     if (nodrawers) {
         return; // for comparative timing / profiling
@@ -955,7 +957,7 @@ void D_DoomMain(void) {
     if (modifiedgame) {
         // These are the lumps that will be checked in IWAD,
         // if any one is not present, execution will be aborted.
-        char name[23][8] = { "e2m1",   "e2m2",   "e2m3",   "e2m4",   "e2m5",    "e2m6",
+        char name[23][9] = { "e2m1",   "e2m2",   "e2m3",   "e2m4",   "e2m5",    "e2m6",
                              "e2m7",   "e2m8",   "e2m9",   "e3m1",   "e3m3",    "e3m3",
                              "e3m4",   "e3m5",   "e3m6",   "e3m7",   "e3m8",    "e3m9",
                              "dphoof", "bfgga0", "heada1", "cybra1", "spida1d1" };
@@ -1041,7 +1043,7 @@ void D_DoomMain(void) {
         // for statistics driver
         extern void* statcopy;
 
-        statcopy = (void*)atoi(myargv[p + 1]);
+        statcopy = (void*)std::atol(myargv[p + 1]);
         printf("External statistics registered.\n");
     }
 

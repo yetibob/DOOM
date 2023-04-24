@@ -39,7 +39,7 @@ BraceWrapping:
 BreakBeforeBinaryOperators: None
 BreakBeforeTernaryOperators: true
 BreakStringLiterals: true
-ColumnLimit:     100
+ColumnLimit:     130
 CommentPragmas:  '^ IWYU pragma:'
 CompactNamespaces: false
 ContinuationIndentWidth: 4
@@ -55,10 +55,10 @@ ForEachMacros:
   - BOOST_FOREACH
 IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex:           '^<(boost|fmt|json|yaml-cpp|gtest|gmock)/'
-    Priority:        1
-  - Regex:           '^<'
+  - Regex:           '^<(boost|fmt|json|yaml-cpp|gtest|gmock|SDL2)/'
     Priority:        2
+  - Regex:           '^<'
+    Priority:        1
   - Regex:           '.*'
     Priority:        3
 IncludeIsMainRegex: '(Test)?$'

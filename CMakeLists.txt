@@ -17,9 +17,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -DNORMALUNIX -DLINUX -Wno-unused-function -Wno-unused-variable -Wno-write-strings -Wno-narrowing -Wno-literal-suffix -fsanitize=address -fpermissive")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -DNORMALUNIX -DLINUX -Wno-unused-function -Wno-unused-variable -Wno-write-strings -Wno-narrowing -Wno-literal-suffix -fsanitize=address -fpermissive")
-
-Set(CMAKE_SHARED_LINKER_FLAGS -L/usr/X11R6/lib)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -DNORMALUNIX -DLINUX -Wno-unused-function -Wno-unused-variable -Wno-write-strings -Wno-narrowing -Wno-literal-suffix -fpermissive -Wno-int-to-pointer-cast")
 
 # Custom boost dir
 # set(BOOST_ROOT "${PROJECT_SOURCE_DIR}/libs/boost")
@@ -39,7 +37,9 @@ Set(CMAKE_SHARED_LINKER_FLAGS -L/usr/X11R6/lib)
 #   GIT_TAG master
 # )
 # FetchContent_MakeAvailable(fmt)
-# list(APPEND EXTRA_LIBS fmt::fmt ${Boost_LIBRARIES})
+
+find_package(SDL2 REQUIRED)
+list(APPEND EXTRA_LIBS SDL2::SDL2)
 
 target_include_directories(${EXE} PRIVATE
     ${INCLUDE_DIRS}
@@ -47,8 +47,6 @@ target_include_directories(${EXE} PRIVATE
 target_link_libraries(${EXE}
   PRIVATE
   ${EXTRA_LIBS}
-  -lXext
-  -lX11
   -lnsl
   -lm
 )

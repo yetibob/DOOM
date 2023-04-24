@@ -23,27 +23,19 @@
 
 static const char rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/extensions/XShm.h>
-#include <X11/keysym.h>
-#include <stdlib.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#include <unistd.h>
-// Had to dig up XShm.c for this one.
-// It is in the libXext, but not in the XFree86 headers.
-#ifdef LINUX
-int XShmGetEventBase(Display* dpy); // problems with g++?
-#endif
-
-#include <errnos.h>
+#include <errno.h>
 #include <netinet/in.h>
 #include <signal.h>
 #include <stdarg.h>
+#include <stdlib.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
 #include <sys/socket.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#include <unistd.h>
+
+#include <SDL2/SDL.h>
 
 #include "d_main.hpp"
 #include "doomdef.hpp"
@@ -54,29 +46,18 @@ int XShmGetEventBase(Display* dpy); // problems with g++?
 
 #define POINTER_WARP_COUNTDOWN 1
 
-Display*    X_display = 0;
-Window      X_mainWindow;
-Colormap    X_cmap;
-Visual*     X_visual;
-GC          X_gc;
-XEvent      X_event;
-int         X_screen;
-XVisualInfo X_visualinfo;
-XImage*     image;
-int         X_width;
-int         X_height;
-
-// MIT SHared Memory extension.
-bool doShm;
-
-XShmSegmentInfo X_shminfo;
-int             X_shmeventtype;
+SDL_Window*  window;
+SDL_Surface* screenSurface;
+SDL_Surface* image;
+SDL_Event    sdl_event;
+int          X_width;
+int          X_height;
 
 // Fake mouse handling.
 // This cannot work properly w/o DGA.
 // Needs an invisible mouse cursor at least.
 bool grabMouse;
-int     doPointerWarp = POINTER_WARP_COUNTDOWN;
+int  doPointerWarp = POINTER_WARP_COUNTDOWN;
 
 // Blocky mode,
 // replace each 320x200 pixel with multiply*multiply pixels.
@@ -92,104 +73,105 @@ int xlatekey(void) {
 
     int rc;
 
-    switch (rc = XKeycodeToKeysym(X_display, X_event.xkey.keycode, 0)) {
-        case XK_Left:
+    switch (rc = sdl_event.key.keysym.sym) {
+        case SDLK_LEFT:
             rc = KEY_LEFTARROW;
             break;
-        case XK_Right:
+        case SDLK_RIGHT:
             rc = KEY_RIGHTARROW;
             break;
-        case XK_Down:
+        case SDLK_DOWN:
             rc = KEY_DOWNARROW;
             break;
-        case XK_Up:
+        case SDLK_UP:
             rc = KEY_UPARROW;
             break;
-        case XK_Escape:
+        case SDLK_ESCAPE:
             rc = KEY_ESCAPE;
             break;
-        case XK_Return:
+        case SDLK_RETURN:
             rc = KEY_ENTER;
             break;
-        case XK_Tab:
+        case SDLK_TAB:
             rc = KEY_TAB;
             break;
-        case XK_F1:
+        case SDLK_F1:
             rc = KEY_F1;
             break;
-        case XK_F2:
+        case SDLK_F2:
             rc = KEY_F2;
             break;
-        case XK_F3:
+        case SDLK_F3:
             rc = KEY_F3;
             break;
-        case XK_F4:
+        case SDLK_F4:
             rc = KEY_F4;
             break;
-        case XK_F5:
+        case SDLK_F5:
             rc = KEY_F5;
             break;
-        case XK_F6:
+        case SDLK_F6:
             rc = KEY_F6;
             break;
-        case XK_F7:
+        case SDLK_F7:
             rc = KEY_F7;
             break;
-        case XK_F8:
+        case SDLK_F8:
             rc = KEY_F8;
             break;
-        case XK_F9:
+        case SDLK_F9:
             rc = KEY_F9;
             break;
-        case XK_F10:
+        case SDLK_F10:
             rc = KEY_F10;
             break;
-        case XK_F11:
+        case SDLK_F11:
             rc = KEY_F11;
             break;
-        case XK_F12:
+        case SDLK_F12:
             rc = KEY_F12;
             break;
 
-        case XK_BackSpace:
-        case XK_Delete:
+        case SDLK_BACKSPACE:
+        case SDLK_DELETE:
             rc = KEY_BACKSPACE;
             break;
 
-        case XK_Pause:
+        case SDLK_PAUSE:
             rc = KEY_PAUSE;
             break;
 
-        case XK_KP_Equal:
-        case XK_equal:
+        case SDLK_KP_EQUALS:
+        case SDLK_EQUALS:
             rc = KEY_EQUALS;
             break;
 
-        case XK_KP_Subtract:
-        case XK_minus:
+        case SDLK_KP_MINUS:
+        case SDLK_MINUS:
             rc = KEY_MINUS;
             break;
 
-        case XK_Shift_L:
-        case XK_Shift_R:
+        case SDLK_LSHIFT:
+        case SDLK_RSHIFT:
             rc = KEY_RSHIFT;
             break;
 
-        case XK_Control_L:
-        case XK_Control_R:
+        case SDLK_LCTRL:
+        case SDLK_RCTRL:
             rc = KEY_RCTRL;
             break;
 
-        case XK_Alt_L:
-        case XK_Meta_L:
-        case XK_Alt_R:
-        case XK_Meta_R:
+        case SDLK_LALT:
+        case SDLK_LGUI:
+        case SDLK_RALT:
+        case SDLK_RGUI:
             rc = KEY_RALT;
             break;
 
         default:
-            if (rc >= XK_space && rc <= XK_asciitilde) {
-                rc = rc - XK_space + ' ';
+            // Was Tilde...now backquote...might not be right?
+            if (rc >= SDLK_SPACE && rc <= SDLK_BACKQUOTE) {
+                rc = rc - SDLK_SPACE + ' ';
             }
             if (rc >= 'A' && rc <= 'Z') {
                 rc = rc - 'A' + 'a';
@@ -200,19 +182,8 @@ int xlatekey(void) {
     return rc;
 }
 
-void I_ShutdownGraphics(void) {
-    // Detach from X server
-    if (!XShmDetach(X_display, &X_shminfo)) {
-        I_Error("XShmDetach() failed in I_ShutdownGraphics()");
-    }
-
-    // Release shared memory.
-    shmdt(X_shminfo.shmaddr);
-    shmctl(X_shminfo.shmid, IPC_RMID, 0);
-
-    // Paranoia.
-    image->data = NULL;
-}
+// Need to handle all SDL closing stuff to free up memory
+void I_ShutdownGraphics(void) {}
 
 //
 // I_StartFrame
@@ -223,65 +194,62 @@ void I_StartFrame(void) {
 
 static int lastmousex = 0;
 static int lastmousey = 0;
-bool    mousemoved = false;
-bool    shmFinished;
+bool       mousemoved = false;
 
 void I_GetEvent(void) {
 
-    event_t event;
+    event_t  event;
+    uint32_t state;
 
     // put event-grabbing stuff in here
-    XNextEvent(X_display, &X_event);
-    switch (X_event.type) {
-        case KeyPress:
+    SDL_PollEvent(&sdl_event);
+    switch (sdl_event.type) {
+        case SDL_KEYDOWN:
             event.type  = ev_keydown;
             event.data1 = xlatekey();
             D_PostEvent(&event);
             // fprintf(stderr, "k");
             break;
-        case KeyRelease:
+        case SDL_KEYUP:
             event.type  = ev_keyup;
             event.data1 = xlatekey();
             D_PostEvent(&event);
             // fprintf(stderr, "ku");
             break;
-        case ButtonPress:
+        // PICK UP HERE
+        case SDL_MOUSEBUTTONDOWN:
+            state       = SDL_GetMouseState(NULL, NULL);
             event.type  = ev_mouse;
-            event.data1 = (X_event.xbutton.state & Button1Mask) |
-                          (X_event.xbutton.state & Button2Mask ? 2 : 0) |
-                          (X_event.xbutton.state & Button3Mask ? 4 : 0) |
-                          (X_event.xbutton.button == Button1) |
-                          (X_event.xbutton.button == Button2 ? 2 : 0) |
-                          (X_event.xbutton.button == Button3 ? 4 : 0);
+            event.data1 = (state & SDL_BUTTON_LMASK) | (state & SDL_BUTTON_MMASK ? 2 : 0) | (state & SDL_BUTTON_RMASK ? 4 : 0) |
+                          (sdl_event.button.button == SDL_BUTTON_LEFT) | (sdl_event.button.button == SDL_BUTTON_MIDDLE ? 2 : 0) |
+                          (sdl_event.button.button == SDL_BUTTON_RIGHT ? 4 : 0);
             event.data2 = event.data3 = 0;
             D_PostEvent(&event);
             // fprintf(stderr, "b");
             break;
-        case ButtonRelease:
+        case SDL_MOUSEBUTTONUP:
+            state       = SDL_GetMouseState(NULL, NULL);
             event.type  = ev_mouse;
-            event.data1 = (X_event.xbutton.state & Button1Mask) |
-                          (X_event.xbutton.state & Button2Mask ? 2 : 0) |
-                          (X_event.xbutton.state & Button3Mask ? 4 : 0);
+            event.data1 = (state & SDL_BUTTON_LMASK) | (state & SDL_BUTTON_MMASK ? 2 : 0) | (state & SDL_BUTTON_RMASK ? 4 : 0);
             // suggest parentheses around arithmetic in operand of |
-            event.data1 = event.data1 ^ (X_event.xbutton.button == Button1 ? 1 : 0) ^
-                          (X_event.xbutton.button == Button2 ? 2 : 0) ^
-                          (X_event.xbutton.button == Button3 ? 4 : 0);
+            event.data1 = event.data1 ^ (sdl_event.button.button == SDL_BUTTON_LEFT) ^
+                          (sdl_event.button.button == SDL_BUTTON_MIDDLE ? 2 : 0) ^
+                          (sdl_event.button.button == SDL_BUTTON_RIGHT ? 4 : 0);
             event.data2 = event.data3 = 0;
             D_PostEvent(&event);
             // fprintf(stderr, "bu");
             break;
-        case MotionNotify:
+        case SDL_MOUSEMOTION:
             event.type  = ev_mouse;
-            event.data1 = (X_event.xmotion.state & Button1Mask) |
-                          (X_event.xmotion.state & Button2Mask ? 2 : 0) |
-                          (X_event.xmotion.state & Button3Mask ? 4 : 0);
-            event.data2 = (X_event.xmotion.x - lastmousex) << 2;
-            event.data3 = (lastmousey - X_event.xmotion.y) << 2;
+            event.data1 = (sdl_event.button.state & SDL_BUTTON_LMASK) | (sdl_event.button.state & SDL_BUTTON_MMASK ? 2 : 0) |
+                          (sdl_event.button.state & SDL_BUTTON_RMASK ? 4 : 0);
+            event.data2 = (sdl_event.button.x - lastmousex) << 2;
+            event.data3 = (lastmousey - sdl_event.button.y) << 2;
 
             if (event.data2 || event.data3) {
-                lastmousex = X_event.xmotion.x;
-                lastmousey = X_event.xmotion.y;
-                if (X_event.xmotion.x != X_width / 2 && X_event.xmotion.y != X_height / 2) {
+                lastmousex = sdl_event.button.x;
+                lastmousey = sdl_event.button.y;
+                if (sdl_event.button.x != X_width / 2 && sdl_event.button.y != X_height / 2) {
                     D_PostEvent(&event);
                     // fprintf(stderr, "m");
                     mousemoved = false;
@@ -291,36 +259,13 @@ void I_GetEvent(void) {
             }
             break;
 
-        case Expose:
-        case ConfigureNotify:
-            break;
+            // case Expose:
+            // case ConfigureNotify:
+            //     break;
 
         default:
-            if (doShm && X_event.type == X_shmeventtype) {
-                shmFinished = true;
-            }
             break;
     }
-}
-
-Cursor createnullcursor(Display* display, Window root) {
-    Pixmap    cursormask;
-    XGCValues xgc;
-    GC        gc;
-    XColor    dummycolour;
-    Cursor    cursor;
-
-    cursormask   = XCreatePixmap(display, root, 1, 1, 1 /*depth*/);
-    xgc.function = GXclear;
-    gc           = XCreateGC(display, cursormask, GCFunction, &xgc);
-    XFillRectangle(display, cursormask, gc, 0, 0, 1, 1);
-    dummycolour.pixel = 0;
-    dummycolour.red   = 0;
-    dummycolour.flags = 04;
-    cursor = XCreatePixmapCursor(display, cursormask, cursormask, &dummycolour, &dummycolour, 0, 0);
-    XFreePixmap(display, cursormask);
-    XFreeGC(display, gc);
-    return cursor;
 }
 
 //
@@ -328,11 +273,11 @@ Cursor createnullcursor(Display* display, Window root) {
 //
 void I_StartTic(void) {
 
-    if (!X_display) {
+    if (!window) {
         return;
     }
 
-    while (XPending(X_display)) {
+    while (SDL_PollEvent(NULL)) {
         I_GetEvent();
     }
 
@@ -341,8 +286,7 @@ void I_StartTic(void) {
     //  loose input focus within X11.
     if (grabMouse) {
         if (!--doPointerWarp) {
-            XWarpPointer(X_display, None, X_mainWindow, 0, 0, 0, 0, X_width / 2, X_height / 2);
-
+            SDL_WarpMouseInWindow(window, X_width / 2, X_height / 2);
             doPointerWarp = POINTER_WARP_COUNTDOWN;
         }
     }
@@ -398,18 +342,16 @@ void I_FinishUpdate(void) {
 
         ilineptr = (unsigned int*)(screens[0]);
         for (i = 0; i < 2; i++) {
-            olineptrs[i] = (unsigned int*)&image->data[i * X_width];
+            olineptrs[i] = (unsigned int*)&((byte*)image->pixels)[i * X_width];
         }
 
         y = SCREENHEIGHT;
         while (y--) {
             x = SCREENWIDTH;
             do {
-                fouripixels = *ilineptr++;
-                twoopixels  = (fouripixels & 0xff000000) | ((fouripixels >> 8) & 0xffff00) |
-                             ((fouripixels >> 16) & 0xff);
-                twomoreopixels = ((fouripixels << 16) & 0xff000000) |
-                                 ((fouripixels << 8) & 0xffff00) | (fouripixels & 0xff);
+                fouripixels    = *ilineptr++;
+                twoopixels     = (fouripixels & 0xff000000) | ((fouripixels >> 8) & 0xffff00) | ((fouripixels >> 16) & 0xff);
+                twomoreopixels = ((fouripixels << 16) & 0xff000000) | ((fouripixels << 8) & 0xffff00) | (fouripixels & 0xff);
 #ifdef __BIG_ENDIAN__
                 *olineptrs[0]++ = twoopixels;
                 *olineptrs[1]++ = twoopixels;
@@ -437,7 +379,7 @@ void I_FinishUpdate(void) {
 
         ilineptr = (unsigned int*)(screens[0]);
         for (i = 0; i < 3; i++) {
-            olineptrs[i] = (unsigned int*)&image->data[i * X_width];
+            olineptrs[i] = (unsigned int*)&((byte*)image->pixels)[i * X_width];
         }
 
         y = SCREENHEIGHT;
@@ -445,12 +387,9 @@ void I_FinishUpdate(void) {
             x = SCREENWIDTH;
             do {
                 fouripixels    = *ilineptr++;
-                fouropixels[0] = (fouripixels & 0xff000000) | ((fouripixels >> 8) & 0xff0000) |
-                                 ((fouripixels >> 16) & 0xffff);
-                fouropixels[1] = ((fouripixels << 8) & 0xff000000) | (fouripixels & 0xffff00) |
-                                 ((fouripixels >> 8) & 0xff);
-                fouropixels[2] = ((fouripixels << 16) & 0xffff0000) |
-                                 ((fouripixels << 8) & 0xff00) | (fouripixels & 0xff);
+                fouropixels[0] = (fouripixels & 0xff000000) | ((fouripixels >> 8) & 0xff0000) | ((fouripixels >> 16) & 0xffff);
+                fouropixels[1] = ((fouripixels << 8) & 0xff000000) | (fouripixels & 0xffff00) | ((fouripixels >> 8) & 0xff);
+                fouropixels[2] = ((fouripixels << 16) & 0xffff0000) | ((fouripixels << 8) & 0xff00) | (fouripixels & 0xff);
 #ifdef __BIG_ENDIAN__
                 *olineptrs[0]++ = fouropixels[0];
                 *olineptrs[1]++ = fouropixels[0];
@@ -481,39 +420,17 @@ void I_FinishUpdate(void) {
     } else if (multiply == 4) {
         // Broken. Gotta fix this some day.
         void Expand4(const unsigned* /*lineptr*/, double* /*xline*/);
-        Expand4((unsigned*)(screens[0]), (double*)(image->data));
+        Expand4((unsigned*)(screens[0]), (double*)(image->pixels));
     }
 
-    if (doShm) {
-
-        if (!XShmPutImage(X_display,
-                          X_mainWindow,
-                          X_gc,
-                          image,
-                          0,
-                          0,
-                          0,
-                          0,
-                          X_width,
-                          X_height,
-                          True)) {
-            I_Error("XShmPutImage() failed\n");
-        }
-
-        // wait for it to finish and processes all input events
-        shmFinished = false;
-        do {
-            I_GetEvent();
-        } while (!shmFinished);
-
-    } else {
-
-        // draw the image
-        XPutImage(X_display, X_mainWindow, X_gc, image, 0, 0, 0, 0, X_width, X_height);
-
-        // sync up with server
-        XSync(X_display, False);
-    }
+    // draw the image
+    // Maybe pass in a SDL_Rect as last arg?
+    // SDL_Rect r;
+    // r.x = 0;
+    // r.y = 0;
+    // r.w = X_Width;
+    // r.h = X_Height;
+    SDL_BlitSurface(image, NULL, screenSurface, NULL);
 }
 
 //
@@ -526,138 +443,43 @@ void I_ReadScreen(byte* scr) {
 //
 // Palette stuff.
 //
-static XColor colors[256];
+static SDL_Color colors[256];
 
-void UploadNewPalette(Colormap cmap, byte* palette) {
+void UploadNewPalette(SDL_Surface* surface, byte* palette) {
 
-    int            i;
-    int            c;
+    int         i;
+    int         c;
     static bool firstcall = true;
 
-#ifdef __cplusplus
-    if (X_visualinfo.c_class == PseudoColor && X_visualinfo.depth == 8)
-#else
-    if (X_visualinfo.class == PseudoColor && X_visualinfo.depth == 8)
-#endif
-    {
-        // initialize the colormap
-        if (firstcall) {
-            firstcall = false;
-            for (i = 0; i < 256; i++) {
-                colors[i].pixel = i;
-                colors[i].flags = DoRed | DoGreen | DoBlue;
-            }
-        }
-
-        // set the X colormap entries
-        for (i = 0; i < 256; i++) {
-            c               = gammatable[usegamma][*palette++];
-            colors[i].red   = (c << 8) + c;
-            c               = gammatable[usegamma][*palette++];
-            colors[i].green = (c << 8) + c;
-            c               = gammatable[usegamma][*palette++];
-            colors[i].blue  = (c << 8) + c;
-        }
-
-        // store the colors to the current colormap
-        XStoreColors(X_display, cmap, colors, 256);
+    // set the X colormap entries
+    for (i = 0; i < 256; i++) {
+        c           = gammatable[usegamma][*palette++];
+        colors[i].r = (c << 8) + c;
+        c           = gammatable[usegamma][*palette++];
+        colors[i].g = (c << 8) + c;
+        c           = gammatable[usegamma][*palette++];
+        colors[i].b = (c << 8) + c;
     }
+
+    // Do we ever need to free this palette?
+    SDL_Palette* sdlPalette = SDL_AllocPalette(256);
+    SDL_SetPaletteColors(sdlPalette, colors, 0, 256);
+    SDL_SetSurfacePalette(surface, sdlPalette);
 }
 
 //
 // I_SetPalette
 //
 void I_SetPalette(byte* palette) {
-    UploadNewPalette(X_cmap, palette);
-}
-
-//
-// This function is probably redundant,
-//  if XShmDetach works properly.
-// ddt never detached the XShm memory,
-//  thus there might have been stale
-//  handles accumulating.
-//
-void grabsharedmemory(int size) {
-
-    int             key = ('d' << 24) | ('o' << 16) | ('o' << 8) | 'm';
-    struct shmid_ds shminfo;
-    int             minsize = 320 * 200;
-    int             id;
-    int             rc;
-    // UNUSED int done=0;
-    int pollution = 5;
-
-    // try to use what was here before
-    do {
-        id = shmget((key_t)key, minsize, 0777);  // just get the id
-        if (id != -1) {
-            rc = shmctl(id, IPC_STAT, &shminfo); // get stats on it
-            if (!rc) {
-                if (shminfo.shm_nattch) {
-                    fprintf(stderr,
-                            "User %d appears to be running "
-                            "DOOM.  Is that wise?\n",
-                            shminfo.shm_cpid);
-                    key++;
-                } else {
-                    if (getuid() == shminfo.shm_perm.cuid) {
-                        rc = shmctl(id, IPC_RMID, 0);
-                        if (!rc) {
-                            fprintf(stderr, "Was able to kill my old shared memory\n");
-                        } else {
-                            I_Error("Was NOT able to kill my old shared memory");
-                        }
-
-                        id = shmget((key_t)key, size, IPC_CREAT | 0777);
-                        if (id == -1) {
-                            I_Error("Could not get shared memory");
-                        }
-
-                        rc = shmctl(id, IPC_STAT, &shminfo);
-
-                        break;
-                    }
-                    if (size >= shminfo.shm_segsz) {
-                        fprintf(stderr, "will use %d's stale shared memory\n", shminfo.shm_cpid);
-                        break;
-                    }
-                    fprintf(stderr,
-                            "warning: can't use stale "
-                            "shared memory belonging to id %d, "
-                            "key=0x%x\n",
-                            shminfo.shm_cpid,
-                            key);
-                    key++;
-                }
-            } else {
-                I_Error("could not get stats on key=%d", key);
-            }
-        } else {
-            id = shmget((key_t)key, size, IPC_CREAT | 0777);
-            if (id == -1) {
-                extern int errno;
-                fprintf(stderr, "errno=%d\n", errno);
-                I_Error("Could not get any shared memory");
-            }
-            break;
-        }
-    } while (--pollution);
-
-    if (!pollution) {
-        I_Error("Sorry, system too polluted with stale "
-                "shared memory segments.\n");
-    }
-
-    X_shminfo.shmid = id;
-
-    // attach to the shared memory segment
-    image->data = X_shminfo.shmaddr = shmat(id, 0, 0);
-
-    fprintf(stderr, "shared memory id=%d, addr=0x%x\n", id, (int)(image->data));
+    UploadNewPalette(screenSurface, palette);
 }
 
 void I_InitGraphics(void) {
+
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        printf("Error initialized SDL\n");
+        exit(0);
+    }
 
     char* displayname;
     char* d;
@@ -670,12 +492,8 @@ void I_InitGraphics(void) {
     char xsign = ' ';
     char ysign = ' ';
 
-    int                  oktodraw;
-    unsigned long        attribmask;
-    XSetWindowAttributes attribs;
-    XGCValues            xgcvalues;
-    int                  valuemask;
-    static int           firsttime = 1;
+    int        oktodraw;
+    static int firsttime = 1;
 
     if (!firsttime) {
         return;
@@ -729,153 +547,34 @@ void I_InitGraphics(void) {
         }
     }
 
-    // open the display
-    X_display = XOpenDisplay(displayname);
-    if (!X_display) {
-        if (displayname) {
-            I_Error("Could not open display [%s]", displayname);
-        } else {
-            I_Error("Could not open display (DISPLAY=[%s])", getenv("DISPLAY"));
-        }
-    }
-
-    // use the default visual
-    X_screen = DefaultScreen(X_display);
-    if (!XMatchVisualInfo(X_display, X_screen, 8, PseudoColor, &X_visualinfo)) {
-        I_Error("xdoom currently only supports 256-color PseudoColor screens");
-    }
-    X_visual = X_visualinfo.visual;
-
-    // check for the MITSHM extension
-    doShm = XShmQueryExtension(X_display);
-
-    // even if it's available, make sure it's a local connection
-    if (doShm) {
-        if (!displayname) {
-            displayname = (char*)getenv("DISPLAY");
-        }
-        if (displayname) {
-            d = displayname;
-            while (*d && (*d != ':')) {
-                d++;
-            }
-            if (*d) {
-                *d = 0;
-            }
-            if (strcasecmp(displayname, "unix") && *displayname) {
-                doShm = false;
-            }
-        }
-    }
-
-    fprintf(stderr, "Using MITSHM extension\n");
-
-    // create the colormap
-    X_cmap = XCreateColormap(X_display, RootWindow(X_display, X_screen), X_visual, AllocAll);
-
-    // setup attributes for main window
-    attribmask         = CWEventMask | CWColormap | CWBorderPixel;
-    attribs.event_mask = KeyPressMask |
-                         KeyReleaseMask
-                         // | PointerMotionMask | ButtonPressMask | ButtonReleaseMask
-                         | ExposureMask;
-
-    attribs.colormap     = X_cmap;
-    attribs.border_pixel = 0;
-
     // create the main window
-    X_mainWindow = XCreateWindow(X_display,
-                                 RootWindow(X_display, X_screen),
-                                 x,
-                                 y,
-                                 X_width,
-                                 X_height,
-                                 0, // borderwidth
-                                 8, // depth
-                                 InputOutput,
-                                 X_visual,
-                                 attribmask,
-                                 &attribs);
+    window = SDL_CreateWindow("DOOM", x, y, X_width, X_height, SDL_WINDOW_SHOWN);
+    if (!window) {
+        printf("Window not created\n");
+        exit(0);
+    }
 
-    XDefineCursor(X_display, X_mainWindow, createnullcursor(X_display, X_mainWindow));
-
-    // create the GC
-    valuemask                    = GCGraphicsExposures;
-    xgcvalues.graphics_exposures = False;
-    X_gc                         = XCreateGC(X_display, X_mainWindow, valuemask, &xgcvalues);
-
-    // map the window
-    XMapWindow(X_display, X_mainWindow);
+    screenSurface = SDL_GetWindowSurface(window);
 
     // wait until it is OK to draw
-    oktodraw = 0;
-    while (!oktodraw) {
-        XNextEvent(X_display, &X_event);
-        if (X_event.type == Expose && !X_event.xexpose.count) {
-            oktodraw = 1;
-        }
-    }
+    // oktodraw = 0;
+    // while (!oktodraw) {
+    //     SDL_PollEvent(&sdl_event);
+    //     if (sdl_event.type == Expose && !sdl_event.xexpose.count) {
+    //         oktodraw = 1;
+    //     }
+    // }
 
     // grabs the pointer so it is restricted to this window
+    // This might not be needed
     if (grabMouse) {
-        XGrabPointer(X_display,
-                     X_mainWindow,
-                     True,
-                     ButtonPressMask | ButtonReleaseMask | PointerMotionMask,
-                     GrabModeAsync,
-                     GrabModeAsync,
-                     X_mainWindow,
-                     None,
-                     CurrentTime);
+        SDL_SetRelativeMouseMode(SDL_TRUE);
     }
 
-    if (doShm) {
-
-        X_shmeventtype = XShmGetEventBase(X_display) + ShmCompletion;
-
-        // create the image
-        image = XShmCreateImage(X_display, X_visual, 8, ZPixmap, 0, &X_shminfo, X_width, X_height);
-
-        grabsharedmemory(image->bytes_per_line * image->height);
-
-        // UNUSED
-        // create the shared memory segment
-        // X_shminfo.shmid = shmget (IPC_PRIVATE,
-        // image->bytes_per_line * image->height, IPC_CREAT | 0777);
-        // if (X_shminfo.shmid < 0)
-        // {
-        // perror("");
-        // I_Error("shmget() failed in InitGraphics()");
-        // }
-        // fprintf(stderr, "shared memory id=%d\n", X_shminfo.shmid);
-        // attach to the shared memory segment
-        // image->data = X_shminfo.shmaddr = shmat(X_shminfo.shmid, 0, 0);
-
-        if (!image->data) {
-            perror("");
-            I_Error("shmat() failed in InitGraphics()");
-        }
-
-        // get the X server to attach to it
-        if (!XShmAttach(X_display, &X_shminfo)) {
-            I_Error("XShmAttach() failed in InitGraphics()");
-        }
-
-    } else {
-        image = XCreateImage(X_display,
-                             X_visual,
-                             8,
-                             ZPixmap,
-                             0,
-                             (char*)malloc(X_width * X_height),
-                             X_width,
-                             X_height,
-                             8,
-                             X_width);
-    }
+    image = SDL_CreateRGBSurface(0, X_width, X_height, 8, 0, 0, 0, 0);
 
     if (multiply == 1) {
-        screens[0] = (unsigned char*)(image->data);
+        screens[0] = (unsigned char*)(image->pixels);
     } else {
         screens[0] = (unsigned char*)malloc(SCREENWIDTH * SCREENHEIGHT);
     }

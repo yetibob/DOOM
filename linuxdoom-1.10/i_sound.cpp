@@ -23,6 +23,7 @@
 
 static const char rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 
+#include <errno.h>
 #include <math.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -144,9 +145,7 @@ int* channelrightvol_lookup[NUM_CHANNELS];
 // Safe ioctl, convenience.
 //
 void myioctl(int fd, int command, int* arg) {
-    int        rc;
-    extern int errno;
-
+    int rc;
     rc = ioctl(fd, command, arg);
     if (rc < 0) {
         fprintf(stderr, "ioctl(dsp,%d,arg) failed\n", command);
@@ -246,8 +245,8 @@ int addsfx(int sfxid, int volume, int step, int seperation) {
 
     // Chainsaw troubles.
     // Play these sound effects only one at a time.
-    if (sfxid == sfx_sawup || sfxid == sfx_sawidl || sfxid == sfx_sawful || sfxid == sfx_sawhit ||
-        sfxid == sfx_stnmov || sfxid == sfx_pistol) {
+    if (sfxid == sfx_sawup || sfxid == sfx_sawidl || sfxid == sfx_sawful || sfxid == sfx_sawhit || sfxid == sfx_stnmov ||
+        sfxid == sfx_pistol) {
         // Loop all channels, check.
         for (i = 0; i < NUM_CHANNELS; i++) {
             // Active, and using the same SFX?

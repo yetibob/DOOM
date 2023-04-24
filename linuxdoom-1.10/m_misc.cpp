@@ -291,14 +291,14 @@ void M_SaveDefaults(void) {
 extern byte scantokey[128];
 
 void M_LoadDefaults(void) {
-    int     i;
-    int     len;
-    FILE*   f;
-    char    def[80];
-    char    strparm[100];
-    char*   newstring;
-    int     parm;
-    bool isstring;
+    int   i;
+    int   len;
+    FILE* f;
+    char  def[80];
+    char  strparm[100];
+    char* newstring;
+    int   parm;
+    bool  isstring;
 
     // set everything to base values
     numdefaults = sizeof(defaults) / sizeof(defaults[0]);
@@ -338,9 +338,8 @@ void M_LoadDefaults(void) {
                         if (!isstring) {
                             *defaults[i].location = parm;
                         } else {
-                            *
+                            *defaults[i].location = (int)newstring;
                         }
-                        defaults[i].location = (int)newstring;
                         break;
                     }
                 }

@@ -41,11 +41,11 @@ bool markfloor;
 bool markceiling;
 
 bool maskedtexture;
-int     toptexture;
-int     bottomtexture;
-int     midtexture;
+int  toptexture;
+int  bottomtexture;
+int  midtexture;
 
-angle_t rw_normalangle;
+int rw_normalangle;
 // angle to line origin
 int rw_angle1;
 
@@ -126,14 +126,11 @@ void R_RenderMaskedSegRange(drawseg_t* ds, int x1, int x2) {
 
     // find positioning
     if (curline->linedef->flags & ML_DONTPEGBOTTOM) {
-        dc_texturemid = frontsector->floorheight > backsector->floorheight
-                            ? frontsector->floorheight
-                            : backsector->floorheight;
+        dc_texturemid = frontsector->floorheight > backsector->floorheight ? frontsector->floorheight : backsector->floorheight;
         dc_texturemid = dc_texturemid + textureheight[texnum] - viewz;
     } else {
-        dc_texturemid = frontsector->ceilingheight < backsector->ceilingheight
-                            ? frontsector->ceilingheight
-                            : backsector->ceilingheight;
+        dc_texturemid =
+            frontsector->ceilingheight < backsector->ceilingheight ? frontsector->ceilingheight : backsector->ceilingheight;
         dc_texturemid = dc_texturemid - viewz;
     }
     dc_texturemid += curline->sidedef->rowoffset;
@@ -489,8 +486,7 @@ void R_StoreWallRange(int start, int stop) {
             markceiling = false;
         }
 
-        if (backsector->ceilingheight <= frontsector->floorheight ||
-            backsector->floorheight >= frontsector->ceilingheight) {
+        if (backsector->ceilingheight <= frontsector->floorheight || backsector->floorheight >= frontsector->ceilingheight) {
             // closed door
             markceiling = markfloor = true;
         }

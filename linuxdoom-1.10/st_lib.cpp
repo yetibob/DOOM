@@ -132,13 +132,7 @@ void STlib_updateNum(st_number_t* n, bool refresh) {
 }
 
 //
-void STlib_initPercent(st_percent_t* p,
-                       int           x,
-                       int           y,
-                       patch_t**     pl,
-                       int*          num,
-                       bool*      on,
-                       patch_t*      percent) {
+void STlib_initPercent(st_percent_t* p, int x, int y, patch_t** pl, int* num, bool* on, patch_t* percent) {
     STlib_initNum(&p->n, x, y, pl, num, on, 3);
     p->p = percent;
 }
@@ -184,7 +178,7 @@ void STlib_updateMultIcon(st_multicon_t* mi, bool refresh) {
     }
 }
 
-void STlib_initBinIcon(st_binicon_t* b, int x, int y, patch_t* i, bool* val, boolean* on) {
+void STlib_initBinIcon(st_binicon_t* b, int x, int y, patch_t* i, bool* val, bool* on) {
     b->x      = x;
     b->y      = y;
     b->oldval = 0;

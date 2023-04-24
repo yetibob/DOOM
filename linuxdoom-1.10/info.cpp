@@ -32,99 +32,99 @@ static const char rcsid[] = "$Id: info.c,v 1.3 1997/01/26 07:45:00 b1 Exp $";
 #ifdef __GNUG__
 #pragma implementation "info.h"
 #endif
+#include "d_player.hpp"
 #include "info.hpp"
 #include "p_mobj.hpp"
+#include "p_pspr.hpp"
 
-char* sprnames[NUMSPRITES] = {
-    "TROO", "SHTG", "PUNG", "PISG", "PISF", "SHTF", "SHT2", "CHGG", "CHGF", "MISG", "MISF", "SAWG",
-    "PLSG", "PLSF", "BFGG", "BFGF", "BLUD", "PUFF", "BAL1", "BAL2", "PLSS", "PLSE", "MISL", "BFS1",
-    "BFE1", "BFE2", "TFOG", "IFOG", "PLAY", "POSS", "SPOS", "VILE", "FIRE", "FATB", "FBXP", "SKEL",
-    "MANF", "FATT", "CPOS", "SARG", "HEAD", "BAL7", "BOSS", "BOS2", "SKUL", "SPID", "BSPI", "APLS",
-    "APBX", "CYBR", "PAIN", "SSWV", "KEEN", "BBRN", "BOSF", "ARM1", "ARM2", "BAR1", "BEXP", "FCAN",
-    "BON1", "BON2", "BKEY", "RKEY", "YKEY", "BSKU", "RSKU", "YSKU", "STIM", "MEDI", "SOUL", "PINV",
-    "PSTR", "PINS", "MEGA", "SUIT", "PMAP", "PVIS", "CLIP", "AMMO", "ROCK", "BROK", "CELL", "CELP",
-    "SHEL", "SBOX", "BPAK", "BFUG", "MGUN", "CSAW", "LAUN", "PLAS", "SHOT", "SGN2", "COLU", "SMT2",
-    "GOR1", "POL2", "POL5", "POL4", "POL3", "POL1", "POL6", "GOR2", "GOR3", "GOR4", "GOR5", "SMIT",
-    "COL1", "COL2", "COL3", "COL4", "CAND", "CBRA", "COL6", "TRE1", "TRE2", "ELEC", "CEYE", "FSKU",
-    "COL5", "TBLU", "TGRN", "TRED", "SMBT", "SMGT", "SMRT", "HDB1", "HDB2", "HDB3", "HDB4", "HDB5",
-    "HDB6", "POB1", "POB2", "BRS1", "TLMP", "TLP2"
-};
+char* sprnames[NUMSPRITES] = { "TROO", "SHTG", "PUNG", "PISG", "PISF", "SHTF", "SHT2", "CHGG", "CHGF", "MISG", "MISF", "SAWG",
+                               "PLSG", "PLSF", "BFGG", "BFGF", "BLUD", "PUFF", "BAL1", "BAL2", "PLSS", "PLSE", "MISL", "BFS1",
+                               "BFE1", "BFE2", "TFOG", "IFOG", "PLAY", "POSS", "SPOS", "VILE", "FIRE", "FATB", "FBXP", "SKEL",
+                               "MANF", "FATT", "CPOS", "SARG", "HEAD", "BAL7", "BOSS", "BOS2", "SKUL", "SPID", "BSPI", "APLS",
+                               "APBX", "CYBR", "PAIN", "SSWV", "KEEN", "BBRN", "BOSF", "ARM1", "ARM2", "BAR1", "BEXP", "FCAN",
+                               "BON1", "BON2", "BKEY", "RKEY", "YKEY", "BSKU", "RSKU", "YSKU", "STIM", "MEDI", "SOUL", "PINV",
+                               "PSTR", "PINS", "MEGA", "SUIT", "PMAP", "PVIS", "CLIP", "AMMO", "ROCK", "BROK", "CELL", "CELP",
+                               "SHEL", "SBOX", "BPAK", "BFUG", "MGUN", "CSAW", "LAUN", "PLAS", "SHOT", "SGN2", "COLU", "SMT2",
+                               "GOR1", "POL2", "POL5", "POL4", "POL3", "POL1", "POL6", "GOR2", "GOR3", "GOR4", "GOR5", "SMIT",
+                               "COL1", "COL2", "COL3", "COL4", "CAND", "CBRA", "COL6", "TRE1", "TRE2", "ELEC", "CEYE", "FSKU",
+                               "COL5", "TBLU", "TGRN", "TRED", "SMBT", "SMGT", "SMRT", "HDB1", "HDB2", "HDB3", "HDB4", "HDB5",
+                               "HDB6", "POB1", "POB2", "BRS1", "TLMP", "TLP2" };
 
 // Doesn't work with g++, needs actionf_p1
-void A_Light0();
-void A_WeaponReady();
-void A_Lower();
-void A_Raise();
-void A_Punch();
-void A_ReFire();
-void A_FirePistol();
-void A_Light1();
-void A_FireShotgun();
-void A_Light2();
-void A_FireShotgun2();
-void A_CheckReload();
-void A_OpenShotgun2();
-void A_LoadShotgun2();
-void A_CloseShotgun2();
-void A_FireCGun();
-void A_GunFlash();
-void A_FireMissile();
-void A_Saw();
-void A_FirePlasma();
-void A_BFGsound();
-void A_FireBFG();
-void A_BFGSpray();
-void A_Explode();
-void A_Pain();
-void A_PlayerScream();
-void A_Fall();
-void A_XScream();
-void A_Look();
-void A_Chase();
-void A_FaceTarget();
-void A_PosAttack();
-void A_Scream();
-void A_SPosAttack();
-void A_VileChase();
-void A_VileStart();
-void A_VileTarget();
-void A_VileAttack();
-void A_StartFire();
-void A_Fire();
-void A_FireCrackle();
-void A_Tracer();
-void A_SkelWhoosh();
-void A_SkelFist();
-void A_SkelMissile();
-void A_FatRaise();
-void A_FatAttack1();
-void A_FatAttack2();
-void A_FatAttack3();
-void A_BossDeath();
-void A_CPosAttack();
-void A_CPosRefire();
-void A_TroopAttack();
-void A_SargAttack();
-void A_HeadAttack();
-void A_BruisAttack();
-void A_SkullAttack();
-void A_Metal();
-void A_SpidRefire();
-void A_BabyMetal();
-void A_BspiAttack();
-void A_Hoof();
-void A_CyberAttack();
-void A_PainAttack();
-void A_PainDie();
-void A_KeenDie();
-void A_BrainPain();
-void A_BrainScream();
-void A_BrainDie();
-void A_BrainAwake();
-void A_BrainSpit();
-void A_SpawnSound();
-void A_SpawnFly();
-void A_BrainExplode();
+void A_Light0(player_t*, pspdef_t*);
+void A_WeaponReady(player_t*, pspdef_t*);
+void A_Lower(player_t*, pspdef_t*);
+void A_Raise(player_t*, pspdef_t*);
+void A_Punch(player_t*, pspdef_t*);
+void A_ReFire(player_t*, pspdef_t*);
+void A_FirePistol(player_t*, pspdef_t*);
+void A_Light1(player_t*, pspdef_t*);
+void A_FireShotgun(player_t*, pspdef_t*);
+void A_Light2(player_t*, pspdef_t*);
+void A_FireShotgun2(player_t*, pspdef_t*);
+void A_CheckReload(player_t*, pspdef_t*);
+void A_OpenShotgun2(player_t*, pspdef_t*);
+void A_LoadShotgun2(player_t*, pspdef_t*);
+void A_CloseShotgun2(player_t*, pspdef_t*);
+void A_FireCGun(player_t*, pspdef_t*);
+void A_GunFlash(player_t*, pspdef_t*);
+void A_FireMissile(player_t*, pspdef_t*);
+void A_Saw(player_t*, pspdef_t*);
+void A_FirePlasma(player_t*, pspdef_t*);
+void A_BFGsound(player_t*, pspdef_t*);
+void A_FireBFG(player_t*, pspdef_t*);
+void A_BFGSpray(mobj_t*);
+void A_Explode(mobj_t*);
+void A_Pain(mobj_t*);
+void A_PlayerScream(mobj_t*);
+void A_Fall(mobj_t*);
+void A_XScream(mobj_t*);
+void A_Look(mobj_t*);
+void A_Chase(mobj_t*);
+void A_FaceTarget(mobj_t*);
+void A_PosAttack(mobj_t*);
+void A_Scream(mobj_t*);
+void A_SPosAttack(mobj_t*);
+void A_VileChase(mobj_t*);
+void A_VileStart(mobj_t*);
+void A_VileTarget(mobj_t*);
+void A_VileAttack(mobj_t*);
+void A_StartFire(mobj_t*);
+void A_Fire(mobj_t*);
+void A_FireCrackle(mobj_t*);
+void A_Tracer(mobj_t*);
+void A_SkelWhoosh(mobj_t*);
+void A_SkelFist(mobj_t*);
+void A_SkelMissile(mobj_t*);
+void A_FatRaise(mobj_t*);
+void A_FatAttack1(mobj_t*);
+void A_FatAttack2(mobj_t*);
+void A_FatAttack3(mobj_t*);
+void A_BossDeath(mobj_t*);
+void A_CPosAttack(mobj_t*);
+void A_CPosRefire(mobj_t*);
+void A_TroopAttack(mobj_t*);
+void A_SargAttack(mobj_t*);
+void A_HeadAttack(mobj_t*);
+void A_BruisAttack(mobj_t*);
+void A_SkullAttack(mobj_t*);
+void A_Metal(mobj_t*);
+void A_SpidRefire(mobj_t*);
+void A_BabyMetal(mobj_t*);
+void A_BspiAttack(mobj_t*);
+void A_Hoof(mobj_t*);
+void A_CyberAttack(mobj_t*);
+void A_PainAttack(mobj_t*);
+void A_PainDie(mobj_t*);
+void A_KeenDie(mobj_t*);
+void A_BrainPain(mobj_t*);
+void A_BrainScream(mobj_t*);
+void A_BrainDie(mobj_t*);
+void A_BrainAwake(mobj_t*);
+void A_BrainSpit(mobj_t*);
+void A_SpawnSound(mobj_t*);
+void A_SpawnFly(mobj_t*);
+void A_BrainExplode(mobj_t*);
 
 state_t states[NUMSTATES] = {
     { SPR_TROO, 0, -1, { NULL }, S_NULL, 0, 0 },                   // S_NULL

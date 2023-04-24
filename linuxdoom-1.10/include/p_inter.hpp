@@ -26,6 +26,8 @@
 #pragma interface
 #endif
 
+#include "d_player.hpp"
+
 bool P_GivePower(player_t*, int);
 
 #endif

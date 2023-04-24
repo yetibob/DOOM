@@ -175,8 +175,8 @@ bool P_TeleportMove(mobj_t* thing, fixed_t x, fixed_t y) {
 // Adjusts tmfloorz and tmceilingz as lines are contacted
 //
 bool PIT_CheckLine(line_t* ld) {
-    if (tmbbox[BOXRIGHT] <= ld->bbox[BOXLEFT] || tmbbox[BOXLEFT] >= ld->bbox[BOXRIGHT] ||
-        tmbbox[BOXTOP] <= ld->bbox[BOXBOTTOM] || tmbbox[BOXBOTTOM] >= ld->bbox[BOXTOP]) {
+    if (tmbbox[BOXRIGHT] <= ld->bbox[BOXLEFT] || tmbbox[BOXLEFT] >= ld->bbox[BOXRIGHT] || tmbbox[BOXTOP] <= ld->bbox[BOXBOTTOM] ||
+        tmbbox[BOXBOTTOM] >= ld->bbox[BOXTOP]) {
         return true;
     }
 
@@ -240,7 +240,7 @@ bool PIT_CheckLine(line_t* ld) {
 //
 bool PIT_CheckThing(mobj_t* thing) {
     fixed_t blockdist;
-    bool solid;
+    bool    solid;
     int     damage;
 
     if (!(thing->flags & (MF_SOLID | MF_SPECIAL | MF_SHOOTABLE))) {
@@ -284,8 +284,7 @@ bool PIT_CheckThing(mobj_t* thing) {
         }
 
         if (tmthing->target &&
-            (tmthing->target->type == thing->type ||
-             (tmthing->target->type == MT_KNIGHT && thing->type == MT_BRUISER) ||
+            (tmthing->target->type == thing->type || (tmthing->target->type == MT_KNIGHT && thing->type == MT_BRUISER) ||
              (tmthing->target->type == MT_BRUISER && thing->type == MT_KNIGHT))) {
             // Don't hit same species as originator.
             if (thing == tmthing->target) {
@@ -693,24 +692,9 @@ retry:
 
     bestslidefrac = FRACUNIT + 1;
 
-    P_PathTraverse(leadx,
-                   leady,
-                   leadx + mo->momx,
-                   leady + mo->momy,
-                   PT_ADDLINES,
-                   PTR_SlideTraverse);
-    P_PathTraverse(trailx,
-                   leady,
-                   trailx + mo->momx,
-                   leady + mo->momy,
-                   PT_ADDLINES,
-                   PTR_SlideTraverse);
-    P_PathTraverse(leadx,
-                   traily,
-                   leadx + mo->momx,
-                   traily + mo->momy,
-                   PT_ADDLINES,
-                   PTR_SlideTraverse);
+    P_PathTraverse(leadx, leady, leadx + mo->momx, leady + mo->momy, PT_ADDLINES, PTR_SlideTraverse);
+    P_PathTraverse(trailx, leady, trailx + mo->momx, leady + mo->momy, PT_ADDLINES, PTR_SlideTraverse);
+    P_PathTraverse(leadx, traily, leadx + mo->momx, traily + mo->momy, PT_ADDLINES, PTR_SlideTraverse);
 
     // move up to the wall
     if (bestslidefrac == FRACUNIT + 1) {
@@ -825,7 +809,7 @@ bool PTR_AimTraverse(intercept_t* in) {
             return false; // stop
         }
 
-        return true;      // shot continues
+        return true; // shot continues
     }
 
     // shoot a thing
@@ -1251,7 +1235,7 @@ bool PIT_ChangeSector(mobj_t* thing) {
 //
 // P_ChangeSector
 //
-bool P_ChangeSector(sector_t* sector, boolean crunch) {
+bool P_ChangeSector(sector_t* sector, bool crunch) {
     int x;
     int y;
 

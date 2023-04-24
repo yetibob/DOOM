@@ -58,8 +58,7 @@ typedef enum {
 //
 // P_NewChaseDir related LUT.
 //
-dirtype_t opposite[] = { DI_WEST,      DI_SOUTHWEST, DI_SOUTH,     DI_SOUTHEAST, DI_EAST,
-                         DI_NORTHEAST, DI_NORTH,     DI_NORTHWEST, DI_NODIR };
+dirtype_t opposite[] = { DI_WEST, DI_SOUTHWEST, DI_SOUTH, DI_SOUTHEAST, DI_EAST, DI_NORTHEAST, DI_NORTH, DI_NORTHWEST, DI_NODIR };
 
 dirtype_t diags[] = { DI_NORTHWEST, DI_NORTHEAST, DI_SOUTHWEST, DI_SOUTHEAST };
 
@@ -181,8 +180,7 @@ bool P_CheckMissileRange(mobj_t* actor) {
     }
 
     // OPTIMIZE: get this from a global checksight
-    dist =
-        P_AproxDistance(actor->x - actor->target->x, actor->y - actor->target->y) - 64 * FRACUNIT;
+    dist = P_AproxDistance(actor->x - actor->target->x, actor->y - actor->target->y) - 64 * FRACUNIT;
 
     if (!actor->info->meleestate) {
         dist -= 128 * FRACUNIT; // no melee attack, so fire more
@@ -441,7 +439,7 @@ void P_NewChaseDir(mobj_t* actor) {
 // If allaround is false, only look 180 degrees in front.
 // Returns true if a player is targeted.
 //
-bool P_LookForPlayers(mobj_t* actor, boolean allaround) {
+bool P_LookForPlayers(mobj_t* actor, bool allaround) {
     int       c;
     int       stop;
     player_t* player;
@@ -1006,7 +1004,7 @@ fixed_t viletryx;
 fixed_t viletryy;
 
 bool PIT_VileCheck(mobj_t* thing) {
-    int     maxdist;
+    int  maxdist;
     bool check;
 
     if (!(thing->flags & MF_CORPSE)) {
@@ -1037,7 +1035,7 @@ bool PIT_VileCheck(mobj_t* thing) {
         return true; // doesn't fit here
     }
 
-    return false;    // got one, so stop checking
+    return false; // got one, so stop checking
 }
 
 //
@@ -1317,8 +1315,7 @@ void A_PainShootSkull(mobj_t* actor, angle_t angle) {
 
     currentthinker = thinkercap.next;
     while (currentthinker != &thinkercap) {
-        if ((currentthinker->function.acp1 == (actionf_p1)P_MobjThinker) &&
-            ((mobj_t*)currentthinker)->type == MT_SKULL) {
+        if ((currentthinker->function.acp1 == (actionf_p1)P_MobjThinker) && ((mobj_t*)currentthinker)->type == MT_SKULL) {
             count++;
         }
         currentthinker = currentthinker->next;

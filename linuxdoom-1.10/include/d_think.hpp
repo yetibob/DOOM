@@ -34,9 +34,10 @@
 //  we will need to handle the various
 //  action functions cleanly.
 //
-typedef void (*actionf_v)();
-typedef void (*actionf_p1)(void*);
-typedef void (*actionf_p2)(void*, void*);
+
+using actionf_v  = void (*)();
+using actionf_p1 = void (*)(void*);
+using actionf_p2 = void (*)(void*, void*);
 
 typedef union {
     actionf_p1 acp1;

@@ -145,7 +145,7 @@ bool P_GiveAmmo(player_t* player, ammotype_t ammo, int num) {
 // P_GiveWeapon
 // The weapon name may have a MF_DROPPED flag ored in.
 //
-bool P_GiveWeapon(player_t* player, weapontype_t weapon, boolean dropped) {
+bool P_GiveWeapon(player_t* player, weapontype_t weapon, bool dropped) {
     bool gaveammo;
     bool gaveweapon;
 
@@ -771,15 +771,13 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
     // Some close combat weapons should not
     // inflict thrust and push the victim out of reach,
     // thus kick away unless using the chainsaw.
-    if (inflictor && !(target->flags & MF_NOCLIP) &&
-        (!source || !source->player || source->player->readyweapon != wp_chainsaw)) {
+    if (inflictor && !(target->flags & MF_NOCLIP) && (!source || !source->player || source->player->readyweapon != wp_chainsaw)) {
         ang = R_PointToAngle2(inflictor->x, inflictor->y, target->x, target->y);
 
         thrust = damage * (FRACUNIT >> 3) * 100 / target->info->mass;
 
         // make fall forwards sometimes
-        if (damage < 40 && damage > target->health && target->z - inflictor->z > 64 * FRACUNIT &&
-            (P_Random() & 1)) {
+        if (damage < 40 && damage > target->health && target->z - inflictor->z > 64 * FRACUNIT && (P_Random() & 1)) {
             ang += ANG180;
             thrust *= 4;
         }
@@ -798,8 +796,7 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 
         // Below certain threshold,
         // ignore damage in GOD mode, or with INVUL power.
-        if (damage < 1000 &&
-            ((player->cheats & CF_GODMODE) || player->powers[pw_invulnerability])) {
+        if (damage < 1000 && ((player->cheats & CF_GODMODE) || player->powers[pw_invulnerability])) {
             return;
         }
 
@@ -852,14 +849,12 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 
     target->reactiontime = 0; // we're awake now...
 
-    if ((!target->threshold || target->type == MT_VILE) && source && source != target &&
-        source->type != MT_VILE) {
+    if ((!target->threshold || target->type == MT_VILE) && source && source != target && source->type != MT_VILE) {
         // if not intent on another player,
         // chase after this one
         target->target    = source;
         target->threshold = BASETHRESHOLD;
-        if (target->state == &states[target->info->spawnstate] &&
-            target->info->seestate != S_NULL) {
+        if (target->state == &states[target->info->spawnstate] && target->info->seestate != S_NULL) {
             P_SetMobjState(target, target->info->seestate);
         }
     }

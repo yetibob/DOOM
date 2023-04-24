@@ -4,11 +4,12 @@
 #
 # $Log:$
 #
-CC=  g++  # gcc or g++
+CC=g++  # gcc or g++
 
-CXXFLAGS=-g -Wall -std=c++17 -DNORMALUNIX -DLINUX # -DUSEASM 
-LDFLAGS=-L/usr/X11R6/lib
-LIBS=-lXext -lX11 -lnsl -lm
+CXXFLAGS=-std=c++17 -Iinclude -Wall -DNORMALUNIX -DLINUX -Wno-unused-function -Wno-unused-variable -Wno-write-strings -Wno-narrowing -Wno-literal-suffix -fsanitize=address -fpermissive -Wno-int-to-pointer-cast
+LDFLAGS=
+LIBS=-lnsl -lm
+
 
 # subdirectory for objects
 O=linux
@@ -84,11 +85,11 @@ clean:
 	rm -f linux/*
 
 $(O)/linuxxdoom:	$(OBJS) $(O)/i_main.o
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(O)/i_main.o \
+	$(CC) $(CXXFLAGS) $(LDFLAGS) $(OBJS) $(O)/i_main.o \
 	-o $(O)/linuxxdoom $(LIBS)
 
 $(O)/%.o:	%.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CXXFLAGS) -c $< -o $@
 
 #############################################################
 #

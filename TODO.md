@@ -1,16 +1,4 @@
-# i_video.cpp
-This is where the majority of the work has to happen (I think). Need to convert i_video from X11 to SDL2
+# TODO
+We are compiling!!! Unfortunately this doesn't mean things are working. There is probably a LOT of work to do (there is no way I did the SDL stuff right). Plus there are just some actual issues in the DOOM code itself. We need to get it running and then try to work our way through all of the warnings
 
-- [x] I_GetEvent
-    - [+] xlatekey
-- [+] I_FinishUpdate
-- [x] I_StartTic
-- [ ] I_InitGraphics
-- [ ] I_ShutdownGraphics
-- [ ] I_SetPalette
-- [ ] I_UpdateNoBlit?
-- [ ] I_WaitVBL?
-- [ ] I_ReadScreen?
-- [ ] I_BeginRead?
-- [ ] I_EndRead?
-
+For now, we are crashing in R_InitTextures

@@ -2,3 +2,4 @@ linux
 *.swp
 build/
 *.core
+core.*

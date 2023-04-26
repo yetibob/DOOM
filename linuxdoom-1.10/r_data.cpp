@@ -25,6 +25,8 @@
 
 static const char rcsid[] = "$Id: r_data.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
 
+#include <cstdint>
+
 #include "doomdef.hpp"
 #include "doomstat.hpp"
 #include "i_system.hpp"
@@ -71,11 +73,11 @@ typedef struct {
 // which are to be combined in a predefined order.
 //
 typedef struct {
-    char       name[8];
-    bool       masked;
-    short      width;
-    short      height;
-    short      patchcount;
+    char     name[8];
+    uint32_t masked;
+    short    width;
+    short    height;
+    short    patchcount;
     // void**     columndirectory; // OBSOLETE
     mappatch_t patches[1];
 } maptexture_t;
@@ -460,9 +462,7 @@ void R_InitTextures(void) {
         mtexture = (maptexture_t*)((byte*)maptex + offset);
 
         texture = textures[i] =
-            Z_Malloc(sizeof(texture_t) + sizeof(texpatch_t) * (SHORT(mtexture->patchcount) - 1),
-                     PU_STATIC,
-                     0);
+            Z_Malloc(sizeof(texture_t) + sizeof(texpatch_t) * (SHORT(mtexture->patchcount) - 1), PU_STATIC, 0);
 
         texture->width      = SHORT(mtexture->width);
         texture->height     = SHORT(mtexture->height);

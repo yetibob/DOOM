@@ -72,11 +72,11 @@ typedef struct {
 //
 typedef struct {
     char       name[8];
-    bool    masked;
+    bool       masked;
     short      width;
     short      height;
-    void**     columndirectory; // OBSOLETE
     short      patchcount;
+    // void**     columndirectory; // OBSOLETE
     mappatch_t patches[1];
 } maptexture_t;
 

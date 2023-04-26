@@ -3,3 +3,4 @@ linux
 build/
 *.core
 core.*
+tags

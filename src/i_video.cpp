@@ -462,9 +462,7 @@ void UploadNewPalette(SDL_Surface* surface, byte* palette) {
     }
 
     // Do we ever need to free this palette?
-    SDL_Palette* sdlPalette = SDL_AllocPalette(256);
-    SDL_SetPaletteColors(sdlPalette, colors, 0, 256);
-    SDL_SetSurfacePalette(surface, sdlPalette);
+    SDL_SetPaletteColors(surface->format->palette, colors, 0, 256);
 }
 
 //

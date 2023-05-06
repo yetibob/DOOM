@@ -200,29 +200,23 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] = {
 // Using patches saves a lot of space,
 //  as they replace 320x200 full screen frames.
 //
-static anim_t epsd0animinfo[] = {
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 224, 104 } }, { ANIM_ALWAYS, TICRATE / 3, 3, { 184, 160 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 112, 136 } }, { ANIM_ALWAYS, TICRATE / 3, 3, { 72, 112 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 88, 96 } },   { ANIM_ALWAYS, TICRATE / 3, 3, { 64, 48 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 192, 40 } },  { ANIM_ALWAYS, TICRATE / 3, 3, { 136, 16 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 80, 16 } },   { ANIM_ALWAYS, TICRATE / 3, 3, { 64, 24 } }
+static anim_t epsd0animinfo[] = { { ANIM_ALWAYS, TICRATE / 3, 3, { 224, 104 } }, { ANIM_ALWAYS, TICRATE / 3, 3, { 184, 160 } },
+                                  { ANIM_ALWAYS, TICRATE / 3, 3, { 112, 136 } }, { ANIM_ALWAYS, TICRATE / 3, 3, { 72, 112 } },
+                                  { ANIM_ALWAYS, TICRATE / 3, 3, { 88, 96 } },   { ANIM_ALWAYS, TICRATE / 3, 3, { 64, 48 } },
+                                  { ANIM_ALWAYS, TICRATE / 3, 3, { 192, 40 } },  { ANIM_ALWAYS, TICRATE / 3, 3, { 136, 16 } },
+                                  { ANIM_ALWAYS, TICRATE / 3, 3, { 80, 16 } },   { ANIM_ALWAYS, TICRATE / 3, 3, { 64, 24 } } };
+
+static anim_t epsd1animinfo[] = {
+    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 1 }, { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 2 },
+    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 3 }, { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 4 },
+    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 5 }, { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 6 },
+    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 7 }, { ANIM_LEVEL, TICRATE / 3, 3, { 192, 144 }, 8 },
+    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 8 }
 };
 
-static anim_t epsd1animinfo[] = { { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 1 },
-                                  { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 2 },
-                                  { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 3 },
-                                  { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 4 },
-                                  { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 5 },
-                                  { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 6 },
-                                  { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 7 },
-                                  { ANIM_LEVEL, TICRATE / 3, 3, { 192, 144 }, 8 },
-                                  { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 8 } };
-
-static anim_t epsd2animinfo[] = {
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 104, 168 } }, { ANIM_ALWAYS, TICRATE / 3, 3, { 40, 136 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 160, 96 } },  { ANIM_ALWAYS, TICRATE / 3, 3, { 104, 80 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 120, 32 } },  { ANIM_ALWAYS, TICRATE / 4, 3, { 40, 0 } }
-};
+static anim_t epsd2animinfo[] = { { ANIM_ALWAYS, TICRATE / 3, 3, { 104, 168 } }, { ANIM_ALWAYS, TICRATE / 3, 3, { 40, 136 } },
+                                  { ANIM_ALWAYS, TICRATE / 3, 3, { 160, 96 } },  { ANIM_ALWAYS, TICRATE / 3, 3, { 104, 80 } },
+                                  { ANIM_ALWAYS, TICRATE / 3, 3, { 120, 32 } },  { ANIM_ALWAYS, TICRATE / 4, 3, { 40, 0 } } };
 
 static int NUMANIMS[NUMEPISODES] = { sizeof(epsd0animinfo) / sizeof(anim_t),
                                      sizeof(epsd1animinfo) / sizeof(anim_t),
@@ -393,11 +387,11 @@ void WI_drawEL(void) {
 
 void WI_drawOnLnode(int n, patch_t* c[]) {
 
-    int     i;
-    int     left;
-    int     top;
-    int     right;
-    int     bottom;
+    int  i;
+    int  left;
+    int  top;
+    int  right;
+    int  bottom;
     bool fits = false;
 
     i = 0;

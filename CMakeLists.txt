@@ -7,8 +7,8 @@ set(EXE doom)
 
 project (${APP} VERSION 0.1)
 
-list(APPEND SOURCE_DIRS  ${PROJECT_SOURCE_DIR}/linuxdoom-1.10)
-list(APPEND INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/linuxdoom-1.10/include)
+list(APPEND SOURCE_DIRS  ${PROJECT_SOURCE_DIR}/src)
+list(APPEND INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
 file(GLOB source_files "${SOURCE_DIRS}/*.cpp")
 
 add_executable(${EXE} ${source_files})

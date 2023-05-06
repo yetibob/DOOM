@@ -43,7 +43,6 @@ static const char rcsid[] = "$Id: r_data.c,v 1.4 1997/02/03 16:47:55 b1 Exp $";
 
 #include "r_data.hpp"
 
-//
 // Graphics.
 // DOOM graphics for walls and sprites
 // is stored in vertical runs of opaque pixels (posts).

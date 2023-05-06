@@ -280,10 +280,7 @@ void D_Display(void) {
         } else {
             y = viewwindowy + 4;
         }
-        V_DrawPatchDirect(viewwindowx + (scaledviewwidth - 68) / 2,
-                          y,
-                          0,
-                          W_CacheLumpName("M_PAUSE", PU_CACHE));
+        V_DrawPatchDirect(viewwindowx + (scaledviewwidth - 68) / 2, y, 0, W_CacheLumpName("M_PAUSE", PU_CACHE));
     }
 
     // menus go directly to the screen
@@ -957,10 +954,9 @@ void D_DoomMain(void) {
     if (modifiedgame) {
         // These are the lumps that will be checked in IWAD,
         // if any one is not present, execution will be aborted.
-        char name[23][9] = { "e2m1",   "e2m2",   "e2m3",   "e2m4",   "e2m5",    "e2m6",
-                             "e2m7",   "e2m8",   "e2m9",   "e3m1",   "e3m3",    "e3m3",
-                             "e3m4",   "e3m5",   "e3m6",   "e3m7",   "e3m8",    "e3m9",
-                             "dphoof", "bfgga0", "heada1", "cybra1", "spida1d1" };
+        char name[23][9] = { "e2m1", "e2m2", "e2m3",   "e2m4",   "e2m5",   "e2m6",   "e2m7",    "e2m8",
+                             "e2m9", "e3m1", "e3m3",   "e3m3",   "e3m4",   "e3m5",   "e3m6",    "e3m7",
+                             "e3m8", "e3m9", "dphoof", "bfgga0", "heada1", "cybra1", "spida1d1" };
         int  i;
 
         if (gamemode == shareware) {
@@ -981,13 +977,12 @@ void D_DoomMain(void) {
 
     // Iff additonal PWAD files are used, print modified banner
     if (modifiedgame) {
-        /*m*/ printf(
-            "===========================================================================\n"
-            "ATTENTION:  This version of DOOM has been modified.  If you would like to\n"
-            "get a copy of the original game, call 1-800-IDGAMES or see the readme file.\n"
-            "        You will not receive technical support for modified games.\n"
-            "                      press enter to continue\n"
-            "===========================================================================\n");
+        /*m*/ printf("===========================================================================\n"
+                     "ATTENTION:  This version of DOOM has been modified.  If you would like to\n"
+                     "get a copy of the original game, call 1-800-IDGAMES or see the readme file.\n"
+                     "        You will not receive technical support for modified games.\n"
+                     "                      press enter to continue\n"
+                     "===========================================================================\n");
         getchar();
     }
 

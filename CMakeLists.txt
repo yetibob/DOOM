@@ -17,7 +17,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -DNORMALUNIX -DLINUX -Wno-unused-function -Wno-unused-variable -Wno-write-strings -Wno-narrowing -Wno-literal-suffix -fsanitize=address -fpermissive")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -DNORMALUNIX -DLINUX -Wno-unused-function -Wno-unused-variable -Wno-write-strings -Wno-narrowing -Wno-literal-suffix -fpermissive -ggdb -O0")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror=int-to-pointer-cast -Wno-write-strings -Wno-narrowing -Wno-unused-function -Wno-unused-variable -Wno-literal-suffix -fpermissive -ggdb -O0 -DNORMALUNIX -DLINUX")
 
 # Custom boost dir
 # set(BOOST_ROOT "${PROJECT_SOURCE_DIR}/libs/boost")

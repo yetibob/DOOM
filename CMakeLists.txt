@@ -9,24 +9,18 @@ project (${APP} VERSION 0.1)
 
 list(APPEND SOURCE_DIRS  ${PROJECT_SOURCE_DIR}/src)
 list(APPEND INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/include)
-file(GLOB source_files "${SOURCE_DIRS}/*.cpp")
+file(GLOB source_files "${SOURCE_DIRS}/*.c")
 
 add_executable(${EXE} ${source_files})
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -DNORMALUNIX -DLINUX -Wno-unused-function -Wno-unused-variable -Wno-write-strings -Wno-narrowing -Wno-literal-suffix -fsanitize=address -fpermissive")
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD_REQUIRED True)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-int-to-pointer-cast -Wno-write-strings -Wno-narrowing -Wno-unused-function -Wno-unused-variable -Wno-literal-suffix -fpermissive -ggdb -O0 -DNORMALUNIX -DLINUX -m32 -L/usr/lib")
+# set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -DNORMALUNIX -DLINUX -Wno-unused-function -Wno-unused-variable -Wno-write-strings -Wno-narrowing -Wno-literal-suffix -fsanitize=address -fpermissive")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-int-to-pointer-cast -Wno-write-strings -Wno-narrowing -Wno-unused-function -Wno-unused-variable -Wno-literal-suffix -fpermissive -ggdb -O0 -DNORMALUNIX -DLINUX")
-
-FetchContent_Declare(fmt
-  GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-  GIT_TAG master
-)
-FetchContent_MakeAvailable(fmt)
 
 find_package(SDL2 REQUIRED)
-list(APPEND EXTRA_LIBS SDL2::SDL2 fmt::fmt)
+list(APPEND EXTRA_LIBS SDL2::SDL2)
 
 target_include_directories(${EXE} PRIVATE
     ${INCLUDE_DIRS}

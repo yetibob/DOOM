@@ -387,11 +387,9 @@ void I_FinishUpdate(void) {
         while (y--) {
             x = SCREENWIDTH;
             do {
-                fouripixels = *ilineptr++;
-                twoopixels =
-                    (fouripixels & 0xff000000) | ((fouripixels >> 8) & 0xffff00) | ((fouripixels >> 16) & 0xff);
-                twomoreopixels =
-                    ((fouripixels << 16) & 0xff000000) | ((fouripixels << 8) & 0xffff00) | (fouripixels & 0xff);
+                fouripixels    = *ilineptr++;
+                twoopixels     = (fouripixels & 0xff000000) | ((fouripixels >> 8) & 0xffff00) | ((fouripixels >> 16) & 0xff);
+                twomoreopixels = ((fouripixels << 16) & 0xff000000) | ((fouripixels << 8) & 0xffff00) | (fouripixels & 0xff);
 #ifdef __BIG_ENDIAN__
                 *olineptrs[0]++ = twoopixels;
                 *olineptrs[1]++ = twoopixels;
@@ -423,13 +421,10 @@ void I_FinishUpdate(void) {
         while (y--) {
             x = SCREENWIDTH;
             do {
-                fouripixels = *ilineptr++;
-                fouropixels[0] =
-                    (fouripixels & 0xff000000) | ((fouripixels >> 8) & 0xff0000) | ((fouripixels >> 16) & 0xffff);
-                fouropixels[1] =
-                    ((fouripixels << 8) & 0xff000000) | (fouripixels & 0xffff00) | ((fouripixels >> 8) & 0xff);
-                fouropixels[2] =
-                    ((fouripixels << 16) & 0xffff0000) | ((fouripixels << 8) & 0xff00) | (fouripixels & 0xff);
+                fouripixels    = *ilineptr++;
+                fouropixels[0] = (fouripixels & 0xff000000) | ((fouripixels >> 8) & 0xff0000) | ((fouripixels >> 16) & 0xffff);
+                fouropixels[1] = ((fouripixels << 8) & 0xff000000) | (fouripixels & 0xffff00) | ((fouripixels >> 8) & 0xff);
+                fouropixels[2] = ((fouripixels << 16) & 0xffff0000) | ((fouripixels << 8) & 0xff00) | (fouripixels & 0xff);
 #ifdef __BIG_ENDIAN__
                 *olineptrs[0]++ = fouropixels[0];
                 *olineptrs[1]++ = fouropixels[0];
@@ -813,16 +808,8 @@ void I_InitGraphics(void) {
             I_Error("XShmAttach() failed in InitGraphics()");
 
     } else {
-        image = XCreateImage(X_display,
-                             X_visual,
-                             8,
-                             ZPixmap,
-                             0,
-                             (char*)malloc(X_width * X_height),
-                             X_width,
-                             X_height,
-                             8,
-                             X_width);
+        image =
+            XCreateImage(X_display, X_visual, 8, ZPixmap, 0, (char*)malloc(X_width * X_height), X_width, X_height, 8, X_width);
     }
 
     if (multiply == 1)
@@ -949,4 +936,3 @@ void Expand4(unsigned* lineptr, double* xline) {
         xline += step;
     } while (y--);
 }
-

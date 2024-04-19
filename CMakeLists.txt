@@ -15,7 +15,7 @@ add_executable(${EXE} ${source_files})
 
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED True)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-int-to-pointer-cast -Wno-write-strings -Wno-narrowing -Wno-unused-function -Wno-unused-variable -Wno-literal-suffix -fpermissive -ggdb -O0 -DNORMALUNIX -DLINUX -m32 -L/usr/lib")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-int-to-pointer-cast -Wno-write-strings -Wno-narrowing -Wno-unused-function -Wno-unused-variable -Wno-literal-suffix -fpermissive -ggdb -O0 -DNORMALUNIX -DLINUX")
 # set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -DNORMALUNIX -DLINUX -Wno-unused-function -Wno-unused-variable -Wno-write-strings -Wno-narrowing -Wno-literal-suffix -fsanitize=address -fpermissive")
 
 

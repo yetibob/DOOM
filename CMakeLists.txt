@@ -28,6 +28,8 @@ target_include_directories(${EXE} PRIVATE
 target_link_libraries(${EXE}
   PRIVATE
   ${EXTRA_LIBS}
+  -lX11
+  -lXext
   -lnsl
   -lm
 )

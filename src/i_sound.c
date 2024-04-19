@@ -57,7 +57,7 @@ static const char rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 // UNIX hack, to be removed.
 #ifdef SNDSERV
 // Separate sound server process.
-FILE* sndserver = 0;
+FILE* sndserver          = 0;
 char* sndserver_filename = "./sndserver ";
 #elif SNDINTR
 
@@ -67,7 +67,7 @@ char* sndserver_filename = "./sndserver ";
 #define SOUND_INTERVAL 500
 
 // Get the interrupt. Set duration in millisecs.
-int I_SoundSetTimer(int duration_of_tick);
+int  I_SoundSetTimer(int duration_of_tick);
 void I_SoundDelTimer(void);
 #else
 // None?
@@ -90,8 +90,8 @@ static int flag = 0;
 #define BUFMUL 4
 #define MIXBUFFERSIZE (SAMPLECOUNT * BUFMUL)
 
-#define SAMPLERATE 11025  // Hz
-#define SAMPLESIZE 2      // 16bit
+#define SAMPLERATE 11025 // Hz
+#define SAMPLESIZE 2     // 16bit
 
 // The actual lengths of all sound effects.
 int lengths[NUMSFX];
@@ -146,6 +146,7 @@ int* channelrightvol_lookup[NUM_CHANNELS];
 //
 void myioctl(int fd, int command, int* arg) {
     int rc;
+
     rc = ioctl(fd, command, arg);
     if (rc < 0) {
         fprintf(stderr, "ioctl(dsp,%d,arg) failed\n", command);
@@ -161,11 +162,11 @@ void myioctl(int fd, int command, int* arg) {
 void* getsfx(char* sfxname, int* len) {
     unsigned char* sfx;
     unsigned char* paddedsfx;
-    int i;
-    int size;
-    int paddedsize;
-    char name[20];
-    int sfxlump;
+    int            i;
+    int            size;
+    int            paddedsize;
+    char           name[20];
+    int            sfxlump;
 
     // Get the sound data from the WAD, allocate lump
     //  in zone memory.
@@ -208,7 +209,8 @@ void* getsfx(char* sfxname, int* len) {
 
     // Now copy and pad.
     memcpy(paddedsfx, sfx, size);
-    for (i = size; i < paddedsize + 8; i++) paddedsfx[i] = 128;
+    for (i = size; i < paddedsize + 8; i++)
+        paddedsfx[i] = 128;
 
     // Remove the cached lump.
     Z_Free(sfx);
@@ -233,7 +235,7 @@ int addsfx(int sfxid, int volume, int step, int seperation) {
     int i;
     int rc = -1;
 
-    int oldest = gametic;
+    int oldest    = gametic;
     int oldestnum = 0;
     int slot;
 
@@ -242,8 +244,8 @@ int addsfx(int sfxid, int volume, int step, int seperation) {
 
     // Chainsaw troubles.
     // Play these sound effects only one at a time.
-    if (sfxid == sfx_sawup || sfxid == sfx_sawidl || sfxid == sfx_sawful ||
-        sfxid == sfx_sawhit || sfxid == sfx_stnmov || sfxid == sfx_pistol) {
+    if (sfxid == sfx_sawup || sfxid == sfx_sawidl || sfxid == sfx_sawful || sfxid == sfx_sawhit ||
+        sfxid == sfx_stnmov || sfxid == sfx_pistol) {
         // Loop all channels, check.
         for (i = 0; i < NUM_CHANNELS; i++) {
             // Active, and using the same SFX?
@@ -261,7 +263,7 @@ int addsfx(int sfxid, int volume, int step, int seperation) {
     for (i = 0; (i < NUM_CHANNELS) && (channels[i]); i++) {
         if (channelstart[i] < oldest) {
             oldestnum = i;
-            oldest = channelstart[i];
+            oldest    = channelstart[i];
         }
     }
 
@@ -282,7 +284,8 @@ int addsfx(int sfxid, int volume, int step, int seperation) {
     channelsend[slot] = channels[slot] + lengths[sfxid];
 
     // Reset current handle number, limited to 0..100.
-    if (!handlenums) handlenums = 100;
+    if (!handlenums)
+        handlenums = 100;
 
     // Assign current handle number.
     // Preserved so sounds could be stopped (unused).
@@ -303,19 +306,20 @@ int addsfx(int sfxid, int volume, int step, int seperation) {
     // Per left/right channel.
     //  x^2 seperation,
     //  adjust volume properly.
-    leftvol =
-        volume - ((volume * seperation * seperation) >> 16);  ///(256*256);
+    leftvol    = volume - ((volume * seperation * seperation) >> 16); ///(256*256);
     seperation = seperation - 257;
-    rightvol = volume - ((volume * seperation * seperation) >> 16);
+    rightvol   = volume - ((volume * seperation * seperation) >> 16);
 
     // Sanity check, clamp volume.
-    if (rightvol < 0 || rightvol > 127) I_Error("rightvol out of bounds");
+    if (rightvol < 0 || rightvol > 127)
+        I_Error("rightvol out of bounds");
 
-    if (leftvol < 0 || leftvol > 127) I_Error("leftvol out of bounds");
+    if (leftvol < 0 || leftvol > 127)
+        I_Error("leftvol out of bounds");
 
     // Get the proper lookup table piece
     //  for this volume level???
-    channelleftvol_lookup[slot] = &vol_lookup[leftvol * 256];
+    channelleftvol_lookup[slot]  = &vol_lookup[leftvol * 256];
     channelrightvol_lookup[slot] = &vol_lookup[rightvol * 256];
 
     // Preserve sound SFX id,
@@ -403,6 +407,7 @@ int I_GetSfxLumpNum(sfxinfo_t* sfx) {
 //  is set, but currently not used by mixing.
 //
 int I_StartSound(int id, int vol, int sep, int pitch, int priority) {
+
     // UNUSED
     priority = 0;
 
@@ -463,8 +468,8 @@ void I_UpdateSound(void) {
     // Mix current sound data.
     // Data, from raw sound, for right and left.
     register unsigned int sample;
-    register int dl;
-    register int dr;
+    register int          dl;
+    register int          dr;
 
     // Pointers in global mixbuffer, left, right, end.
     signed short* leftout;
@@ -478,9 +483,9 @@ void I_UpdateSound(void) {
 
     // Left and right channel
     //  are in global mixbuffer, alternating.
-    leftout = mixbuffer;
+    leftout  = mixbuffer;
     rightout = mixbuffer + 1;
-    step = 2;
+    step     = 2;
 
     // Determine end, for left channel only
     //  (right channel is implicit).
@@ -516,7 +521,8 @@ void I_UpdateSound(void) {
                 channelstepremainder[chan] &= 65536 - 1;
 
                 // Check whether we are done.
-                if (channels[chan] >= channelsend[chan]) channels[chan] = 0;
+                if (channels[chan] >= channelsend[chan])
+                    channels[chan] = 0;
             }
         }
 
@@ -650,7 +656,8 @@ void I_InitSound() {
     fprintf(stderr, "I_InitSound: ");
 
     audio_fd = open("/dev/dsp", O_WRONLY);
-    if (audio_fd < 0) fprintf(stderr, "Could not open /dev/dsp\n");
+    if (audio_fd < 0)
+        fprintf(stderr, "Could not open /dev/dsp\n");
 
     i = 11 | (2 << 16);
     myioctl(audio_fd, SNDCTL_DSP_SETFRAGMENT, &i);
@@ -683,14 +690,15 @@ void I_InitSound() {
         } else {
             // Previously loaded already?
             S_sfx[i].data = S_sfx[i].link->data;
-            lengths[i] = lengths[(S_sfx[i].link - S_sfx) / sizeof(sfxinfo_t)];
+            lengths[i]    = lengths[(S_sfx[i].link - S_sfx) / sizeof(sfxinfo_t)];
         }
     }
 
     fprintf(stderr, " pre-cached all sound data\n");
 
     // Now initialize mixbuffer with zero.
-    for (i = 0; i < MIXBUFFERSIZE; i++) mixbuffer[i] = 0;
+    for (i = 0; i < MIXBUFFERSIZE; i++)
+        mixbuffer[i] = 0;
 
     // Finished initialization.
     fprintf(stderr, "I_InitSound: sound module ready\n");
@@ -706,13 +714,13 @@ void I_InitSound() {
 void I_InitMusic(void) {}
 void I_ShutdownMusic(void) {}
 
-static int looping = 0;
+static int looping   = 0;
 static int musicdies = -1;
 
 void I_PlaySong(int handle, int looping) {
     // UNUSED.
     handle = looping = 0;
-    musicdies = gametic + TICRATE * 30;
+    musicdies        = gametic + TICRATE * 30;
 }
 
 void I_PauseSong(int handle) {
@@ -729,7 +737,7 @@ void I_StopSong(int handle) {
     // UNUSED.
     handle = 0;
 
-    looping = 0;
+    looping   = 0;
     musicdies = 0;
 }
 
@@ -817,16 +825,17 @@ int I_SoundSetTimer(int duration_of_tick) {
 
     sigaction(sig, &act, &oact);
 
-    value.it_interval.tv_sec = 0;
+    value.it_interval.tv_sec  = 0;
     value.it_interval.tv_usec = duration_of_tick;
-    value.it_value.tv_sec = 0;
-    value.it_value.tv_usec = duration_of_tick;
+    value.it_value.tv_sec     = 0;
+    value.it_value.tv_usec    = duration_of_tick;
 
     // Error is -1.
     res = setitimer(itimer, &value, &ovalue);
 
     // Debug.
-    if (res == -1) fprintf(stderr, "I_SoundSetTimer: interrupt n.a.\n");
+    if (res == -1)
+        fprintf(stderr, "I_SoundSetTimer: interrupt n.a.\n");
 
     return res;
 }

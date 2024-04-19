@@ -17,29 +17,16 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -DNORMALUNIX -DLINUX -Wno-unused-function -Wno-unused-variable -Wno-write-strings -Wno-narrowing -Wno-literal-suffix -fsanitize=address -fpermissive")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror=int-to-pointer-cast -Wno-write-strings -Wno-narrowing -Wno-unused-function -Wno-unused-variable -Wno-literal-suffix -fpermissive -ggdb -O0 -DNORMALUNIX -DLINUX")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-int-to-pointer-cast -Wno-write-strings -Wno-narrowing -Wno-unused-function -Wno-unused-variable -Wno-literal-suffix -fpermissive -ggdb -O0 -DNORMALUNIX -DLINUX")
 
-# Custom boost dir
-# set(BOOST_ROOT "${PROJECT_SOURCE_DIR}/libs/boost")
-# set(Boost_NO_SYSTEM_PATHS on CACHE BOOL "Do not search system for Boost" )
-
-# set(Boost_NO_BOOST_CMAKE         ON)
-# set(Boost_USE_STATIC_LIBS        ON)  # only find static libs
-# set(Boost_USE_DEBUG_LIBS        OFF)  # ignore debug libs and
-# set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
-# set(Boost_USE_MULTITHREADED      ON)
-# set(Boost_USE_STATIC_RUNTIME    OFF)
-# find_package(Boost 1.75.0 REQUIRED COMPONENTS date_time regex system thread)
-# list(APPEND INCLUDE_DIRS ${Boost_INCLUDE_DIRS})
-
-# FetchContent_Declare(fmt
-#   GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-#   GIT_TAG master
-# )
-# FetchContent_MakeAvailable(fmt)
+FetchContent_Declare(fmt
+  GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+  GIT_TAG master
+)
+FetchContent_MakeAvailable(fmt)
 
 find_package(SDL2 REQUIRED)
-list(APPEND EXTRA_LIBS SDL2::SDL2)
+list(APPEND EXTRA_LIBS SDL2::SDL2 fmt::fmt)
 
 target_include_directories(${EXE} PRIVATE
     ${INCLUDE_DIRS}

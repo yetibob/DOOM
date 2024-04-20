@@ -430,6 +430,7 @@ void I_FinishUpdate(void) {
     // r.w = X_Width;
     // r.h = X_Height;
     SDL_BlitSurface(image, NULL, screenSurface, NULL);
+    SDL_UpdateWindowSurface(window);
 }
 
 //
@@ -474,8 +475,7 @@ void I_SetPalette(byte* palette) {
 void I_InitGraphics(void) {
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("Error initialized SDL\n");
-        exit(0);
+        I_Error("Error initializing SDL\n");
     }
 
     char* d;
@@ -539,11 +539,11 @@ void I_InitGraphics(void) {
     // create the main window
     window = SDL_CreateWindow("DOOM", x, y, X_width, X_height, SDL_WINDOW_SHOWN);
     if (!window) {
-        printf("Window not created\n");
-        exit(0);
+        I_Error("Window not created\n");
     }
 
     screenSurface = SDL_GetWindowSurface(window);
+    return;
 
     // wait until it is OK to draw
     // oktodraw = 0;
@@ -564,8 +564,6 @@ void I_InitGraphics(void) {
 
     if (multiply == 1) {
         screens[0] = (unsigned char*)(image->pixels);
-    } else {
-        screens[0] = (unsigned char*)malloc(SCREENWIDTH * SCREENHEIGHT);
     }
 }
 

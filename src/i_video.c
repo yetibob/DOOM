@@ -183,7 +183,10 @@ int xlatekey(void) {
 }
 
 // Need to handle all SDL closing stuff to free up memory
-void I_ShutdownGraphics(void) {}
+void I_ShutdownGraphics(void) {
+    SDL_DestroyWindow(window);
+    SDL_FreeSurface(image);
+}
 
 //
 // I_StartFrame
@@ -204,6 +207,9 @@ void I_GetEvent(void) {
     // put event-grabbing stuff in here
     SDL_PollEvent(&sdl_event);
     switch (sdl_event.type) {
+        case SDL_QUIT:
+            I_Quit();
+            break;
         case SDL_KEYDOWN:
             event.type  = ev_keydown;
             event.data1 = xlatekey();

@@ -429,10 +429,13 @@ void D_DoAdvanceDemo(void) {
             } else {
                 pagetic = 200;
 
-                if (gamemode == retail)
+                if (gamemode == retail || gamemode == commercial || gamemode == registered)
                     pagename = "CREDIT";
-                else
+                else {
+                    printf("pagename\n: gamemode = %i\n", gamemode);
+                    printf("retail = %i\n, commercial = %i\n, registered = %i\n", retail, commercial, registered);
                     pagename = "HELP2";
+                }
             }
             break;
         case 5:

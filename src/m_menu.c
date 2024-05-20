@@ -551,6 +551,7 @@ void M_DrawReadThis2(void) {
             break;
         case shareware:
         case registered:
+            printf("case shareware: case registered:\n");
             V_DrawPatchDirect(0, 0, 0, W_CacheLumpName("HELP2", PU_CACHE));
             break;
         default:
@@ -684,15 +685,9 @@ char msgNames[2][9]    = { "M_MSGOFF", "M_MSGON" };
 void M_DrawOptions(void) {
     V_DrawPatchDirect(108, 15, 0, W_CacheLumpName("M_OPTTTL", PU_CACHE));
 
-    V_DrawPatchDirect(OptionsDef.x + 175,
-                      OptionsDef.y + LINEHEIGHT * detail,
-                      0,
-                      W_CacheLumpName(detailNames[detailLevel], PU_CACHE));
+    V_DrawPatchDirect(OptionsDef.x + 175, OptionsDef.y + LINEHEIGHT * detail, 0, W_CacheLumpName(detailNames[detailLevel], PU_CACHE));
 
-    V_DrawPatchDirect(OptionsDef.x + 120,
-                      OptionsDef.y + LINEHEIGHT * messages,
-                      0,
-                      W_CacheLumpName(msgNames[showMessages], PU_CACHE));
+    V_DrawPatchDirect(OptionsDef.x + 120, OptionsDef.y + LINEHEIGHT * messages, 0, W_CacheLumpName(msgNames[showMessages], PU_CACHE));
 
     M_DrawThermo(OptionsDef.x, OptionsDef.y + LINEHEIGHT * (mousesens + 1), 10, mouseSensitivity);
 
@@ -1351,10 +1346,7 @@ void M_Drawer(void) {
     }
 
     // DRAW SKULL
-    V_DrawPatchDirect(x + SKULLXOFF,
-                      currentMenu->y - 5 + itemOn * LINEHEIGHT,
-                      0,
-                      W_CacheLumpName(skullName[whichSkull], PU_CACHE));
+    V_DrawPatchDirect(x + SKULLXOFF, currentMenu->y - 5 + itemOn * LINEHEIGHT, 0, W_CacheLumpName(skullName[whichSkull], PU_CACHE));
 }
 
 //

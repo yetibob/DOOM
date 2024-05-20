@@ -669,8 +669,10 @@ void F_Drawer(void) {
             case 1:
                 if (gamemode == retail)
                     V_DrawPatch(0, 0, 0, W_CacheLumpName("CREDIT", PU_CACHE));
-                else
+                else {
+                    printf("here we are f_finale\n");
                     V_DrawPatch(0, 0, 0, W_CacheLumpName("HELP2", PU_CACHE));
+                }
                 break;
             case 2:
                 V_DrawPatch(0, 0, 0, W_CacheLumpName("VICTORY2", PU_CACHE));

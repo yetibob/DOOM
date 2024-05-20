@@ -538,8 +538,9 @@ void D_QuitNetGame(void) {
     if (debugfile)
         fclose(debugfile);
 
-    if (!netgame || !usergame || consoleplayer == -1 || demoplayback)
+    if (!netgame || !usergame || consoleplayer == -1 || demoplayback) {
         return;
+    }
 
     // send a bunch of packets for security
     netbuffer->player  = consoleplayer;

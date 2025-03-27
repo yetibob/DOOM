@@ -83,8 +83,8 @@ void P_PlayerThink(player_t* player);
 //
 // P_MOBJ
 //
-#define ONFLOORZ MININT
-#define ONCEILINGZ MAXINT
+#define ONFLOORZ INT_MIN
+#define ONCEILINGZ INT_MAX
 
 // Time interval for item respawning.
 #define ITEMQUESIZE 128
@@ -224,8 +224,8 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 #include "p_spec.h"
 
 #endif // __P_LOCAL__
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------
+       //-----------------------------------------------------------------------------
+       //
+       // $Log:$
+       //
+       //-----------------------------------------------------------------------------

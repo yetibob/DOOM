@@ -18,9 +18,14 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -Wno-write-strings -Wno-narrowing -Wno-unused-function -Wno-unused-variable -fpermissive -ggdb -O0 -DNORMALUNIX -DLINUX")
 # set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -DNORMALUNIX -DLINUX -Wno-unused-function -Wno-unused-variable -Wno-write-strings -Wno-narrowing -Wno-literal-suffix -fsanitize=address -fpermissive")
 
+FetchContent_Declare(mega
+  GIT_REPOSITORY git@github.com:yetibob/mega-cpp.git
+  GIT_TAG main
+)
+FetchContent_MakeAvailable(mega)
 
 find_package(SDL2 REQUIRED)
-list(APPEND EXTRA_LIBS SDL2::SDL2)
+list(APPEND EXTRA_LIBS mega SDL2::SDL2)
 
 target_include_directories(${EXE} PRIVATE
     ${INCLUDE_DIRS}
@@ -28,9 +33,7 @@ target_include_directories(${EXE} PRIVATE
 target_link_libraries(${EXE}
   PRIVATE
   ${EXTRA_LIBS}
-  -lX11
-  -lXext
-  -lnsl
+  # -lnsl
   -lm
 )
 
